@@ -7,11 +7,11 @@ import Head from 'next/head'
 import store from 'store'
 import { NextPage } from 'next'
 import Router, { useRouter } from 'next/router'
-import { Hydrate, QueryClientProvider } from 'react-query'
-import { ReactQueryDevtools } from 'react-query/devtools'
+import { QueryClientProvider, HydrationBoundary } from '@tanstack/react-query'
+import { ReactQueryDevtools } from '@tanstack/react-query-devtools'
 // import Providers from '../Providers'
 import GlobalStyle from '../style/Global'
-import useBaseQueryClient from 'hooks/queries/useBaseQueryClient'
+import { getQueryClient } from '@/queries/client'
 import Menu from 'components/Menu'
 import Footer from 'components/Footer'
 import MenuWrapper from 'components/MenuWrapper'
@@ -90,7 +90,7 @@ function GlobalHooks() {
 
 function MyApp(props: AppProps) {
   const { pageProps } = props
-  const queryClient = useBaseQueryClient()
+  const queryClient = getQueryClient()
 
   return (
     <>
@@ -113,12 +113,12 @@ function MyApp(props: AppProps) {
         <title>IIDT</title>
       </Head>
       <QueryClientProvider client={queryClient}>
-        <Hydrate state={pageProps.dehydratedState}>
+        <HydrationBoundary state={pageProps.dehydratedState}>
           <Provider store={store}>
             <GlobalHooks />
             <App {...props} />
           </Provider>
-        </Hydrate>
+        </HydrationBoundary>
         <ReactQueryDevtools initialIsOpen={false} />
       </QueryClientProvider>
       <Script

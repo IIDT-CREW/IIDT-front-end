@@ -2,16 +2,15 @@ import { useEffect, useCallback } from 'react'
 import { useRouter } from 'next/router'
 import AOS from 'aos'
 import styled from 'styled-components'
-import { useQuery } from 'react-query'
 import Page from '@components/Layout/Page'
 import { Flex, Box, Text, useModal } from '@components/Common'
-import { getWill } from '@api/will'
+import { useWill } from '@/queries/will'
 import WillCard from '@views/Will/components/WillShareCard'
 import TitleBanner from '@views/Will/components/TitleBanner'
 import { MainButton } from '@views/Home'
 import LoginModal from '@components/LoginModal'
 import { useIsLogin } from '@store/auth/hooks'
-import { GetWill } from '@api/will/types'
+import type { Will } from '@api/will/types'
 
 const St = {
   Container: styled(Box)`
@@ -36,7 +35,7 @@ const St = {
   `,
 }
 type WillTitleProps = {
-  data: GetWill
+  data?: Will
 }
 
 const WillTitle = ({ data }: WillTitleProps) => {
@@ -44,8 +43,8 @@ const WillTitle = ({ data }: WillTitleProps) => {
     <Box mb="36px">
       <TitleBanner
         height="100vh"
-        title={data?.result?.TITLE}
-        date={data?.result?.REG_DATE}
+        title={data?.TITLE}
+        date={data?.REG_DATE}
         imagePath="https://images.unsplash.com/photo-1436891620584-47fd0e565afb?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1287&q=80"
       />
     </Box>
@@ -54,13 +53,13 @@ const WillTitle = ({ data }: WillTitleProps) => {
 
 type WillContentProps = {
   isLoading: boolean
-  data: GetWill
+  data?: Will
 }
 const WillContent = ({ isLoading, data }: WillContentProps) => {
   return (
     <Flex flexDirection="column" justifyContent="center" alignItems="center">
       <Flex flexDirection="column" justifyContent="center" alignItems="center">
-        {!isLoading && data.result && <WillCard will={data?.result} />}
+        {!isLoading && data && <WillCard will={data} />}
       </Flex>
     </Flex>
   )
@@ -90,7 +89,8 @@ const WillFooter = ({ handleWrite }: WillFooterProps) => {
 const WillPage = () => {
   const isLogin = useIsLogin()
   const router = useRouter()
-  const { data, isLoading, isError } = useQuery('getWill', () => getWill(router.query.id as string))
+  const willId = router.query.id as string
+  const { data, isLoading, isError } = useWill(willId, { enabled: !!willId })
   const [presentLoginModal] = useModal(<LoginModal />)
 
   const handleWrite = useCallback(() => {
@@ -108,7 +108,7 @@ const WillPage = () => {
   }
 
   return (
-    <Page title={data?.result?.TITLE} content={data.result?.CONTENT} isFullPage>
+    <Page title={data?.TITLE} content={data?.CONTENT} isFullPage>
       <St.Container>
         <WillTitle data={data} />
         <WillContent data={data} isLoading={isLoading} />

@@ -2,8 +2,7 @@ import React, { useEffect, InputHTMLAttributes, useState, useCallback } from 're
 import { Modal, ModalProps, Flex, Box, Text, Button } from 'components/Common'
 import styled, { CSSProp } from 'styled-components'
 import { fontSize, FontSizeProps } from 'styled-system'
-import { useQuery } from 'react-query'
-import { checkDuplicateNickname } from 'api/auth'
+import { useCheckNickname } from '@/queries/auth'
 import { API_CODE } from 'config/constants/api'
 import useLoginTransaction from 'hooks/useLoginTransaction'
 
@@ -53,31 +52,28 @@ const NickNameModal: React.FC<NickNameModalProps> = ({ onDismiss, ...props }) =>
   const [isDuplicateNickname, setIsDuplicateNickname] = useState(false)
   const [nickName, setNickName] = useState('')
   const [isValidateNickname, setIsValidateNickname] = useState(false)
-  const handleNickName = useCallback((e) => {
+  const [shouldCheck, setShouldCheck] = useState(false)
+
+  const handleNickName = useCallback((e: React.ChangeEvent<HTMLInputElement>) => {
     setNickName(e.target.value)
     setIsDuplicateNickname(false)
     setIsFetched(false)
-    setIsValidateNickname(e.target.value)
+    setIsValidateNickname(!!e.target.value)
+    setShouldCheck(false)
   }, [])
 
-  const {
-    data: checkNicknameRes,
-    isLoading,
-    isError,
-    refetch,
-  } = useQuery(['checkDuplicateNickname', nickName], () => checkDuplicateNickname({ mem_nickname: nickName }), {
-    enabled: false,
+  const { data: checkNicknameRes, isLoading, isError } = useCheckNickname(nickName, {
+    enabled: shouldCheck && !!nickName,
   })
 
   const handleCheckDuplicateNickname = useCallback(() => {
     setIsFetched(true)
-    refetch()
-  }, [refetch])
+    setShouldCheck(true)
+  }, [])
 
   useEffect(() => {
     if (!checkNicknameRes) return
-    if (checkNicknameRes?.code !== API_CODE.SUCCESS) return
-    if (checkNicknameRes?.result.IS_EXIST) {
+    if (checkNicknameRes?.IS_EXIST) {
       setIsDuplicateNickname(true)
       return
     } else setIsDuplicateNickname(false)
@@ -92,18 +88,20 @@ const NickNameModal: React.FC<NickNameModalProps> = ({ onDismiss, ...props }) =>
     <Modal title="마지막으로..." onDismiss={onDismiss} {...props} width="100%" height="100%" hideCloseButton>
       <Flex justifyContent="center" alignItems="center" flexDirection="column">
         <NickName onChange={handleNickName} placeholder="닉네임" />
-        {isValidateNickname && !isDuplicateNickname && isFetched ? (
+        {isValidateNickname && !isDuplicateNickname && isFetched && checkNicknameRes ? (
           <Box>
             <Button onClick={handleSignUp}>[{nickName}]로 등록할게요!</Button>
           </Box>
         ) : (
-          <Button onClick={handleCheckDuplicateNickname} disabled={!isValidateNickname}>
-            결정했습니다.
+          <Button onClick={handleCheckDuplicateNickname} disabled={!isValidateNickname || isLoading}>
+            {isLoading ? '확인중...' : '결정했습니다.'}
           </Button>
         )}
 
         <Box>
-          {!isValidateNickname && isDuplicateNickname && <Text color="red">아쉽지만 다른 닉네임을 사용해주세요.</Text>}
+          {isValidateNickname && isDuplicateNickname && (
+            <Text color="red">아쉽지만 다른 닉네임을 사용해주세요.</Text>
+          )}
         </Box>
       </Flex>
     </Modal>

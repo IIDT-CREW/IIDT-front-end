@@ -1,8 +1,17 @@
 import { DefaultResponse } from '../types'
+
+// Response format - used when reading will data
 export type Answer = {
   question_essay_index: string
   question_index: string
   question_answer: string
+}
+
+// Request format - used when creating/updating will
+export type AnswerInput = {
+  qs_essay_idx: string
+  qs_idx: string
+  qs_essay_answer: string
 }
 export interface Meta {
   pageNo: number
@@ -54,7 +63,7 @@ export type InsertWillParams = {
   will_id: string
   content_type: number
   is_private: boolean
-  answer_list?: Answer[] | null
+  answer_list?: AnswerInput[] | null
 }
 
 export type DeleteWillParams = {

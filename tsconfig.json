@@ -21,6 +21,9 @@
     "declaration": true, // d.ts 타입 정의 파일 export 여부
     "baseUrl": "src",
     "paths": {
+      "@/*": [
+        "*"
+      ],
       "@api/*": [
         "api/*"
       ],
@@ -67,14 +70,22 @@
     "typeRoots": [
       "./node_modules/@types",
       "./src/types"
-    ]
+    ],
+    "plugins": [
+      {
+        "name": "next"
+      }
+    ],
+    "strictNullChecks": true
   },
   "include": [
     "next-env.d.ts",
     "additional.d.ts",
     "src/**/*.ts",
     "src/**/*.tsx",
-    "src/types/*.d.ts"
+    "src/types/*.d.ts",
+    ".next/types/**/*.ts",
+    ".next/dev/types/**/*.ts"
   ],
   "exclude": [
     "node_modules"

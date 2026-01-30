@@ -6,8 +6,7 @@ import { naviActions } from 'store/navi'
 import { authActions } from 'store/auth'
 import { STORAGE_NAME } from 'config/constants/api'
 import styled from 'styled-components'
-import axios from 'api'
-import { logout } from 'api/auth'
+import { authService } from '@/services/auth.service'
 
 const St = {
   TextLink: styled(Text)`
@@ -26,10 +25,7 @@ const MenuWrapper = () => {
 
   const handleLogout = async () => {
     try {
-      //...todo
-      await logout()
-      axios.defaults.headers.common.Authorization = ''
-      axios.defaults.headers.common.refresh = ''
+      await authService.logout()
       localStorage.removeItem(STORAGE_NAME.USER)
       sessionStorage.removeItem(STORAGE_NAME.USER)
       dispatch(

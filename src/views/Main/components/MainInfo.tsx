@@ -1,9 +1,9 @@
 import { Text } from 'components/Common'
-import { useWillCountData } from 'hooks/queries/useWillData'
+import { useWillCount } from '@/queries'
 import { SkeletonV2 } from 'components/Common/Skeleton'
 
 const MainInfo = () => {
-  const { isLoading, isError, data, error } = useWillCountData({ storeCode: '', options: '' })
+  const { isLoading, isError, data } = useWillCount()
 
   return (
     <>
@@ -14,7 +14,7 @@ const MainInfo = () => {
         <SkeletonV2 height="24px" width="24px" mb="24px"></SkeletonV2>
       ) : (
         <Text fontSize="26px" bold mb="24px">
-          {data.result}개
+          {data}개
         </Text>
       )}
 

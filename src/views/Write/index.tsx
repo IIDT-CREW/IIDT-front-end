@@ -12,9 +12,7 @@ import ProgressBar from 'components/Common/ProgressBar'
 import useMatchBreakpoints from 'hooks/useMatchBreakpoints'
 import MenuBar, { StyleMenuButton } from 'views/Write/components/MenuBar'
 import { QUESTION_LIST } from 'views/Write/data'
-import useAddPostMutation from 'hooks/queries/Write/useAddPostMutation'
-import useUpdatePostMutation from 'hooks/queries/Write/useUpdatePostMutation'
-import { useGetWill } from 'hooks/queries/Write/useGetWill'
+import { useWill, useCreateWill, useUpdateWill } from '@/queries'
 import useWarningHistoryBack from './hooks/useWarningHistoryBack'
 
 const DEFAULT_TITLE = `${new Date().toLocaleDateString('ko-KR', {
@@ -30,8 +28,8 @@ const Write = () => {
   const goToBack = useCallback(() => {
     router.push('/main')
   }, [router])
-  const { mutate: addPostMutate } = useAddPostMutation({ goToBack })
-  const { mutate: updatePostMutate } = useUpdatePostMutation({ goToBack })
+  const { mutate: addPostMutate } = useCreateWill({ onSuccessCallback: goToBack })
+  const { mutate: updatePostMutate } = useUpdateWill({ onSuccessCallback: goToBack })
   const isEditMode = !!router?.query?.will_id
   const willId = router?.query?.will_id as string
   const [isDefaultPostType, setIsDefaultPostType] = useState(true)
@@ -46,7 +44,7 @@ const Write = () => {
   )
   const [isDisableSave, setIsDisableSave] = useState(true)
 
-  const { data, isSuccess: isPostLoaded } = useGetWill(willId, {
+  const { data, isSuccess: isPostLoaded } = useWill(willId, {
     enabled: router.isReady && isEditMode,
   })
 
@@ -62,18 +60,18 @@ const Write = () => {
   }, [contents, page])
 
   const setPostWhenEditMode = useCallback(() => {
+    if (!data) return
+
     const {
-      result: {
-        TITLE: title,
-        CONTENT: content,
-        CONTENT_TYPE: contentType,
-        ANSWER_LIST: answerList,
-        IS_PRIVATE: isPrivate,
-      },
+      TITLE: title,
+      CONTENT: content,
+      CONTENT_TYPE: contentType,
+      ANSWER_LIST: answerList,
+      IS_PRIVATE: isPrivate,
     } = data
 
     setTitle(title)
-    setPrivate(isPrivate)
+    setPrivate(!!isPrivate)
     if (contentType === IS_DEFAULT_MODE) {
       const answer = [{ questionIndex: 1, answer: content }, ...contents.slice(1)]
       return setContents(answer)
@@ -87,7 +85,7 @@ const Write = () => {
         answer: answer.question_answer,
       }
     })
-    setContents(answer)
+    if (answer) setContents(answer)
   }, [contents, data])
 
   /* 모달 onOpen */
