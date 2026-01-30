@@ -1,42 +1,42 @@
 import nookies from 'nookies'
-
-import axios from 'api'
 import { useDispatch } from 'react-redux'
 import { useRouter } from 'next/router'
-import { getUserInfo } from 'api/auth'
 import { authActions } from 'store/auth'
+import { fetchServer } from '@/lib/fetch/server'
+import { API_CODE } from 'config/constants/api'
+
 /* getUser */
-async function getUser(content: any) {
-  const res = await getUserInfo()
+async function getUser(accessToken: string) {
+  try {
+    const res = await fetchServer<any>('/api/oauth/userInfo', {
+      method: 'GET',
+      accessToken,
+    })
 
-  if (res.data && res.data.code === '0000') {
-    const { result: userInfo } = res.data
-
-    return userInfo
+    if (res && res.code === API_CODE.SUCCESS) {
+      return res.result
+    }
+    return null
+  } catch (e) {
+    return null
   }
-  return null
 }
 
-export function withAuthServerSideProps(getServerSidePropsFunc?) {
+export function withAuthServerSideProps(getServerSidePropsFunc?: (context: any, user: any) => any) {
   return async (context: any) => {
     context.res.setHeader('set-cookie', '')
-    const cookie = context.req ? context.req.headers.cookie : ''
-    axios.defaults.headers.common.Cookie = ''
     let user = null
     const nookie = nookies.get(context)
     const accessToken = nookie['access_token']
     const refresh_token = nookie['refresh_token']
-    //console.log('context = ', nookie)
+
     if (!accessToken && !refresh_token) {
       return { props: { user, data: { props: { user } } } }
     }
+
     /* 토큰 세팅 */
-    if (context.req && cookie) {
-      axios.defaults.headers.common.Cookie = cookie
-      const bearer = `Bearer ${accessToken}`
-      axios.defaults.headers.common['Authorization'] = bearer
-      if (refresh_token) axios.defaults.headers.common['refresh'] = nookie['refresh_token']
-      user = await getUser(context)
+    if (accessToken) {
+      user = await getUser(accessToken)
     }
 
     if (getServerSidePropsFunc) {
@@ -55,7 +55,6 @@ export function withAuthComponent(Component: any, isProtected = true) {
 
     if (isProtected && !user) {
       router.push('/login')
-      // return <h1>Denied</h1> // or redirect, we can use the Router because we are client side here
       return null
     }
 
@@ -69,7 +68,7 @@ export function withAuthComponent(Component: any, isProtected = true) {
           nickname: user.nickname,
           userid: user.userid,
           memIdx: user.memIdx,
-        }),
+        })
       )
     }
     return <Component {...data.props} />

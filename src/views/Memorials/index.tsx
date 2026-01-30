@@ -2,12 +2,11 @@ import { useEffect, useContext, useMemo, useState } from 'react'
 import { Box, Flex, Heading } from 'components/Common'
 import styled from 'styled-components'
 import WillCard from 'components/WillCard'
-import { useMutation, useQueryClient } from 'react-query'
-import { deleteWill, getWillList } from 'api/will'
+import { useQueryClient } from '@tanstack/react-query'
 import { toastContext } from 'contexts/Toast'
 import { DEFAULT_PAGE_NO, DEFAULT_PAGE_SIZE } from 'config/constants/default'
 import useIntersect from './hooks/useIntersect'
-import useInfiniteScroll from 'hooks/useInfiniteScroll'
+import { useInfiniteWillList, useDeleteWill, queryKeys } from '@/queries'
 import { Skeleton } from 'components/Common/Skeleton'
 import moment from 'moment'
 import isEmpty from 'lodash/isEmpty'
@@ -34,7 +33,7 @@ const St = {
   `};
   `,
 }
-const makeDateList = (year, nextYear) => {
+const makeDateList = (year: string, nextYear: string) => {
   const dateList = [
     {
       title: '이른 봄',
@@ -79,7 +78,7 @@ const makeDateList = (year, nextYear) => {
   ]
   return dateList
 }
-const getWillTitle = (will) => {
+const getWillTitle = (will: any) => {
   const targetDate = moment(will?.EDIT_DATE ?? will?.REG_DATE)
   const year = targetDate.format('YYYY')
   const nextYear = moment(will?.EDIT_DATE ?? will?.REG_DATE)
@@ -89,14 +88,13 @@ const getWillTitle = (will) => {
   let title = ''
   dateList.forEach((date) => {
     if (moment(targetDate.format('YYYY-MM-DD')).isBetween(date.fromDate, date.toDate)) {
-      //console.log('[seo] date.title', date.title)
       title = date.title
     }
   })
   return `${year}년 ${title}`
 }
 
-const WillContainerHeader = ({ dateTitle }) => {
+const WillContainerHeader = ({ dateTitle }: { dateTitle: string }) => {
   return (
     <Box mt="20px" mb="20px">
       <Heading textAlign={'center'}>어느 {dateTitle}에 남겨진 기억.</Heading>
@@ -125,13 +123,8 @@ const WillContainer = () => {
     hasNextPage,
     isFetchingNextPage,
     fetchNextPage,
-  } = useInfiniteScroll({
-    fetch: getWillList,
-    params: {
-      pageNo: DEFAULT_PAGE_NO,
-      pageSize: DEFAULT_PAGE_SIZE,
-    },
-    queryKey: ['willList', 'get_willList_all'],
+  } = useInfiniteWillList({
+    pageSize: parseInt(DEFAULT_PAGE_SIZE, 10),
   })
 
   const ref = useIntersect(async (entry, observer) => {
@@ -140,31 +133,27 @@ const WillContainer = () => {
       fetchNextPage()
     }
   })
-  const deleteMutation = useMutation(deleteWill, {
-    onSuccess: () => {
+
+  const deleteMutation = useDeleteWill({
+    onSuccessCallback: () => {
       handleToast({ message: '데이터를 삭제했습니다.' })
-      // myWill로 시작하는 모든 쿼리를 무효화한다
-      queryClient.invalidateQueries(['willList', 'get_willList_all'])
     },
   })
 
   const willList = useMemo(
-    () => (myWillData ? myWillData.pages.flatMap(({ result }) => result.willList) : []),
-    [myWillData],
+    () => (myWillData ? myWillData.pages.flatMap(({ list }) => list) : []),
+    [myWillData]
   )
 
-  const [dateGroupingWillList, setDateGroupingWillList] = useState({})
+  const [dateGroupingWillList, setDateGroupingWillList] = useState<Record<string, any[]>>({})
   useEffect(() => {
     if (willList.length === 0) return
-    const dateGroupingWillList = {}
+    const grouped: Record<string, any[]> = {}
     willList.map((will) => {
-      //그룹별로 지정
       const title = getWillTitle(will)
-      dateGroupingWillList[title] = dateGroupingWillList[title]
-        ? dateGroupingWillList[title].concat(will)
-        : (dateGroupingWillList[title] = [will])
+      grouped[title] = grouped[title] ? grouped[title].concat(will) : (grouped[title] = [will])
     })
-    setDateGroupingWillList(dateGroupingWillList)
+    setDateGroupingWillList(grouped)
   }, [willList])
 
   return (
@@ -181,7 +170,7 @@ const WillContainer = () => {
                     key={`${i}-${will.WILL_ID}`}
                     isPrivate={false}
                     will={will}
-                    handleDelete={() => deleteMutation.mutate({ will_id: will.WILL_ID as string })}
+                    handleDelete={() => deleteMutation.mutate(will.WILL_ID as string)}
                   />
                 )
               })}
@@ -189,7 +178,7 @@ const WillContainer = () => {
           )
         })}
 
-      {(status === 'loading' || isFetching) && (
+      {(status === 'pending' || isFetching) && (
         <>
           {Array.from({ length: parseInt(DEFAULT_PAGE_SIZE, 10) }).map((v, index) => {
             return <Skeleton key={`my-will-${index}`} height="480px" minWidth="362px" maxWidth="582px" />

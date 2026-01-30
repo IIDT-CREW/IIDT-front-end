@@ -3,25 +3,23 @@ import { useDispatch } from 'react-redux'
 import { decryptWithAES } from 'utils/crypto'
 import { authActions } from 'store/auth'
 import { STORAGE_NAME, API_CODE } from 'config/constants/api'
-import { getUserInfo } from 'api/auth'
+import { authService } from '@/services/auth.service'
 import { useIsLogin } from 'store/auth/hooks'
-import axios from 'api'
 
 const useAuthAccessToken = () => {
   const dispatch = useDispatch()
   const isLogin = useIsLogin()
+
   async function getUser() {
     try {
-      const res = await getUserInfo()
-      if (res.data && res.data.code === API_CODE.SUCCESS) {
-        const { result: userInfo } = res.data
-
+      const userInfo = await authService.getUserInfo()
+      if (userInfo) {
         return {
-          memIdx: userInfo.MEM_IDX,
-          name: userInfo.MEM_USERNAME,
-          email: userInfo.MEM_EMAIL,
-          nickname: userInfo.MEM_NICKNAME,
-          userid: userInfo.MEM_USERID,
+          memIdx: (userInfo as any).MEM_IDX,
+          name: (userInfo as any).MEM_USERNAME,
+          email: (userInfo as any).MEM_EMAIL,
+          nickname: (userInfo as any).MEM_NICKNAME,
+          userid: (userInfo as any).MEM_USERID,
         }
       }
     } catch (e) {
@@ -31,16 +29,18 @@ const useAuthAccessToken = () => {
 
   useEffect(() => {
     if (isLogin) return
-    const getUserInfo = async () => {
+
+    const getUserInfoFromStorage = async () => {
       const storageData = localStorage.getItem(STORAGE_NAME.USER)
       if (!storageData) return
 
-      const encryptStorageData = JSON.parse(decryptWithAES(storageData))
-      if (!encryptStorageData) return
-      const ACCESS_TOKEN = encryptStorageData.accessToken
+      const decryptedData = decryptWithAES(storageData)
+      if (!decryptedData) return
 
-      const bearer = `Bearer ${ACCESS_TOKEN}`
-      axios.defaults.headers.common['Authorization'] = bearer
+      const encryptStorageData = JSON.parse(decryptedData)
+      if (!encryptStorageData) return
+
+      const ACCESS_TOKEN = encryptStorageData.accessToken
 
       const info = await getUser()
 
@@ -54,12 +54,12 @@ const useAuthAccessToken = () => {
             nickname: info.nickname,
             userid: info.userid,
             memIdx: info.memIdx,
-          }),
+          })
         )
       }
     }
 
-    getUserInfo()
+    getUserInfoFromStorage()
   })
 
   return { hi: 'hi' }

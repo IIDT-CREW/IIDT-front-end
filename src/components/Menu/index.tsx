@@ -20,7 +20,6 @@ import { MENU_HEIGHT } from 'config/constants/default'
 import MenuOutline from 'components/Common/Svg/Icons/MenuOutline'
 import LoginModal from 'components/LoginModal'
 import { STORAGE_NAME } from 'config/constants/api'
-import axios from 'api'
 import { authActions } from '@store/auth'
 import { useNaviState } from '@store/navi/hooks'
 import useOnClickOutside from '@hooks/useOnClickOutside'
@@ -149,10 +148,6 @@ const MenuBox = () => {
   const router = useRouter()
   const handleLogout = async () => {
     try {
-      //...todo
-      //await logout()
-      axios.defaults.headers.common.Authorization = ''
-      axios.defaults.headers.common.refresh = ''
       localStorage.removeItem(STORAGE_NAME.USER)
       sessionStorage.removeItem(STORAGE_NAME.USER)
       dispatch(

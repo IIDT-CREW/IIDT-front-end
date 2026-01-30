@@ -1,9 +1,7 @@
 import { useCallback, useState } from 'react'
 import { useRouter } from 'next/router'
-import { getUserInfo } from 'api/auth'
 import { API_CODE, STORAGE_NAME } from 'config/constants/api'
-import axios from 'axios'
-import { signup, socialLogin } from 'api/auth'
+import { authService } from '@/services/auth.service'
 import { encryptWithAES } from 'utils/crypto'
 import { useSetAuth } from 'store/auth/hooks'
 import { ModalProps } from 'components/Common'
@@ -12,16 +10,14 @@ import NickNameModal from 'components/NickNameModal'
 
 const getUser = async () => {
   try {
-    const res = await getUserInfo()
-    if (res.data && res.data.code === API_CODE.SUCCESS) {
-      const { result: userInfo } = res.data
-
+    const userInfo = await authService.getUserInfo()
+    if (userInfo) {
       return {
-        memIdx: userInfo.MEM_IDX,
-        name: userInfo.MEM_USERNAME,
-        email: userInfo.MEM_EMAIL,
-        nickname: userInfo.MEM_NICKNAME,
-        userid: userInfo.MEM_USERID,
+        memIdx: (userInfo as any).MEM_IDX,
+        name: (userInfo as any).MEM_USERNAME,
+        email: (userInfo as any).MEM_EMAIL,
+        nickname: (userInfo as any).MEM_NICKNAME,
+        userid: (userInfo as any).MEM_USERID,
       }
     }
   } catch (e) {
@@ -34,6 +30,7 @@ type HandleLoginTransactionProps = ModalProps & {
   isLogin?: boolean
   nickName?: string
 }
+
 const useLoginTransaction = () => {
   const router = useRouter()
   const handleSetAuth = useSetAuth()
@@ -50,24 +47,21 @@ const useLoginTransaction = () => {
   const handleLoginTransaction = useCallback(
     async ({ accessToken, isLogin, nickName, onDismiss }: HandleLoginTransactionProps) => {
       if (!code && !authParams) return
-      const cooperation = authParams[0]
+      const cooperation = (authParams as string[])[0]
       try {
         const res = isLogin
-          ? await socialLogin({ cooperation, code })
-          : await signup({ cooperation, code, accessToken, nickname: nickName })
+          ? await authService.socialLogin({ provider: cooperation, code })
+          : await authService.signup({ provider: cooperation, code, accessToken, nickname: nickName })
 
-        //가입이 안되어있으면
-        if (res.data.code === API_CODE.INVALID_USER) {
-          //console.log('setting ,res.data.result.access_token ', res.data.result.access_token)
-          setAccessToken(res.data.result.access_token)
+        // 가입이 안되어있으면
+        if (res.code === API_CODE.INVALID_USER) {
+          setAccessToken((res.result as any).access_token)
           handleNicknameModal()
           return
         }
 
-        if (res.data.code !== API_CODE.SUCCESS) return
-        const ACCESS_TOKEN = res.data.accessToken
-        const bearer = `Bearer ${ACCESS_TOKEN}`
-        axios.defaults.headers.common['Authorization'] = bearer
+        if (res.code !== API_CODE.SUCCESS) return
+        const ACCESS_TOKEN = (res.result as any).accessToken
 
         const info = await getUser()
         if (!info) return
@@ -85,13 +79,13 @@ const useLoginTransaction = () => {
             nickname: info.nickname,
             userid: info.userid,
             memIdx: info.memIdx,
-          }),
+          })
         )
-        localStorage.setItem(STORAGE_NAME.USER, encDataString) //예시로 로컬에 저장함
+        localStorage.setItem(STORAGE_NAME.USER, encDataString)
         const path = localStorage.getItem('login_path')
 
         if (path === '/') router.push('/main')
-        if (path !== '/') router.replace(path)
+        if (path !== '/') router.replace(path as string)
         localStorage.removeItem('login_path')
       } catch (e) {
         alert('오류가 발생했습니다. 로그인 재 시도해주세요')
@@ -102,7 +96,7 @@ const useLoginTransaction = () => {
         if (onDismiss) onDismiss()
       }
     },
-    [authParams, code, handleNicknameModal, handleSetAuth, router],
+    [authParams, code, handleNicknameModal, handleSetAuth, router]
   )
 
   return { handleLoginTransaction }
