@@ -50,3 +50,11 @@ debug.log*
 
 # turbo
 .turbo
+
+# IDE/Tool configs
+.agent/
+.agents/
+.claude/
+.cursor/
+.gemini/
+.github/skills/
