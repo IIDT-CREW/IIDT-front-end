@@ -1,68 +1,35 @@
-import styled, { css, keyframes } from 'styled-components'
-import { FC, useEffect } from 'react'
-import { Box, BoxProps } from '../Box'
-
-const unmountAnimation = keyframes`
-    0% {
-      opacity: 1;
-    }
-    100% {
-      opacity: 0;
-    }
-  `
-
-const mountAnimation = keyframes`
-    0% {
-     opacity: 0;
-    }
-    100% {
-     opacity: 1;
-    }
-  `
-
-const StyledOverlay = styled(Box)<{ isUnmounting?: boolean }>`
-  position: fixed;
-  top: 0px;
-  left: 0px;
-  width: 100%;
-  height: 100%;
-  background: rgba(255, 255, 255, 0.6);
-  z-index: 20;
-  will-change: opacity;
-  animation: ${mountAnimation} 350ms ease forwards;
-  ${({ isUnmounting }) =>
-    isUnmounting &&
-    css`
-      animation: ${unmountAnimation} 350ms ease forwards;
-    `}
-`
+import { FC, useEffect, HTMLAttributes } from 'react'
+import { cn } from '@lib/utils'
 
 const BodyLock = () => {
   useEffect(() => {
-    document.body.style.cssText = `
-      overflow: hidden;
-    `
+    document.body.style.cssText = `overflow: hidden;`
     document.body.style.overflow = 'hidden'
     return () => {
-      document.body.style.cssText = `
-        overflow: visible;
-        overflow: overlay;
-      `
+      document.body.style.cssText = `overflow: visible; overflow: overlay;`
     }
   }, [])
 
   return null
 }
 
-interface OverlayProps extends BoxProps {
+interface OverlayProps extends HTMLAttributes<HTMLDivElement> {
   isUnmounting?: boolean
 }
 
-export const Overlay: FC<OverlayProps> = (props) => {
+export const Overlay: FC<OverlayProps> = ({ isUnmounting, className, ...props }) => {
   return (
     <>
       <BodyLock />
-      <StyledOverlay role="presentation" {...props} />
+      <div
+        role="presentation"
+        className={cn(
+          'fixed inset-0 w-full h-full bg-white/60 dark:bg-black/60 z-20 will-change-[opacity]',
+          isUnmounting ? 'animate-out fade-out duration-350' : 'animate-in fade-in duration-350',
+          className,
+        )}
+        {...props}
+      />
     </>
   )
 }

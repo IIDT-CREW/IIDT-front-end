@@ -1,11 +1,21 @@
-import styled from 'styled-components'
-import { PolymorphicComponent } from '../../../utils/polymorphic'
+import { forwardRef } from 'react'
+import { cn } from '@lib/utils'
 import Button from './Button'
-import { BaseButtonProps } from './types'
+import { ButtonProps } from './types'
 
-const IconButton: PolymorphicComponent<BaseButtonProps, 'button'> = styled(Button)<BaseButtonProps>`
-  padding: 0;
-  width: ${({ scale }) => (scale === 'sm' ? '32px' : '48px')};
-`
+const IconButton = forwardRef<HTMLButtonElement, ButtonProps<'button'>>(
+  ({ scale = 'md', className, ...props }, ref) => {
+    return (
+      <Button
+        ref={ref}
+        scale={scale}
+        className={cn('p-0', scale === 'sm' ? 'w-8' : 'w-12', className)}
+        {...props}
+      />
+    )
+  },
+)
+
+IconButton.displayName = 'IconButton'
 
 export default IconButton

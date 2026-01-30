@@ -1,94 +1,60 @@
-import styled, { DefaultTheme } from 'styled-components'
-import { InputProps, scales } from './types'
+import { forwardRef, InputHTMLAttributes } from 'react'
+import { cn } from '@lib/utils'
+import { InputProps, scales, Scales } from './types'
 
-interface StyledInputProps extends InputProps {
-  theme: DefaultTheme
+const scaleStyles: Record<Scales, string> = {
+  sm: 'h-8',
+  md: 'h-10',
+  lg: 'h-12',
 }
 
-/**
- * Priority: Warning --> Success
- */
-const getBoxShadow = ({ isSuccess = false, isWarning = false, theme }: StyledInputProps) => {
-  if (isWarning) {
-    return theme.shadows.warning
-  }
+const Input = forwardRef<HTMLInputElement, InputProps>(
+  ({ scale = scales.MD, isSuccess = false, isWarning = false, className, label, form, ...props }, ref) => {
+    const inputElement = (
+      <input
+        ref={ref}
+        className={cn(
+          // Base styles
+          'block w-full rounded px-4 text-base outline-none',
+          'bg-light-input dark:bg-dark-input',
+          'border border-light-input-secondary dark:border-dark-input-secondary',
+          'text-foreground',
+          'placeholder:text-light-text-subtle dark:placeholder:text-dark-text-subtle',
+          // Scale
+          scaleStyles[scale],
+          // States
+          isWarning && 'shadow-warning',
+          isSuccess && 'shadow-success',
+          !isWarning && !isSuccess && 'shadow-inset',
+          // Focus
+          'focus:shadow-focus focus:not-disabled',
+          // Disabled
+          'disabled:bg-light-bg-disabled dark:disabled:bg-dark-bg-disabled',
+          'disabled:text-light-text-disabled dark:disabled:text-dark-text-disabled',
+          'disabled:cursor-not-allowed disabled:shadow-none',
+          // Custom
+          className,
+        )}
+        {...form}
+        {...props}
+      />
+    )
 
-  if (isSuccess) {
-    return theme.shadows.success
-  }
-
-  return theme.shadows.inset
-}
-
-const getHeight = ({ scale = scales.MD }: StyledInputProps) => {
-  switch (scale) {
-    case scales.SM:
-      return '32px'
-    case scales.LG:
-      return '48px'
-    case scales.MD:
-    default:
-      return '40px'
-  }
-}
-const InputContainer = styled.div`
-  .label {
-    span {
-      font-size: 14px;
-      color grey;
-      display: block;
+    if (label) {
+      return (
+        <div>
+          <label className="block">
+            <span className="block text-sm text-gray-500 mb-1">{label}</span>
+            {inputElement}
+          </label>
+        </div>
+      )
     }
-  }
-`
 
-const Input = styled.input<InputProps>`
-  background-color: ${({ theme }) => theme.colors.input};
-  border: 0;
-  border-radius: 4px;
-  box-shadow: ${getBoxShadow};
-  color: black;
-  display: block;
-  font-size: 16px;
-  height: ${getHeight};
-  outline: 0;
-  padding: 0 16px;
-  width: 100%;
-  border: 1px solid ${({ theme }) => theme.colors.inputSecondary};
+    return inputElement
+  },
+)
 
-  &::placeholder {
-    color: ${({ theme }) => theme.colors.textSubtle};
-  }
+Input.displayName = 'Input'
 
-  &:disabled {
-    background-color: ${({ theme }) => theme.colors.backgroundDisabled};
-    box-shadow: none;
-    color: ${({ theme }) => theme.colors.textDisabled};
-    cursor: not-allowed;
-  }
-
-  &:focus:not(:disabled) {
-    box-shadow: ${({ theme }) => theme.shadows.focus};
-  }
-`
-
-const InputWrapper = ({ label, form, ...props }: InputProps) => {
-  return (
-    <InputContainer>
-      {label && (
-        <label className="label">
-          <span>{label}</span>
-          <Input {...props} />
-        </label>
-      )}
-      {!label && <Input {...form} {...props} />}
-    </InputContainer>
-  )
-}
-
-Input.defaultProps = {
-  scale: scales.MD,
-  isSuccess: false,
-  isWarning: false,
-}
-export default InputWrapper
-// export default InputWrapper
+export default Input

@@ -1,14 +1,6 @@
 import { AnimatePresence, domAnimation, LazyMotion, m } from 'framer-motion'
 import React, { createContext, useRef, useState } from 'react'
-import styled from 'styled-components'
-import { Overlay } from '../Overlay'
-import {
-  animationHandler,
-  animationMap,
-  animationVariants,
-  appearAnimation,
-  disappearAnimation,
-} from '../../../utils/animationToolkit'
+import { cn } from '@lib/utils'
 import { Handler } from './types'
 
 interface ModalsContext {
@@ -19,27 +11,6 @@ interface ModalsContext {
   onPresent: (node: React.ReactNode, newNodeId: string, closeOverlayClick: boolean) => void
   onDismiss: Handler
 }
-
-const ModalWrapper = styled(m.div)`
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
-  position: fixed;
-  top: 0;
-  right: 0;
-  bottom: 0;
-  left: 0;
-  z-index: ${({ theme }) => theme.zIndices.modal - 1};
-  will-change: opacity;
-  opacity: 0;
-  &.appear {
-    animation: ${appearAnimation} 0.3s ease-in-out forwards;
-  }
-  &.disappear {
-    animation: ${disappearAnimation} 0.3s ease-in-out forwards;
-  }
-`
 
 export const Context = createContext<ModalsContext>({
   isOpen: false,
@@ -53,12 +24,12 @@ export const Context = createContext<ModalsContext>({
 type ModalProviderProps = {
   children?: React.ReactNode
 }
+
 const ModalProvider = ({ children }: ModalProviderProps) => {
   const [isOpen, setIsOpen] = useState(false)
   const [modalNode, setModalNode] = useState<React.ReactNode>()
   const [nodeId, setNodeId] = useState('')
   const [closeOnOverlayClick, setCloseOnOverlayClick] = useState(true)
-  const animationRef = useRef<HTMLDivElement>(null)
 
   const handlePresent = (node: React.ReactNode, newNodeId: string, closeOverlayClick: boolean) => {
     setModalNode(node)
@@ -94,19 +65,35 @@ const ModalProvider = ({ children }: ModalProviderProps) => {
       <LazyMotion features={domAnimation}>
         <AnimatePresence>
           {isOpen && (
-            <ModalWrapper
-              ref={animationRef}
-              onAnimationStart={() => animationHandler(animationRef.current)}
-              {...animationMap}
-              variants={animationVariants}
+            <m.div
+              className={cn(
+                'fixed inset-0 z-[99] flex flex-col items-center justify-center',
+                'will-change-[opacity]',
+              )}
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              exit={{ opacity: 0 }}
               transition={{ duration: 0.3 }}
             >
-              <Overlay onClick={handleOverlayDismiss} />
-              {React.isValidElement(modalNode) &&
-                React.cloneElement(modalNode, {
-                  onDismiss: handleDismiss,
-                })}
-            </ModalWrapper>
+              {/* Overlay */}
+              <div
+                className="absolute inset-0 bg-white/60 dark:bg-black/60"
+                onClick={handleOverlayDismiss}
+              />
+              {/* Modal Content */}
+              <m.div
+                className="relative z-10"
+                initial={{ scale: 0.95, opacity: 0 }}
+                animate={{ scale: 1, opacity: 1 }}
+                exit={{ scale: 0.95, opacity: 0 }}
+                transition={{ duration: 0.2 }}
+              >
+                {React.isValidElement(modalNode) &&
+                  React.cloneElement(modalNode as React.ReactElement<any>, {
+                    onDismiss: handleDismiss,
+                  })}
+              </m.div>
+            </m.div>
           )}
         </AnimatePresence>
       </LazyMotion>

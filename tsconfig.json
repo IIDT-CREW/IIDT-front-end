@@ -2,7 +2,11 @@
   "compilerOptions": {
     "target": "esnext" /* 사용할 특정 ECMAScript 버전 설정: 'ES3' (기본), 'ES5', 'ES20xx' or 'ESNEXT'. */,
     "module": "esnext" /* 모듈을 위한 코드 생성 설정: 'none', 'commonjs', 'amd', 'system', 'umd', 'ES20xx' or 'ESNext'. */,
-    "lib": ["dom", "dom.iterable", "esnext"], // 컴파일에 포함될 라이브러리 파일 목록
+    "lib": [
+      "dom",
+      "dom.iterable",
+      "esnext"
+    ], // 컴파일에 포함될 라이브러리 파일 목록
     "allowJs": true /* 자바스크립트 파일 컴파일 허용 여부 */,
     "skipLibCheck": true /* 정의 파일의 타입 확인을 건너 뛸 지 여부 */,
     "strict": false /* 모든 엄격한 타입-체킹 옵션 활성화 여부 */,
@@ -12,26 +16,67 @@
     "moduleResolution": "node" /* 모듈 해석 방법 설정: 'node' (Node.js) 혹은 'classic' (TypeScript pre-1.6). */,
     "resolveJsonModule": true,
     "isolatedModules": true /* 각 파일을 분리된 모듈로 트랜스파일 ('ts.transpileModule'과 비슷합니다). */,
-    "jsx": "preserve" /* JSX 코드 생성 설정: 'preserve', 'react-native', 혹은 'react'. */,
+    "jsx": "react-jsx" /* JSX 코드 생성 설정: 'preserve', 'react-native', 혹은 'react'. */,
     "incremental": true,
     "declaration": true, // d.ts 타입 정의 파일 export 여부
     "baseUrl": "src",
     "paths": {
-      "@api/*": ["api/*"],
-      "@components/*": ["components/*"],
-      "@constants/*": ["constants/*"],
-      "@context/*": ["context/*"],
-      "@hoc/*": ["hoc/*"],
-      "@hooks/*": ["hooks/*"],
-      "@pages/*": ["pages/*"],
-      "@store/*": ["store/*"],
-      "@utils/*": ["utils/*"],
-      "@views/*": ["views/*"],
-      "@types/*": ["types/*"],
-      "@public/*": ["../public/*"]
+      "@api/*": [
+        "api/*"
+      ],
+      "@components/*": [
+        "components/*"
+      ],
+      "@constants/*": [
+        "constants/*"
+      ],
+      "@context/*": [
+        "context/*"
+      ],
+      "@hoc/*": [
+        "hoc/*"
+      ],
+      "@hooks/*": [
+        "hooks/*"
+      ],
+      "@pages/*": [
+        "pages/*"
+      ],
+      "@store/*": [
+        "store/*"
+      ],
+      "@utils/*": [
+        "utils/*"
+      ],
+      "@views/*": [
+        "views/*"
+      ],
+      "@types/*": [
+        "types/*"
+      ],
+      "@public/*": [
+        "../public/*"
+      ],
+      "@lib/*": [
+        "lib/*"
+      ],
+      "@ui/*": [
+        "components/ui/*"
+      ]
     },
-    "typeRoots": ["./node_modules/@types", "./src/types"]
+    "typeRoots": [
+      "./node_modules/@types",
+      "./src/types"
+    ]
   },
-  "include": ["next-env.d.ts", "additional.d.ts", "src/**/*.ts", "src/**/*.tsx", "src/types/*.d.ts"],
-  "exclude": ["node_modules"]
+  "include": [
+    "next-env.d.ts",
+    "additional.d.ts",
+    "src/**/*.ts",
+    "src/**/*.tsx",
+    "src/types/*.d.ts"
+  ],
+  "exclude": [
+    "node_modules"
+  ]
 }
