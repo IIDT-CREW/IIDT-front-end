@@ -1,30 +1,115 @@
-@tailwind base;
-@tailwind components;
-@tailwind utilities;
+@import 'tailwindcss';
 
-/* CSS Custom Properties for theming */
-@layer base {
-  :root {
-    --color-bg: #ffffff;
-    --color-bg-alt: #ffffff;
-    --color-text: #000000;
-    --color-text-secondary: #2e3237;
-    --color-text-subtle: #7c7c7c;
-    --color-card-border: #e7e3eb;
-    --color-dropdown: #f6f6f6;
-    --color-input: #ffffff;
-  }
+/* Tailwind v4 Theme Configuration */
+@theme {
+  /* Custom breakpoints */
+  --breakpoint-xs: 370px;
+  --breakpoint-sm: 576px;
+  --breakpoint-md: 852px;
+  --breakpoint-lg: 968px;
+  --breakpoint-xl: 1080px;
+  --breakpoint-2xl: 1200px;
 
-  .dark {
-    --color-bg: #000000;
-    --color-bg-alt: #000000;
-    --color-text: #ffffff;
-    --color-text-secondary: #abb2bf;
-    --color-text-subtle: #595959;
-    --color-card-border: #383241;
-    --color-dropdown: #1e1d20;
-    --color-input: #ffffff;
-  }
+  /* Base colors */
+  --color-primary: #ff8f0e;
+  --color-primary-bright: #ffffff;
+  --color-primary-dark: #000000;
+  --color-secondary: #7645d9;
+  --color-success: #31d0aa;
+  --color-warning: #ffb237;
+  --color-error: #f3213b;
+  --color-failure: #ed4b9e;
+
+  /* Grayscale */
+  --color-grayscale-0: #ffffff;
+  --color-grayscale-1: #eceef0;
+  --color-grayscale-2: #e8e9eb;
+  --color-grayscale-4: #d4d4d4;
+  --color-grayscale-5: #a4a2a3;
+  --color-grayscale-6: #2e3237;
+  --color-grayscale-7: #000000;
+
+  /* Light mode colors */
+  --color-light-bg: #ffffff;
+  --color-light-bg-disabled: #e9eaeb;
+  --color-light-bg-alt: #ffffff;
+  --color-light-card-border: #e7e3eb;
+  --color-light-dropdown: #f6f6f6;
+  --color-light-dropdown-deep: #eeeeee;
+  --color-light-input: #ffffff;
+  --color-light-tertiary: #eff4f5;
+  --color-light-text: #000000;
+  --color-light-text-secondary: #2e3237;
+  --color-light-text-disabled: #bdc2c4;
+  --color-light-text-subtle: #7c7c7c;
+
+  /* Dark mode colors */
+  --color-dark-bg: #000000;
+  --color-dark-bg-disabled: #3c3742;
+  --color-dark-bg-alt: #000000;
+  --color-dark-card-border: #383241;
+  --color-dark-dropdown: #1e1d20;
+  --color-dark-dropdown-deep: #100c18;
+  --color-dark-input: #ffffff;
+  --color-dark-tertiary: #353547;
+  --color-dark-text: #ffffff;
+  --color-dark-text-secondary: #abb2bf;
+  --color-dark-text-disabled: #666171;
+  --color-dark-text-subtle: #595959;
+
+  /* Theme-aware colors using CSS variables */
+  --color-theme-bg: var(--color-bg);
+  --color-theme-bg-alt: var(--color-bg-alt);
+  --color-theme-text: var(--color-text);
+  --color-theme-text-secondary: var(--color-text-secondary);
+  --color-theme-text-subtle: var(--color-text-subtle);
+  --color-theme-card-border: var(--color-card-border);
+  --color-theme-dropdown: var(--color-dropdown);
+  --color-theme-input: var(--color-input);
+
+  /* Custom shadows */
+  --shadow-level1: 0px 2px 12px -8px rgba(25, 19, 38, 0.1), 0px 1px 1px rgba(25, 19, 38, 0.05);
+  --shadow-active: 0px 0px 0px 1px #0098a1, 0px 0px 4px 8px rgba(31, 199, 212, 0.4);
+  --shadow-success: 0px 0px 0px 1px #31d0aa, 0px 0px 0px 4px rgba(49, 208, 170, 0.2);
+  --shadow-warning: 0px 0px 0px 1px #ed4b9e, 0px 0px 0px 4px rgba(237, 75, 158, 0.2);
+  --shadow-focus: 0px 0px 0px 1px #7645d9, 0px 0px 0px 4px rgba(118, 69, 217, 0.6);
+  --shadow-inset: inset 0px 2px 2px -1px rgba(74, 74, 104, 0.1);
+  --shadow-tooltip: 0px 0px 2px rgba(0, 0, 0, 0.2), 0px 4px 12px -8px rgba(14, 14, 44, 0.1);
+
+  /* Custom border radius */
+  --radius-small: 4px;
+  --radius-card: 12px;
+
+  /* Custom z-index */
+  --z-ribbon: 9;
+  --z-dropdown: 10;
+  --z-modal: 100;
+
+  /* Custom max-width */
+  --width-site: 1200px;
+}
+
+/* CSS Custom Properties for runtime theming */
+:root {
+  --color-bg: #ffffff;
+  --color-bg-alt: #ffffff;
+  --color-text: #000000;
+  --color-text-secondary: #2e3237;
+  --color-text-subtle: #7c7c7c;
+  --color-card-border: #e7e3eb;
+  --color-dropdown: #f6f6f6;
+  --color-input: #ffffff;
+}
+
+.dark {
+  --color-bg: #000000;
+  --color-bg-alt: #000000;
+  --color-text: #ffffff;
+  --color-text-secondary: #abb2bf;
+  --color-text-subtle: #595959;
+  --color-card-border: #383241;
+  --color-dropdown: #1e1d20;
+  --color-input: #ffffff;
 }
 
 @font-face {
