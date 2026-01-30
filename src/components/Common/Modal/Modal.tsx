@@ -1,7 +1,5 @@
 import React, { useEffect } from 'react'
-import { useTheme } from 'styled-components'
-import Heading from '../Heading/Heading'
-import getThemeValue from '../../../utils/getThemeValue'
+import { cn } from '@lib/utils'
 import { ModalBody, ModalHeader, ModalTitle, ModalContainer, ModalCloseButton, ModalBackButton } from './styles'
 import { ModalProps } from './types'
 
@@ -15,25 +13,24 @@ const Modal: React.FC<ModalProps> = ({
   bodyPadding = '32px',
   headerBackground = 'transparent',
   minWidth = '272px',
+  className,
   ...props
 }) => {
-  const theme = useTheme()
-
   useEffect(() => {
     const preventGoBack = () => {
-      onDismiss()
+      onDismiss?.()
     }
     window.addEventListener('popstate', preventGoBack)
     return () => window.removeEventListener('popstate', preventGoBack)
   }, [onDismiss])
 
   return (
-    <ModalContainer minWidth={minWidth} {...props}>
+    <ModalContainer minWidth={minWidth} className={className} {...props}>
       {!hideTitle && (
-        <ModalHeader background={getThemeValue(`colors.${headerBackground}`, headerBackground)(theme)}>
+        <ModalHeader background={headerBackground}>
           <ModalTitle>
             {onBack && <ModalBackButton onBack={onBack} />}
-            <Heading scale="md">{title}</Heading>
+            <h2 className="text-lg font-semibold leading-tight">{title}</h2>
           </ModalTitle>
           {!hideCloseButton && <ModalCloseButton onDismiss={onDismiss} />}
         </ModalHeader>
