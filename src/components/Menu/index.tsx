@@ -13,14 +13,13 @@ import MenuItem from 'components/Menu/MenuItem'
 import DropdownMenu from './DropdownMenu'
 import MenuConfig from './config'
 import { naviActions } from 'store/navi'
-import { useIsLogin } from 'store/auth/hooks'
+import { useIsLogin } from '@/hooks/useAuth'
+import { signOut } from 'next-auth/react'
 import ThemeToggleButton from '../Common/Button/ThemeToggleButton'
 
 import { MENU_HEIGHT } from 'config/constants/default'
 import MenuOutline from 'components/Common/Svg/Icons/MenuOutline'
 import LoginModal from 'components/LoginModal'
-import { STORAGE_NAME } from 'config/constants/api'
-import { authActions } from '@store/auth'
 import { useNaviState } from '@store/navi/hooks'
 import useOnClickOutside from '@hooks/useOnClickOutside'
 
@@ -148,18 +147,8 @@ const MenuBox = () => {
   const router = useRouter()
   const handleLogout = async () => {
     try {
-      localStorage.removeItem(STORAGE_NAME.USER)
-      sessionStorage.removeItem(STORAGE_NAME.USER)
-      dispatch(
-        authActions.setAuth({
-          isAuthenticated: false,
-          accessToken: '',
-          refreshToken: '',
-          name: '',
-          email: '',
-        }),
-      )
       dispatch(naviActions.menuOnOff())
+      await signOut({ callbackUrl: '/' })
     } catch (e) {
       console.log('logout ', e)
     }
