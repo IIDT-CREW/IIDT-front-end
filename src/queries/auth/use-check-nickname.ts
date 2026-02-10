@@ -1,6 +1,6 @@
 import { useQuery, UseQueryOptions } from '@tanstack/react-query'
 import { queryKeys } from '../keys'
-import { authService } from '@/services/auth.service'
+import { fetchClient } from '@/lib/fetch'
 import type { FetchError } from '@/lib/fetch'
 
 interface CheckNicknameResult {
@@ -13,7 +13,12 @@ export function useCheckNickname(
 ) {
   return useQuery({
     queryKey: queryKeys.auth.checkNickname(nickname),
-    queryFn: () => authService.checkDuplicateNickname(nickname),
+    queryFn: async () => {
+      const res = await fetchClient<CheckNicknameResult>('/api/auth/check-nickname', {
+        params: { mem_nickname: nickname },
+      })
+      return res.result
+    },
     enabled: !!nickname && nickname.length > 0,
     ...options,
   })

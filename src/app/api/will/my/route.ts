@@ -1,32 +1,58 @@
-import { NextRequest, NextResponse } from 'next/server'
-import { fetchServer } from '@/lib/fetch/server'
+import { NextRequest } from 'next/server'
+import { auth } from '@/lib/auth'
+import { createSupabaseServerClient } from '@/lib/supabase/server'
+import { apiSuccess, apiError, mapWillRow } from '@/lib/supabase/helpers'
 
 export async function GET(req: NextRequest) {
-  const accessToken = req.headers.get('authorization')?.replace('Bearer ', '')
-  const { searchParams } = new URL(req.url)
-  const memIdx = searchParams.get('memIdx')
-  const pageNo = searchParams.get('pageNo') || '1'
-  const pageSize = searchParams.get('pageSize') || '10'
-
-  if (!memIdx) {
-    return NextResponse.json(
-      { code: '1001', reason: 'memIdx is required', result: null },
-      { status: 400 }
-    )
+  const session = await auth()
+  if (!session?.user?.memIdx || session.user.memIdx === -1) {
+    return apiError('4002', 'Unauthorized', 401)
   }
 
-  try {
-    const response = await fetchServer('/api/will/getMyWill', {
-      method: 'GET',
-      accessToken,
-      params: { memIdx, pageNo, pageSize },
-    })
+  const { searchParams } = new URL(req.url)
+  const memIdx = parseInt(searchParams.get('memIdx') || String(session.user.memIdx))
+  const pageNo = parseInt(searchParams.get('pageNo') || '1')
+  const pageSize = parseInt(searchParams.get('pageSize') || '10')
+  const offset = (pageNo - 1) * pageSize
 
-    return NextResponse.json(response)
-  } catch (error) {
-    return NextResponse.json(
-      { code: '9000', reason: 'Internal server error', result: null },
-      { status: 500 }
-    )
+  try {
+    const supabase = createSupabaseServerClient()
+
+    // 전체 개수
+    const { count } = await supabase
+      .from('will')
+      .select('*', { count: 'exact', head: true })
+      .eq('mem_idx', memIdx)
+      .eq('is_delete', 0)
+
+    const totalCount = count ?? 0
+    const totalPageCount = Math.ceil(totalCount / pageSize)
+
+    // 페이징 조회
+    const { data, error } = await supabase
+      .from('will')
+      .select('*, member!inner(mem_nickname)')
+      .eq('mem_idx', memIdx)
+      .eq('is_delete', 0)
+      .order('reg_date', { ascending: false })
+      .range(offset, offset + pageSize - 1)
+
+    if (error) {
+      return apiError('3000', error.message, 500)
+    }
+
+    return apiSuccess({
+      list: (data ?? []).map(mapWillRow),
+      meta: {
+        pageNo,
+        pageSize,
+        totalCount,
+        totalPageCount,
+        nextPageNo: pageNo < totalPageCount ? pageNo + 1 : pageNo,
+        isLast: pageNo >= totalPageCount,
+      },
+    })
+  } catch {
+    return apiError('9000', 'Internal server error', 500)
   }
 }

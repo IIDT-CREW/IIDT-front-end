@@ -1,5 +1,4 @@
 import { configureStore, getDefaultMiddleware } from '@reduxjs/toolkit'
-import auth from './auth'
 import navi from './navi'
 import { useSelector } from 'react-redux'
 import type { TypedUseSelectorHook } from 'react-redux'
@@ -16,7 +15,6 @@ const makeStore = () => {
   // 슬라이스 통합 store 생성
   const store = configureStore({
     reducer: {
-      auth: auth.reducer,
       navi: navi.reducer,
     },
     middleware, // 미들웨어 불필요시 생략

@@ -1,30 +1,21 @@
-import { NextRequest, NextResponse } from 'next/server'
-import { fetchServer } from '@/lib/fetch/server'
+import { NextRequest } from 'next/server'
+import { createSupabaseServerClient } from '@/lib/supabase/server'
+import { apiSuccess, apiError } from '@/lib/supabase/helpers'
 
 export async function GET(req: NextRequest) {
-  const accessToken = req.headers.get('authorization')?.replace('Bearer ', '')
   const { searchParams } = new URL(req.url)
   const mem_nickname = searchParams.get('mem_nickname')
 
   if (!mem_nickname) {
-    return NextResponse.json(
-      { code: '1001', reason: 'mem_nickname is required', result: null },
-      { status: 400 }
-    )
+    return apiError('1001', 'mem_nickname is required')
   }
 
   try {
-    const response = await fetchServer('/api/oauth/checkDuplicateNickname', {
-      method: 'GET',
-      accessToken,
-      params: { mem_nickname },
-    })
+    const supabase = createSupabaseServerClient()
+    const { data } = await supabase.from('member').select('mem_idx').eq('mem_nickname', mem_nickname).limit(1)
 
-    return NextResponse.json(response)
-  } catch (error) {
-    return NextResponse.json(
-      { code: '9000', reason: 'Internal server error', result: null },
-      { status: 500 }
-    )
+    return apiSuccess({ IS_EXIST: (data?.length ?? 0) > 0 })
+  } catch {
+    return apiError('9000', 'Internal server error', 500)
   }
 }

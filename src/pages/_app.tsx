@@ -4,12 +4,12 @@ import Script from 'next/script'
 import '../style/index.css'
 import type { AppProps } from 'next/app'
 import Head from 'next/head'
+import { SessionProvider } from 'next-auth/react'
 import store from 'store'
 import { NextPage } from 'next'
 import Router, { useRouter } from 'next/router'
 import { QueryClientProvider, HydrationBoundary } from '@tanstack/react-query'
 import { ReactQueryDevtools } from '@tanstack/react-query-devtools'
-// import Providers from '../Providers'
 import GlobalStyle from '../style/Global'
 import { getQueryClient } from '@/queries/client'
 import Menu from 'components/Menu'
@@ -17,8 +17,6 @@ import Footer from 'components/Footer'
 import MenuWrapper from 'components/MenuWrapper'
 import { useNaviState } from 'store/navi/hooks'
 import { MENU_HEIGHT, FOOTER_HEIGHT } from 'config/constants/default'
-// import useAuthUserStorage from 'hooks/useAuthUserStorage'
-import useAuthAccessToken from 'hooks/useAuthAccessToken'
 import useFooterDisable from 'hooks/useFooterDisable'
 import * as gtag from 'utils/gtag'
 import { useDarkMode } from 'hooks/useDarkMode'
@@ -82,11 +80,7 @@ function scrollPositionRestorer() {
   }
 }
 
-function GlobalHooks() {
-  // useAuthUserStorage()
-  useAuthAccessToken()
-  return null
-}
+// GlobalHooks removed - auth is now handled by NextAuth SessionProvider
 
 function MyApp(props: AppProps) {
   const { pageProps } = props
@@ -112,15 +106,16 @@ function MyApp(props: AppProps) {
 
         <title>IIDT</title>
       </Head>
-      <QueryClientProvider client={queryClient}>
-        <HydrationBoundary state={pageProps.dehydratedState}>
-          <Provider store={store}>
-            <GlobalHooks />
-            <App {...props} />
-          </Provider>
-        </HydrationBoundary>
-        <ReactQueryDevtools initialIsOpen={false} />
-      </QueryClientProvider>
+      <SessionProvider session={pageProps.session}>
+        <QueryClientProvider client={queryClient}>
+          <HydrationBoundary state={pageProps.dehydratedState}>
+            <Provider store={store}>
+              <App {...props} />
+            </Provider>
+          </HydrationBoundary>
+          <ReactQueryDevtools initialIsOpen={false} />
+        </QueryClientProvider>
+      </SessionProvider>
       <Script
         strategy="afterInteractive"
         id="google-tag"

@@ -9,7 +9,7 @@ import WillCard from '@views/Will/components/WillShareCard'
 import TitleBanner from '@views/Will/components/TitleBanner'
 import { MainButton } from '@views/Home'
 import LoginModal from '@components/LoginModal'
-import { useIsLogin } from '@store/auth/hooks'
+import { useIsLogin } from '@/hooks/useAuth'
 import type { Will } from '@api/will/types'
 
 const St = {

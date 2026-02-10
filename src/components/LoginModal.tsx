@@ -1,6 +1,7 @@
-import React, { useEffect } from 'react'
+import React from 'react'
 import { Modal, ModalProps, Flex, Box, Text } from 'components/Common'
 import styled, { css } from 'styled-components'
+import { signIn } from 'next-auth/react'
 import { useRouter } from 'next/router'
 
 enum EType {
@@ -104,59 +105,30 @@ const LoginIcon = styled.i<LoginProps>`
     }
   }}
 `
-const KAKAO_LOGIN_URL =
-  `https://kauth.kakao.com/oauth/authorize` +
-  `?client_id=${process.env.NEXT_PUBLIC_KAKAO_CLIENT_ID}` +
-  `&redirect_uri=${process.env.NEXT_PUBLIC_LOGIN_CALLBACK_URL_PREFIX}/kakao` +
-  `&response_type=code`
-
-const GOOGLE_LOGIN_URL =
-  `https://accounts.google.com/o/oauth2/v2/auth` +
-  `?client_id=${process.env.NEXT_PUBLIC_GOOGLE_CLIENT_ID}` +
-  `&redirect_uri=${process.env.NEXT_PUBLIC_LOGIN_CALLBACK_URL_PREFIX}/google` +
-  `&response_type=code` +
-  `&scope=https://www.googleapis.com/auth/userinfo.email`
-
-const NAVER_LOGIN_URL =
-  'https://nid.naver.com/oauth2.0/authorize' +
-  `?client_id=${process.env.NEXT_PUBLIC_NAVER_CLIENT_ID}` +
-  `&redirect_uri=${process.env.NEXT_PUBLIC_LOGIN_CALLBACK_URL_PREFIX}/naver` +
-  '&response_type=code' +
-  '&state=RANDOM_STATE'
-
 const LoginModal: React.FC<ModalProps> = ({ onDismiss, ...props }) => {
   const router = useRouter()
-
-  useEffect(() => {
-    localStorage.setItem('login_path', router.asPath)
-  }, [])
+  const callbackUrl = router.asPath === '/' ? '/main' : router.asPath
 
   return (
     <Modal title="로그인이 필요해요" onDismiss={onDismiss} {...props} minWidth="272px">
       <Flex justifyContent="center" alignItems="center" flexDirection="column">
         {/* <LoginButton
-        loginType={EType.NAVER}
-        onClick={() => {
-          router.push(NAVER_LOGIN_URL)
-        }}
-      >
-        <LoginIcon loginType={EType.NAVER} />
-        <span>네이버 로그인</span>
-      </LoginButton> */}
+          loginType={EType.NAVER}
+          onClick={() => signIn('naver', { callbackUrl })}
+        >
+          <LoginIcon loginType={EType.NAVER} />
+          <span>네이버 로그인</span>
+        </LoginButton> */}
         <LoginButton
           loginType={EType.KAKAO}
-          onClick={() => {
-            router.push(KAKAO_LOGIN_URL)
-          }}
+          onClick={() => signIn('kakao', { callbackUrl })}
         >
           <LoginIcon loginType={EType.KAKAO} />
           <span>카카오 계정으로 시작하기</span>
         </LoginButton>
         <LoginButton
           loginType={EType.GOOGLE}
-          onClick={() => {
-            router.push(GOOGLE_LOGIN_URL)
-          }}
+          onClick={() => signIn('google', { callbackUrl })}
         >
           <LoginIcon loginType={EType.GOOGLE} />
           <span>Google 계정으로 시작하기</span>

@@ -3,10 +3,8 @@ import { MENU_HEIGHT } from 'config/constants/default'
 import { useRouter } from 'next/router'
 import { useDispatch } from 'react-redux'
 import { naviActions } from 'store/navi'
-import { authActions } from 'store/auth'
-import { STORAGE_NAME } from 'config/constants/api'
+import { signOut } from 'next-auth/react'
 import styled from 'styled-components'
-import { authService } from '@/services/auth.service'
 
 const St = {
   TextLink: styled(Text)`
@@ -25,19 +23,8 @@ const MenuWrapper = () => {
 
   const handleLogout = async () => {
     try {
-      await authService.logout()
-      localStorage.removeItem(STORAGE_NAME.USER)
-      sessionStorage.removeItem(STORAGE_NAME.USER)
-      dispatch(
-        authActions.setAuth({
-          isAuthenticated: false,
-          accessToken: '',
-          refreshToken: '',
-          name: '',
-          email: '',
-        }),
-      )
       dispatch(naviActions.menuOnOff())
+      await signOut({ callbackUrl: '/' })
     } catch (e) {
       console.log('logout ', e)
     }
@@ -59,8 +46,6 @@ const MenuWrapper = () => {
         <St.TextLink mb="24px" onClick={handleLogout}>
           로그아웃
         </St.TextLink>
-        {/* <St.TextLink mb="24px">개인정보 처리방침</St.TextLink>
-        <St.TextLink mb="24px">서비스 이용약관</St.TextLink> */}
       </Box>
     </Box>
   )

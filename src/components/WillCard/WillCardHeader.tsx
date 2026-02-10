@@ -11,7 +11,7 @@ import Panorama from 'components/Common/Svg/Icons/Panorama'
 import moment from 'moment'
 import WriteDeleteModal from 'views/Main/components/modal/WriteDeleteModal'
 import ShareModal from 'views/Main/components/modal/ShareModal'
-import { useIsLogin } from 'store/auth/hooks'
+import { useIsLogin } from '@/hooks/useAuth'
 import { Will } from '@api/will/types'
 
 const St = {
