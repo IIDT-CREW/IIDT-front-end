@@ -1,5 +1,4 @@
 import { ElementType } from 'react'
-import { LayoutProps, SpaceProps } from 'styled-system'
 import { PolymorphicComponentProps } from 'utils/polymorphic'
 export const scales = {
   MD: 'md',
@@ -21,12 +20,22 @@ export const variants = {
 export type Scale = typeof scales[keyof typeof scales]
 export type Variant = typeof variants[keyof typeof variants]
 
-export interface BaseButtonProps extends LayoutProps, SpaceProps {
+export interface BaseButtonProps {
   as?: 'a' | 'button' | ElementType
   external?: boolean
   scale?: Scale
   variant?: Variant
   disabled?: boolean
   width?: string
+  m?: string
+  mt?: string
+  mb?: string
+  ml?: string
+  mr?: string
+  p?: string
+  pt?: string
+  pb?: string
+  pl?: string
+  pr?: string
 }
 export type ButtonProps<P extends ElementType = 'button'> = PolymorphicComponentProps<P, BaseButtonProps>

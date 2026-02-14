@@ -1,7 +1,5 @@
 /* eslint-disable no-sparse-arrays */
 import { TextareaHTMLAttributes, useCallback, useEffect, useState } from 'react'
-import styled, { CSSProp } from 'styled-components'
-import { fontSize, FontSizeProps } from 'styled-system'
 import { useRouter } from 'next/router'
 import { useModal } from 'components/Common'
 import SelectPostTypeModal from 'views/Write/components/modal/SelectPostTypeModal'
@@ -14,6 +12,7 @@ import MenuBar, { StyleMenuButton } from 'views/Write/components/MenuBar'
 import { QUESTION_LIST } from 'views/Write/data'
 import { useWill, useCreateWill, useUpdateWill } from '@/queries'
 import useWarningHistoryBack from './hooks/useWarningHistoryBack'
+import cn from 'utils/cn'
 
 const DEFAULT_TITLE = `${new Date().toLocaleDateString('ko-KR', {
   year: '2-digit',
@@ -137,12 +136,17 @@ const Write = () => {
             qs_essay_answer: content.answer,
           })),
     }
-    // console.log(parameter)
     isEditMode ? updatePostMutate(parameter) : addPostMutate(parameter)
   }, [addPostMutate, contents, isDefaultPostType, isEditMode, isPrivate, memIdx, title, updatePostMutate, willId])
 
   return (
-    <St.Article>
+    <article
+      style={{
+        marginTop: `${MENU_HEIGHT}px`,
+        position: 'relative',
+        height: `calc(100vh - ${MENU_HEIGHT}px - ${FOOTER_HEIGHT}px)`,
+      }}
+    >
       <MenuBar
         isMobile={isMobile}
         handleUpsert={handleUpsert}
@@ -155,24 +159,42 @@ const Write = () => {
         handleSetIsPrivate={handleSetIsPrivate}
       />
 
-      <St.Editor>
-        <Title
+      <section className="px-6 h-full flex flex-col">
+        <textarea
           value={title}
           onChange={handleTitle}
-          fontSize={[, '16px', '26px']}
           rows={1}
           wrap="off"
           placeholder={DEFAULT_TITLE}
-          css={{ height: '30px', marginBottom: '24px', overflow: 'hidden' }}
+          maxLength={30}
+          className={cn(
+            'outline-none border-none resize-none w-full font-normal leading-7 bg-inherit',
+            'font-[Nanum_Myeongjo] text-[var(--color-text-secondary)]',
+            'placeholder:text-[var(--color-grayscale-5)]',
+            'sm:text-[16px] md:text-[26px]',
+          )}
+          style={{ height: '30px', marginBottom: '24px', overflow: 'hidden' }}
         />
 
-        {isDefaultPostType || <St.Question fontSize={[, '16px', '26px']}>{QUESTION_LIST[page]?.question}</St.Question>}
-        <Contents
-          isDefaultPostType={isDefaultPostType}
+        {isDefaultPostType || (
+          <div
+            className="font-[Nanum_Myeongjo] font-bold text-[26px] mb-4 sm:text-[16px] md:text-[26px]"
+            style={{ color: 'var(--color-text-primary)' }}
+          >
+            {QUESTION_LIST[page]?.question}
+          </div>
+        )}
+        <textarea
+          placeholder="내용을 입력하세요"
           value={contents[page]?.answer}
           onChange={handleContents}
-          fontSize={[, '16px', '18px']}
-          css={{ flex: 'auto' }}
+          maxLength={1500}
+          className={cn(
+            'outline-none border-none resize-none w-full font-normal leading-7 bg-inherit flex-auto',
+            'font-[Nanum_Myeongjo] text-[var(--color-text-secondary)]',
+            'placeholder:text-[var(--color-grayscale-5)]',
+            'sm:text-[16px] md:text-[18px]',
+          )}
         />
         {isDefaultPostType && isMobile && (
           <StyleMenuButton
@@ -180,7 +202,7 @@ const Write = () => {
             variant="primary"
             onClick={handleUpsert}
             disabled={false}
-            css={{ marginBottom: '16px' }}
+            style={{ marginBottom: '16px' }}
           >
             작성 완료
           </StyleMenuButton>
@@ -191,69 +213,15 @@ const Write = () => {
             variant="primary"
             onClick={handleUpsert}
             disabled={isDisableSave}
-            css={{ marginBottom: '16px' }}
+            style={{ marginBottom: '16px' }}
           >
             모두 다 작성했어요
           </StyleMenuButton>
         )}
-      </St.Editor>
-      {!isDefaultPostType || <ProgressBar value={page + 1} max={QUESTION_LIST.length} wrapperCss={progressStyle} />}
-    </St.Article>
+      </section>
+      {!isDefaultPostType || <ProgressBar value={page + 1} max={QUESTION_LIST.length} wrapperClassName="mb-2.5" />}
+    </article>
   )
-}
-const progressStyle = { marginBottom: '10px' }
-interface TextAreaProps extends FontSizeProps, TextareaHTMLAttributes<HTMLTextAreaElement> {
-  isDefaultPostType?: boolean
-  css?: CSSProp
-}
-
-const Title = ({ ...props }: TextAreaProps) => {
-  return <St.Textarea {...props} maxLength={30} />
-}
-const Contents = ({ ...props }: TextAreaProps) => {
-  return <St.Textarea placeholder="내용을 입력하세요" {...props} maxLength={1500} />
-}
-const St = {
-  Editor: styled.section`
-    padding: 0px 24px 0 24px;
-    height: 100%;
-    display: flex;
-    flex-direction: column;
-  `,
-  Question: styled.div<FontSizeProps>`
-    font-family: 'Nanum Myeongjo';
-    font-style: normal;
-    font-weight: 700;
-    font-size: 26px;
-    margin: 0 0 16px 0;
-    color: ${({ theme }) => theme.colors.textPrimary};
-    ${fontSize}
-  `,
-  Article: styled.article`
-    margin-top: ${MENU_HEIGHT}px;
-    position: relative;
-    height: calc(100vh - ${MENU_HEIGHT}px - ${FOOTER_HEIGHT}px);
-  `,
-
-  Textarea: styled.textarea<TextAreaProps>`
-    outline: none;
-    border: none;
-    resize: none;
-    width: 100%;
-    font-size: 18px;
-    font-weight: 400;
-    font-family: 'Nanum Myeongjo';
-    padding: unset;
-    color: ${({ theme }) => theme.colors.textSecondary};
-    line-height: 28px;
-    background-color: inherit;
-    ::placeholder {
-      color: ${({ theme }) => theme.colors.grayscale5};
-      ${fontSize}
-    }
-    ${({ css }) => css}
-    ${fontSize}
-  `,
 }
 
 export default Write

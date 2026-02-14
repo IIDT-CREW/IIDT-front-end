@@ -1,12 +1,22 @@
-import styled from 'styled-components'
-import { grid, flexbox } from 'styled-system'
-import Box from './Box'
+import { forwardRef } from 'react'
+import cn from 'utils/cn'
 import { GridProps } from './types'
+import { extractStyleProps } from './extractStyleProps'
 
-const Grid = styled(Box)<GridProps>`
-  display: grid;
-  ${flexbox}
-  ${grid}
-`
+const Grid = forwardRef<HTMLDivElement, GridProps>(
+  ({ className, style, ...props }, ref) => {
+    const { style: extractedStyle, rest } = extractStyleProps(props)
+    return (
+      <div
+        ref={ref}
+        className={cn('grid', className)}
+        style={{ ...extractedStyle, ...style }}
+        {...rest}
+      />
+    )
+  },
+)
+
+Grid.displayName = 'Grid'
 
 export default Grid

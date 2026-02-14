@@ -1,5 +1,4 @@
 import React from 'react'
-import styled, { useTheme } from 'styled-components'
 import { Meta } from '@storybook/react/types-6-0'
 import Box from '../Box/Box'
 import Heading from '../Heading/Heading'
@@ -9,9 +8,11 @@ import CardFooter from './CardFooter'
 import Card from './Card'
 import Image from '../Image/NextImage'
 
-const Row = styled.div`
-  margin-bottom: 32px;
-`
+const Row = ({ children, ...props }: React.HTMLAttributes<HTMLDivElement>) => (
+  <div className="mb-8" {...props}>
+    {children}
+  </div>
+)
 
 export default {
   title: 'Components/Card',
@@ -57,16 +58,12 @@ export const Default: React.FC = () => {
 }
 
 export const CardHeader: React.FC = () => {
-  const theme = useTheme()
-  // This is example how to make card header "overlap" the border.
-  // Seems to be easiest solution that works on all screens and does not rely on absolute positioning trickery
   const headerHeight = '60px'
   const customHeadingColor = '#7645D9'
   const gradientStopPoint = `calc(${headerHeight} + 1px)`
-  const borderBackground = `linear-gradient(${customHeadingColor} ${gradientStopPoint}, ${theme.colors.cardBorder} ${gradientStopPoint})`
+  const borderBackground = `linear-gradient(${customHeadingColor} ${gradientStopPoint}, var(--color-card-border) ${gradientStopPoint})`
+  const gradientBorderColor = `linear-gradient(transparent ${gradientStopPoint}, var(--color-card-border) ${gradientStopPoint}), linear-gradient(111.68deg, #F2ECF2 0%, #E8F2F6 100%)`
 
-  // Gradient overlap is also possible, just put the "dividing" gradient first and after that the header gradient
-  const gradientBorderColor = `linear-gradient(transparent ${gradientStopPoint}, ${theme.colors.cardBorder} ${gradientStopPoint}), ${theme.colors.gradients.cardHeader}`
   return (
     <div style={{ padding: '32px', width: '500px' }}>
       <Row>
@@ -82,7 +79,7 @@ export const CardHeader: React.FC = () => {
       </Row>
       <Row>
         <Card borderBackground={gradientBorderColor}>
-          <Box background={theme.colors.gradients.cardHeader} p="16px" height={headerHeight}>
+          <Box background="linear-gradient(111.68deg, #F2ECF2 0%, #E8F2F6 100%)" p="16px" height={headerHeight}>
             <Heading scale="xl">Gradient overlapping Header</Heading>
           </Box>
           <CardBody>The border on sides of header is covered</CardBody>

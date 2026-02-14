@@ -8,7 +8,7 @@
 |---|---|
 | Framework | Next.js 16, React 19 |
 | Language | TypeScript |
-| Styling | Tailwind CSS 4 + Styled Components |
+| Styling | Tailwind CSS 4 |
 | State Management | Redux Toolkit, React Query |
 | UI Components | shadcn/ui, Radix UI |
 | Authentication | NextAuth (Auth.js v5) - Google, Kakao, Naver |
@@ -74,8 +74,7 @@ src/
 ├── queries/           # React Query 설정
 ├── services/          # 서비스 레이어 (will)
 ├── store/             # Redux 스토어 (navi)
-├── style/             # 글로벌 스타일
-├── theme/             # 테마 설정 (light/dark)
+├── style/             # 글로벌 스타일 (CSS 커스텀 속성 기반 테마)
 ├── types/             # TypeScript 타입 정의
 ├── utils/             # 유틸리티 함수
 └── views/             # 페이지 뷰 컴포넌트

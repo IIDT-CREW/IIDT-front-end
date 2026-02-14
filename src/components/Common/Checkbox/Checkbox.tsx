@@ -1,71 +1,38 @@
-import styled from 'styled-components'
+import { forwardRef } from 'react'
+import cn from 'utils/cn'
 import { CheckboxProps, scales } from './types'
 
-const getScale = ({ scale }: CheckboxProps) => {
-  switch (scale) {
-    case scales.SM:
-      return '24px'
-    case scales.MD:
-    default:
-      return '32px'
-  }
+const scaleMap = {
+  [scales.SM]: 'h-6 w-6',
+  [scales.MD]: 'h-8 w-8',
 }
 
-const Checkbox = styled.input.attrs({ type: 'checkbox' })<CheckboxProps>`
-  appearance: none;
-  overflow: hidden;
-  cursor: pointer;
-  position: relative;
-  display: inline-block;
-  height: ${getScale};
-  width: ${getScale};
-  vertical-align: middle;
-  transition: background-color 0.2s ease-in-out;
-  border: 0;
-  border-radius: 8px;
-  background-color: ${({ theme }) => theme.colors.input};
-  box-shadow: ${({ theme }) => theme.shadows.inset};
+const Checkbox = forwardRef<
+  HTMLInputElement,
+  CheckboxProps & React.InputHTMLAttributes<HTMLInputElement>
+>(({ scale = scales.MD, className, ...props }, ref) => (
+  <input
+    ref={ref}
+    type="checkbox"
+    className={cn(
+      'appearance-none overflow-hidden cursor-pointer relative inline-block align-middle',
+      'transition-colors duration-200 ease-in-out border-0 rounded-lg',
+      'bg-[var(--color-input)]',
+      'shadow-[inset_0px_2px_2px_-1px_rgba(74,74,104,0.1)]',
+      'after:content-[""] after:absolute after:border-b-2 after:border-l-2 after:border-transparent',
+      'after:top-[30%] after:left-0 after:right-0 after:w-1/2 after:h-1/4 after:m-auto',
+      'after:-rotate-[50deg] after:transition-colors after:duration-200 after:ease-in-out',
+      'hover:not-disabled:not-checked:shadow-[0px_0px_0px_1px_#7645D9,0px_0px_0px_4px_rgba(118,69,217,0.6)]',
+      'focus:outline-none focus:shadow-[0px_0px_0px_1px_#7645D9,0px_0px_0px_4px_rgba(118,69,217,0.6)]',
+      'checked:bg-[var(--color-success,#31d0aa)] checked:after:border-white',
+      'disabled:cursor-default disabled:opacity-60',
+      scaleMap[scale] || scaleMap[scales.MD],
+      className,
+    )}
+    {...props}
+  />
+))
 
-  &:after {
-    content: '';
-    position: absolute;
-    border-bottom: 2px solid;
-    border-left: 2px solid;
-    border-color: transparent;
-    top: 30%;
-    left: 0;
-    right: 0;
-    width: 50%;
-    height: 25%;
-    margin: auto;
-    transform: rotate(-50deg);
-    transition: border-color 0.2s ease-in-out;
-  }
-
-  &:hover:not(:disabled):not(:checked) {
-    box-shadow: ${({ theme }) => theme.shadows.focus};
-  }
-
-  &:focus {
-    outline: none;
-    box-shadow: ${({ theme }) => theme.shadows.focus};
-  }
-
-  &:checked {
-    background-color: ${({ theme }) => theme.colors.success};
-    &:after {
-      border-color: white;
-    }
-  }
-
-  &:disabled {
-    cursor: default;
-    opacity: 0.6;
-  }
-`
-
-Checkbox.defaultProps = {
-  scale: scales.MD,
-}
+Checkbox.displayName = 'Checkbox'
 
 export default Checkbox

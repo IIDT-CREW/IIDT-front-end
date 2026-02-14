@@ -1,23 +1,41 @@
-import styled from 'styled-components'
+import React, { forwardRef } from 'react'
+import cn from 'utils/cn'
 
-const Column = styled.div`
-  display: flex;
-  flex-direction: column;
-  justify-content: flex-start;
-`
-export const ColumnCenter = styled(Column)`
-  width: 100%;
-  align-items: center;
-`
+const Column = forwardRef<HTMLDivElement, React.HTMLAttributes<HTMLDivElement>>(
+  ({ className, ...props }, ref) => (
+    <div ref={ref} className={cn('flex flex-col justify-start', className)} {...props} />
+  ),
+)
 
-export const AutoColumn = styled.div<{
+Column.displayName = 'Column'
+
+export const ColumnCenter = forwardRef<HTMLDivElement, React.HTMLAttributes<HTMLDivElement>>(
+  ({ className, ...props }, ref) => (
+    <div ref={ref} className={cn('flex flex-col justify-start w-full items-center', className)} {...props} />
+  ),
+)
+
+ColumnCenter.displayName = 'ColumnCenter'
+
+export interface AutoColumnProps extends React.HTMLAttributes<HTMLDivElement> {
   gap?: 'sm' | 'md' | 'lg' | string
   justify?: 'stretch' | 'center' | 'start' | 'end' | 'flex-start' | 'flex-end' | 'space-between'
-}>`
-  display: grid;
-  grid-auto-rows: auto;
-  grid-row-gap: ${({ gap }) => (gap === 'sm' && '8px') || (gap === 'md' && '12px') || (gap === 'lg' && '24px') || gap};
-  justify-items: ${({ justify }) => justify};
-`
+}
+
+export const AutoColumn = forwardRef<HTMLDivElement, AutoColumnProps>(
+  ({ gap, justify, className, style, ...props }, ref) => {
+    const gapValue = gap === 'sm' ? '8px' : gap === 'md' ? '12px' : gap === 'lg' ? '24px' : gap
+    return (
+      <div
+        ref={ref}
+        className={cn('grid auto-rows-auto', className)}
+        style={{ gridRowGap: gapValue, justifyItems: justify, ...style }}
+        {...props}
+      />
+    )
+  },
+)
+
+AutoColumn.displayName = 'AutoColumn'
 
 export default Column

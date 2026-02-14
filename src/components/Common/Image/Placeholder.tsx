@@ -1,14 +1,14 @@
-import styled from 'styled-components'
+import cn from 'utils/cn'
 
-const Placeholder = styled.div<{ isVisible: boolean }>`
-  height: 100%;
-  left: 0;
-  position: absolute;
-  top: 0;
-  width: 100%;
-  background: grey;
-  transition: opacity 0.6s;
-  opacity: ${({ isVisible }) => (isVisible ? 1 : 0)};
-`
+const Placeholder = ({ isVisible, className, ...props }: { isVisible: boolean } & React.HTMLAttributes<HTMLDivElement>) => (
+  <div
+    className={cn(
+      'h-full left-0 absolute top-0 w-full bg-gray-400 transition-opacity duration-[600ms]',
+      isVisible ? 'opacity-100' : 'opacity-0',
+      className,
+    )}
+    {...props}
+  />
+)
 
 export default Placeholder

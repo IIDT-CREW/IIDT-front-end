@@ -19,17 +19,13 @@ const nextConfig = {
 
   // Turbopack config (Next.js 16 default)
   turbopack: {
+    root: __dirname,
     rules: {
       '*.svg': {
         loaders: ['@svgr/webpack'],
         as: '*.js',
       },
     },
-  },
-
-  // styled-components support
-  compiler: {
-    styledComponents: true,
   },
 
   // Webpack config for non-Turbopack builds

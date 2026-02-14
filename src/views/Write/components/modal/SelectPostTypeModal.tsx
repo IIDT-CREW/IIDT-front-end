@@ -1,13 +1,34 @@
-/* eslint-disable no-sparse-arrays */
 import { Modal } from 'components/Common'
 import { Flex, Box, Text } from 'components/Common'
-import styled from 'styled-components'
 import { ButtonHTMLAttributes } from 'react'
+import cn from 'utils/cn'
 
 interface customModalProps extends ButtonHTMLAttributes<HTMLButtonElement> {
   handlePostType: () => void
   onDismiss?: () => void
 }
+
+type variant = 'primary' | 'secondary'
+
+const ModalButton = ({
+  variant,
+  className,
+  ...props
+}: React.ButtonHTMLAttributes<HTMLButtonElement> & { variant?: variant }) => (
+  <button
+    className={cn(
+      'flex flex-row justify-center items-center py-3.5 px-4 cursor-pointer rounded border-none font-[SUIT] font-semibold text-lg leading-[22px]',
+      'xs:w-[275px] xs:text-base xs:py-3 xs:px-3.5 xs:mb-2.5',
+      'sm:w-[335px] sm:text-lg sm:mx-5 sm:my-4',
+      'dark:border dark:border-[rgb(203,212,255,0.5)]',
+      variant === 'primary'
+        ? 'bg-grayscale-7 text-grayscale-0'
+        : 'bg-grayscale-2 text-grayscale-7',
+      className,
+    )}
+    {...props}
+  />
+)
 
 const SelectPostTypeModal = ({ handlePostType, onDismiss }: customModalProps) => {
   const handleButton = () => {
@@ -28,10 +49,10 @@ const SelectPostTypeModal = ({ handlePostType, onDismiss }: customModalProps) =>
 
         <Box mt="20px">
           <Flex flexDirection="column">
-            <St.ModalButton onClick={handleButton}>질문에 따라 유서를 적고 싶어요</St.ModalButton>
-            <St.ModalButton onClick={onDismiss} variant="primary">
+            <ModalButton onClick={handleButton}>질문에 따라 유서를 적고 싶어요</ModalButton>
+            <ModalButton onClick={onDismiss} variant="primary">
               제 마음대로 일기를 적고 싶어요
-            </St.ModalButton>
+            </ModalButton>
           </Flex>
         </Box>
       </Flex>
@@ -40,53 +61,3 @@ const SelectPostTypeModal = ({ handlePostType, onDismiss }: customModalProps) =>
 }
 
 export default SelectPostTypeModal
-
-type variant = 'primary' | 'secondary'
-const St = {
-  ModalButton: styled.button<{ variant?: variant }>`
-    display: flex;
-    flex-direction: row;
-    justify-content: center;
-    align-items: center;
-    padding: 14px 16px;
-
-    ${({ theme }) => theme.mediaQueries.xs} {
-      width: 275px;
-      font-size: 16px;
-      padding: 12px 14px;
-      margin-bottom: 10px;
-    }
-
-    ${({ theme }) => theme.mediaQueries.sm} {
-      width: 335px;
-      font-size: 18px;
-      margin: 16px 20px;
-    }
-    ${({ theme }) => theme.mediaQueries.md} {
-      width: 335px;
-      font-size: 18px;
-      margin: 16px 20px;
-    }
-    ${({ variant, theme }) => {
-      if (variant === 'primary') {
-        return `
-        background-color: ${theme.colors.grayscale7};
-        color: ${theme.colors.grayscale0};
-        `
-      }
-      return `
-        background-color: ${theme.colors.grayscale2};
-        color: ${theme.colors.grayscale7};
-      `
-    }}
-    cursor: pointer;
-    border-radius: 4px;
-    border: none;
-    ${({ theme }) => theme.isDark && 'border: 1px solid rgb(203, 212, 255, 0.5)'};
-    font-family: 'SUIT';
-    font-style: normal;
-    font-weight: 600;
-    font-size: 18px;
-    line-height: 22px;
-  `,
-}

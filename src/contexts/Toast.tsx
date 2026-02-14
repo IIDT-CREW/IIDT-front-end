@@ -1,15 +1,6 @@
 import { createContext, ReactNode } from 'react'
 import { toast, ToastOptions, Slide } from 'react-toastify'
-import { Flex, Text } from 'components/Common'
-import styled from 'styled-components'
 
-const St = {
-  ToastWrapper: styled.div`
-    // background: ${({ theme }) => theme.colors.background};
-    /* 🌑/Gray/300 */
-    background: #191919;
-  `,
-}
 export const TYPE_OPTIONS = {
   INFO: 'info',
   SUCCESS: 'success',
@@ -43,12 +34,12 @@ export const toastContext = createContext<any>(undefined)
 
 export const CustomToast = (props) => {
   return (
-    <St.ToastWrapper>
-      <Flex justifyContent="space-between" alignItems="center">
-        <Text style={{ fontFamily: 'SUIT', color: '#fff' }}>{props.message}</Text>
-        <Text style={{ fontFamily: 'SUIT', color: '#fff' }}>닫기</Text>
-      </Flex>
-    </St.ToastWrapper>
+    <div className="bg-[#191919]">
+      <div className="flex justify-between items-center">
+        <span style={{ fontFamily: 'SUIT', color: '#fff' }}>{props.message}</span>
+        <span style={{ fontFamily: 'SUIT', color: '#fff' }}>닫기</span>
+      </div>
+    </div>
   )
 }
 export const ToastContextProvider = ({ children }) => {

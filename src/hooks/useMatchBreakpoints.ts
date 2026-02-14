@@ -1,6 +1,14 @@
 import { useState } from 'react'
-import { breakpointMap } from 'theme/base'
 import { useIsomorphicEffect } from './useIsomorphicEffect'
+
+const breakpointMap: Record<string, number> = {
+  xs: 370,
+  sm: 576,
+  md: 852,
+  lg: 968,
+  xl: 1080,
+  xxl: 1200,
+}
 
 type State = {
   [key: string]: boolean

@@ -1,29 +1,38 @@
-import { Flex, FlexProps } from 'components/Common/Box'
-import styled from 'styled-components'
+import React, { forwardRef } from 'react'
+import cn from 'utils/cn'
 
-const FlexLayout = styled.div`
-  display: flex;
-  justify-content: center;
-  flex-wrap: wrap;
-  & > * {
-    min-width: 280px;
-    max-width: 31.5%;
-    width: 100%;
-    margin: 0 8px;
-    margin-bottom: 32px;
-  }
-`
+const FlexLayout = forwardRef<HTMLDivElement, React.HTMLAttributes<HTMLDivElement>>(
+  ({ className, ...props }, ref) => (
+    <div
+      ref={ref}
+      className={cn(
+        'flex justify-center flex-wrap [&>*]:min-w-[280px] [&>*]:max-w-[31.5%] [&>*]:w-full [&>*]:mx-2 [&>*]:mb-8',
+        className,
+      )}
+      {...props}
+    />
+  ),
+)
 
-export interface FlexGapProps extends FlexProps {
+FlexLayout.displayName = 'FlexLayout'
+
+export interface FlexGapProps extends React.HTMLAttributes<HTMLDivElement> {
   gap?: string
   rowGap?: string
   columnGap?: string
 }
 
-export const FlexGap = styled(Flex)<FlexGapProps>`
-  gap: ${({ gap }) => gap};
-  row-gap: ${({ rowGap }) => rowGap};
-  column-gap: ${({ columnGap }) => columnGap};
-`
+export const FlexGap = forwardRef<HTMLDivElement, FlexGapProps>(
+  ({ gap, rowGap, columnGap, className, style, ...props }, ref) => (
+    <div
+      ref={ref}
+      className={cn('flex', className)}
+      style={{ gap, rowGap, columnGap, ...style }}
+      {...props}
+    />
+  ),
+)
+
+FlexGap.displayName = 'FlexGap'
 
 export default FlexLayout

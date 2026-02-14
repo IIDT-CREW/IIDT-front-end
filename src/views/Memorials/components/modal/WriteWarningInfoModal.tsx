@@ -1,36 +1,12 @@
 import { Modal } from 'components/Common'
 import { Flex, Box, Text } from 'components/Common'
-import styled from 'styled-components'
-const St = {
-  ConfirmButton: styled.div`
-    /* Auto layout */
 
-    display: flex;
-    flex-direction: row;
-    justify-content: center;
-    align-items: center;
-    padding: 14px 16px;
-    gap: 10px;
-
-    width: 335px;
-    height: 50px;
-
-    /* Color/Grayscale 7 */
-
-    background: #000000;
-    border-radius: 4px;
-    border: none;
-    /* Inside auto layout */
-
-    flex: none;
-    order: 0;
-    flex-grow: 1;
-
-    color: #fff;
-
-    cursor: pointer;
-  `,
-}
+const ConfirmButton = (props: React.HTMLAttributes<HTMLDivElement>) => (
+  <div
+    className="flex flex-row justify-center items-center py-3.5 px-4 gap-2.5 w-[335px] h-[50px] bg-black rounded border-none flex-none grow text-white cursor-pointer"
+    {...props}
+  />
+)
 
 const WriteWarningInfoModal = ({ onDismiss, ...props }: any) => {
   return (
@@ -51,7 +27,7 @@ const WriteWarningInfoModal = ({ onDismiss, ...props }: any) => {
 
         <Text mb="20px">마음이 힘들다면 1577-0199로 전화해주세요. 당신은 그 누구보다 소중하니까요.</Text>
         <Box>
-          <St.ConfirmButton onClick={onDismiss}>확인했어요</St.ConfirmButton>
+          <ConfirmButton onClick={onDismiss}>확인했어요</ConfirmButton>
         </Box>
       </Flex>
     </Modal>

@@ -1,7 +1,6 @@
 import { useEffect, useCallback } from 'react'
 import { useRouter } from 'next/router'
 import AOS from 'aos'
-import styled from 'styled-components'
 import Page from '@components/Layout/Page'
 import { Flex, Box, Text, useModal } from '@components/Common'
 import { useWill } from '@/queries/will'
@@ -12,28 +11,6 @@ import LoginModal from '@components/LoginModal'
 import { useIsLogin } from '@/hooks/useAuth'
 import type { Will } from '@api/will/types'
 
-const St = {
-  Container: styled(Box)`
-    min-height: calc(100% - 231px);
-  `,
-  Main: styled(Box)`
-    height: calc(100% - 231px);
-  `,
-
-  MenuWrapper: styled<any>(Box)`
-    width: 200px;
-    background: ${({ theme }) => theme.colors.background};
-    box-shadow: 0px 0px 1px rgba(0, 0, 0, 0.08), 0px 16px 30px 4px rgba(0, 0, 0, 0.1);
-    border-radius: 4px;
-    padding: 18px;
-    ${({ isOpen }) =>
-      !isOpen &&
-      `
-  pointer-events: none;
-  visibility: hidden;
-`};
-  `,
-}
 type WillTitleProps = {
   data?: Will
 }
@@ -109,11 +86,11 @@ const WillPage = () => {
 
   return (
     <Page title={data?.TITLE} content={data?.CONTENT} isFullPage>
-      <St.Container>
+      <Box style={{ minHeight: 'calc(100% - 231px)' }}>
         <WillTitle data={data} />
         <WillContent data={data} isLoading={isLoading} />
         <WillFooter handleWrite={handleWrite} />
-      </St.Container>
+      </Box>
     </Page>
   )
 }

@@ -1,16 +1,9 @@
-import { Box, Text } from 'components/Common'
 import { MENU_HEIGHT } from 'config/constants/default'
 import { useRouter } from 'next/router'
 import { useDispatch } from 'react-redux'
 import { naviActions } from 'store/navi'
 import { signOut } from 'next-auth/react'
-import styled from 'styled-components'
 
-const St = {
-  TextLink: styled(Text)`
-    cursor: pointer;
-  `,
-}
 const MenuWrapper = () => {
   const dispatch = useDispatch()
   const router = useRouter()
@@ -35,19 +28,19 @@ const MenuWrapper = () => {
     dispatch(naviActions.menuOff())
   }
   return (
-    <Box mt={`${returnMarginTop()}px`} position="absolute" padding="10px">
-      <Box>
-        <St.TextLink mb="24px" onClick={() => handleRoute('/')}>
+    <div className="absolute p-2.5" style={{ marginTop: `${returnMarginTop()}px` }}>
+      <div>
+        <p className="mb-6 cursor-pointer text-theme-text" onClick={() => handleRoute('/')}>
           HOME
-        </St.TextLink>
-        <St.TextLink mb="24px" onClick={() => handleRoute('/main')}>
+        </p>
+        <p className="mb-6 cursor-pointer text-theme-text" onClick={() => handleRoute('/main')}>
           MAIN
-        </St.TextLink>
-        <St.TextLink mb="24px" onClick={handleLogout}>
+        </p>
+        <p className="mb-6 cursor-pointer text-theme-text" onClick={handleLogout}>
           로그아웃
-        </St.TextLink>
-      </Box>
-    </Box>
+        </p>
+      </div>
+    </div>
   )
 }
 

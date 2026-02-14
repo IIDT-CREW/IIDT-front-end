@@ -1,8 +1,8 @@
 import React from 'react'
 import { Modal, ModalProps, Flex, Box, Text } from 'components/Common'
-import styled, { css } from 'styled-components'
 import { signIn } from 'next-auth/react'
 import { useRouter } from 'next/router'
+import cn from 'utils/cn'
 
 enum EType {
   NAVER,
@@ -10,101 +10,47 @@ enum EType {
   GOOGLE,
   TEST,
 }
-interface LoginProps {
+
+const loginStyles: Record<number, string> = {
+  [EType.NAVER]: 'bg-[#03c75a] text-white text-[14.5px]',
+  [EType.KAKAO]: 'bg-[#fee500] text-[#000000d8] text-[14.5px] rounded',
+  [EType.GOOGLE]: 'bg-white border border-[#e2e4e6] rounded text-black text-[14.5px] [&_span]:font-[Roboto,Spoqa_Han_Sans_Neo,sans-serif]',
+}
+
+const loginIconStyles: Record<number, string> = {
+  [EType.NAVER]: 'bg-[url(/images/login/logo/naver.svg)] brightness-0 invert',
+  [EType.KAKAO]: 'bg-[url(/images/login/btn_kakao_icon.svg)]',
+  [EType.GOOGLE]: 'bg-[url(/images/login/btn_google_icon.svg)] rounded',
+}
+
+interface LoginButtonProps extends React.ButtonHTMLAttributes<HTMLButtonElement> {
   loginType: EType
 }
 
-const LoginButton = styled.button<LoginProps>`
-  height: 40px;
-  width: 310px;
-  margin-top: 10px;
-  border: none;
-  cursor: pointer;
-  padding-left: 0px;
-  vertical-align: middle;
-  border-radius: 0.25rem;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  span {
-    width: 264px;
-  }
-  &:focus {
-    box-shadow: 0px 0px 8px rgba(0, 0, 0, 0.2);
-  }
-  &:hover {
-    // background: #e49600;
-  }
-  &:active {
-    // background: #e49600;
-  }
-  ${({ loginType }) => {
-    switch (loginType) {
-      case EType.NAVER: {
-        return css`
-          background-color: #03c75a;
-          color: #fff;
-          font-size: 14.5px;
-        `
-      }
-      case EType.KAKAO: {
-        return css`
-          background-color: #fee500;
-          color: #000000d8;
-          font-size: 14.5px;
-          border-radius: 4px;
-        `
-      }
-      case EType.GOOGLE: {
-        return css`
-          background-color: #ffffff;
-          border: 1px solid #e2e4e6;
-          border-radius: 4px;
+const LoginButton = ({ loginType, className, ...props }: LoginButtonProps) => (
+  <button
+    className={cn(
+      'h-10 w-[310px] mt-2.5 border-none cursor-pointer pl-0 align-middle flex items-center justify-center',
+      'focus:shadow-[0px_0px_8px_rgba(0,0,0,0.2)]',
+      '[&_span]:w-[264px]',
+      loginStyles[loginType],
+      className,
+    )}
+    {...props}
+  />
+)
 
-          color: black;
-          font-size: 14.5px;
-          span {
-            font-family: 'Roboto', 'Spoqa Han Sans Neo', 'sans-serif';
-          }
-        `
-      }
-      default: {
-        return css`
-          background-color: #fdb11a;
-          color: white;
-        `
-      }
-    }
-  }}
-`
-const LoginIcon = styled.i<LoginProps>`
-  width: 40px;
-  height: 40px;
-  display: inline-block;
-  background-repeat: no-repeat;
-  background-position: center;
-  ${({ loginType }) => {
-    switch (loginType) {
-      case EType.NAVER: {
-        return css`
-          background-image: url('/images/login/logo/naver.svg');
-          filter: brightness(0%) invert(100%);
-        `
-      }
-      case EType.KAKAO: {
-        return css`
-          background-image: url('/images/login/btn_kakao_icon.svg');
-        `
-      }
-      case EType.GOOGLE: {
-        return css`
-          background-image: url('/images/login/btn_google_icon.svg');
-          border-radius: 0.25rem;
-        `
-      }
-    }
-  }}
-`
+const LoginIcon = ({ loginType, className, ...props }: { loginType: EType } & React.HTMLAttributes<HTMLElement>) => (
+  <i
+    className={cn(
+      'w-10 h-10 inline-block bg-no-repeat bg-center',
+      loginIconStyles[loginType],
+      className,
+    )}
+    {...props}
+  />
+)
+
 const LoginModal: React.FC<ModalProps> = ({ onDismiss, ...props }) => {
   const router = useRouter()
   const callbackUrl = router.asPath === '/' ? '/main' : router.asPath
@@ -112,13 +58,6 @@ const LoginModal: React.FC<ModalProps> = ({ onDismiss, ...props }) => {
   return (
     <Modal title="로그인이 필요해요" onDismiss={onDismiss} {...props} minWidth="272px">
       <Flex justifyContent="center" alignItems="center" flexDirection="column">
-        {/* <LoginButton
-          loginType={EType.NAVER}
-          onClick={() => signIn('naver', { callbackUrl })}
-        >
-          <LoginIcon loginType={EType.NAVER} />
-          <span>네이버 로그인</span>
-        </LoginButton> */}
         <LoginButton
           loginType={EType.KAKAO}
           onClick={() => signIn('kakao', { callbackUrl })}

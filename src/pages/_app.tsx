@@ -1,5 +1,4 @@
 import { useEffect, useRef, useState, Fragment } from 'react'
-import ResetCSS from 'style/ResetCSS'
 import Script from 'next/script'
 import '../style/index.css'
 import type { AppProps } from 'next/app'
@@ -10,19 +9,15 @@ import { NextPage } from 'next'
 import Router, { useRouter } from 'next/router'
 import { QueryClientProvider, HydrationBoundary } from '@tanstack/react-query'
 import { ReactQueryDevtools } from '@tanstack/react-query-devtools'
-import GlobalStyle from '../style/Global'
 import { getQueryClient } from '@/queries/client'
 import Menu from 'components/Menu'
 import Footer from 'components/Footer'
-import MenuWrapper from 'components/MenuWrapper'
 import { useNaviState } from 'store/navi/hooks'
 import { MENU_HEIGHT, FOOTER_HEIGHT } from 'config/constants/default'
 import useFooterDisable from 'hooks/useFooterDisable'
 import * as gtag from 'utils/gtag'
 import { useDarkMode } from 'hooks/useDarkMode'
-import styled, { ThemeProvider } from 'styled-components'
 import { ToastContainer } from 'react-toastify'
-import { light, dark } from 'theme'
 import ModalProvider from 'components/Common/Modal/ModalContext'
 import { Provider } from 'react-redux'
 import { ToastContextProvider } from 'contexts/Toast'
@@ -141,30 +136,12 @@ type AppPropsWithLayout = AppProps & {
   Component: NextPageWithLayout
 }
 
-// const ProductionErrorBoundary = process.env.NODE_ENV === 'production' ? ErrorBoundary : Fragment
-
-const St = {
-  Wrapper: styled.div`
-    min-height: calc(100vh - ${MENU_HEIGHT}px - ${FOOTER_HEIGHT}px);
-  `,
-}
 const App = ({ Component, pageProps }: AppPropsWithLayout) => {
   const router = useRouter()
   // Use the layout defined at the page level, if available
   const Layout = Component.Layout || Fragment
   const { isMenuOpen } = useNaviState()
   const scrollPos = useRef(0)
-
-  // useEffect(() => {
-  //   if (isMenuOpen) {
-  //     scrollPos.current = window.scrollY
-  //     document.body.style.overflow = 'hidden'
-  //     window.requestAnimationFrame(() => window.scrollTo(0, 0))
-  //   } else {
-  //     document.body.style.overflow = 'visible'
-  //     window.requestAnimationFrame(() => window.scrollTo(0, scrollPos.current))
-  //   }
-  // }, [isMenuOpen])
 
   useEffect(() => {
     const handleRouteChange = (url) => {
@@ -182,37 +159,31 @@ const App = ({ Component, pageProps }: AppPropsWithLayout) => {
   }, [])
 
   const [themeMode, toggleTheme] = useDarkMode()
-  const theme = themeMode === 'light' ? light : dark
 
   const isFooterDisable = useFooterDisable()
 
   const body = (
-    <ThemeProvider theme={theme}>
-      <ResetCSS />
-      <GlobalStyle />
-      <ToastContextProvider>
-        <ModalProvider>
-          <Layout>
-            <Menu themeMode={themeMode} toggleTheme={toggleTheme} />
-            {/* {isMenuOpen && <MenuWrapper />} */}
-            <St.Wrapper>
-              <Component {...pageProps} />
-            </St.Wrapper>
-          </Layout>
-          {!isFooterDisable && <Footer />}
+    <ToastContextProvider>
+      <ModalProvider>
+        <Layout>
+          <Menu themeMode={themeMode} toggleTheme={toggleTheme} />
+          <div style={{ minHeight: `calc(100vh - ${MENU_HEIGHT}px - ${FOOTER_HEIGHT}px)` }}>
+            <Component {...pageProps} />
+          </div>
+        </Layout>
+        {!isFooterDisable && <Footer />}
 
-          <ToastContainer
-            position="bottom-right"
-            autoClose={3000}
-            closeOnClick
-            draggable={false}
-            pauseOnHover={false}
-            pauseOnFocusLoss={false}
-            hideProgressBar={true}
-          />
-        </ModalProvider>
-      </ToastContextProvider>
-    </ThemeProvider>
+        <ToastContainer
+          position="bottom-right"
+          autoClose={3000}
+          closeOnClick
+          draggable={false}
+          pauseOnHover={false}
+          pauseOnFocusLoss={false}
+          hideProgressBar={true}
+        />
+      </ModalProvider>
+    </ToastContextProvider>
   )
 
   if (!mounted) {

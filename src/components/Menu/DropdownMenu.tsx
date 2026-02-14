@@ -4,80 +4,78 @@ import { usePopper } from 'react-popper'
 import useOnClickOutside from 'hooks/useOnClickOutside'
 import { Box } from '../Common/Box'
 import Text from '../Common/Text/Text'
-import { Colors } from 'theme'
 import { DropdownMenuItemType, DropdownMenuProps } from './types'
 import Link from 'next/link'
-import styled from 'styled-components'
+import cn from 'utils/cn'
 
-export const StyledDropdownMenu = styled.div<{ isOpen: boolean; isBottomNav: boolean }>`
-  background-color: ${({ theme }) => theme.card.background};
-  border: 1px solid ${({ theme }) => theme.colors.cardBorder};
-  border-radius: 16px;
-  padding-bottom: 4px;
-  padding-top: 4px;
-  pointer-events: auto;
-  width: ${({ isBottomNav }) => (isBottomNav ? 'calc(100% - 32px)' : '280px')};
-  visibility: visible;
-  z-index: 1001;
+export const StyledDropdownMenu = ({
+  isOpen,
+  isBottomNav,
+  className,
+  style,
+  ...props
+}: React.HTMLAttributes<HTMLDivElement> & { isOpen: boolean; isBottomNav: boolean }) => (
+  <div
+    className={cn(
+      'bg-[var(--color-bg)] border border-[var(--color-card-border)] rounded-2xl py-1 pointer-events-auto z-[1001]',
+      isBottomNav ? 'w-[calc(100%-32px)]' : 'w-[280px]',
+      !isOpen && 'pointer-events-none invisible',
+      className,
+    )}
+    style={{ visibility: isOpen ? 'visible' : 'hidden', ...style }}
+    {...props}
+  />
+)
 
-  ${({ isOpen }) =>
-    !isOpen &&
-    `
-    pointer-events: none;
-    visibility: hidden;
-  `}
-`
-export const LinkStatus = styled(Text)<{ color: keyof Colors }>`
-  border-radius: ${({ theme }) => theme.radii.default};
-  padding: 0 8px;
-  border: 2px solid;
-  border-color: ${({ theme, color }) => theme.colors[color]};
-  box-shadow: none;
-  color: ${({ theme, color }) => theme.colors[color]};
-  margin-left: 8px;
-`
+export const LinkStatus = ({
+  color,
+  className,
+  ...props
+}: React.HTMLAttributes<HTMLSpanElement> & { color: string; fontSize?: string }) => (
+  <span
+    className={cn('rounded-2xl px-2 border-2 shadow-none ml-2 text-sm', className)}
+    style={{
+      borderColor: `var(--color-${color}, ${color})`,
+      color: `var(--color-${color}, ${color})`,
+    }}
+    {...props}
+  />
+)
+
 export interface StyledDropdownMenuItemProps extends React.ComponentPropsWithoutRef<'button'> {
   disabled?: boolean
   isActive?: boolean
 }
 
-export const DropdownMenuItem = styled.button<StyledDropdownMenuItemProps & { isActive: boolean }>`
-  align-items: center;
-  border: 0;
-  background: transparent;
-  color: ${({ theme, isActive }) => (isActive ? theme.colors.secondary : theme.colors.text)};
-  cursor: ${({ disabled }) => (disabled ? 'not-allowed' : 'pointer')};
-  font-weight: ${({ isActive = false }) => (isActive ? '600' : '400')};
-  display: flex;
-  font-size: 16px;
-  height: 48px;
-  justify-content: space-between;
-  outline: 0;
-  padding-left: 16px;
-  padding-right: 16px;
-  width: 100%;
+export const DropdownMenuItem = ({
+  isActive = false,
+  disabled,
+  className,
+  ...props
+}: StyledDropdownMenuItemProps & { isActive: boolean }) => (
+  <button
+    className={cn(
+      'items-center border-0 bg-transparent cursor-pointer flex text-base h-12 justify-between outline-0 pl-4 pr-4 w-full',
+      'hover:not-disabled:bg-[var(--color-tertiary)]',
+      'active:not-disabled:opacity-85 active:not-disabled:translate-y-px',
+      isActive ? 'text-[var(--color-secondary)] font-semibold' : 'text-theme-text font-normal',
+      disabled && 'cursor-not-allowed',
+      className,
+    )}
+    disabled={disabled}
+    {...props}
+  />
+)
 
-  &:hover:not(:disabled) {
-    background-color: ${({ theme }) => theme.colors.tertiary};
-  }
-
-  &:active:not(:disabled) {
-    opacity: 0.85;
-    transform: translateY(1px);
-  }
-`
-
-export const StyledDropdownMenuItemContainer = styled.div`
-  &:first-child > ${DropdownMenuItem} {
-    border-top-left-radius: 8px;
-    border-top-right-radius: 8px;
-  }
-
-  &:last-child > ${DropdownMenuItem} {
-    border-bottom-left-radius: 8px;
-    border-bottom-right-radius: 8px;
-  }
-`
+export const StyledDropdownMenuItemContainer = ({ className, ...props }: React.HTMLAttributes<HTMLDivElement>) => (
+  <div
+    className={cn(
+      'first:[&>button]:rounded-t-lg last:[&>button]:rounded-b-lg',
+      className,
+    )}
+    {...props}
+  />
+)
 
 const DropdownMenu: React.FC<DropdownMenuProps> = ({
   children,
@@ -89,7 +87,6 @@ const DropdownMenu: React.FC<DropdownMenuProps> = ({
   setMenuOpenByIndex,
   ...props
 }) => {
-  // const { linkComponent } = useContext(MenuContext)
   const [isOpen, setIsOpen] = useState(false)
   const [targetRef, setTargetRef] = useState<HTMLDivElement | null>(null)
   const [tooltipRef, setTooltipRef] = useState<HTMLDivElement | null>(null)

@@ -1,38 +1,39 @@
-import styled, { css, keyframes } from 'styled-components'
-import { space } from 'styled-system'
-import getThemeValue from '../../../utils/getThemeValue'
+import { forwardRef } from 'react'
+import cn from 'utils/cn'
 import { SvgProps } from './types'
-const rotate = keyframes`
-  from {
-    transform: rotate(0deg);
-  }
-  to {
-    transform: rotate(360deg);
-  }
-`
 
-const spinStyle = css`
-  animation: ${rotate} 2s linear infinite;
-`
-
-const Svg = styled.svg<SvgProps>`
-  align-self: center; // Safari fix
-  fill: ${({ theme, color }) => getThemeValue(`colors.${color}`, color)(theme)};
-  flex-shrink: 0;
-  ${({ spin }) => spin && spinStyle};
-  ${space};
-  ${({ css }) => css}
-  // Safari fix
-  @supports (-webkit-text-size-adjust: none) and (not (-ms-accelerator: true)) and (not (-moz-appearance: none)) {
-    filter: none !important;
-  }
-`
-
-Svg.defaultProps = {
-  color: 'text',
-  width: '20px',
-  xmlns: 'http://www.w3.org/2000/svg',
-  spin: false,
+const colorMap: Record<string, string> = {
+  text: 'var(--color-text)',
+  textSubtle: 'var(--color-text-subtle)',
+  textSecondary: 'var(--color-text-secondary)',
+  primary: 'var(--color-primary)',
+  secondary: 'var(--color-secondary)',
+  success: 'var(--color-success)',
+  warning: 'var(--color-warning)',
+  error: 'var(--color-error)',
+  failure: 'var(--color-failure)',
 }
+
+const Svg = forwardRef<SVGSVGElement, SvgProps>(
+  ({ color = 'text', width = '20px', spin = false, className, style, ...props }, ref) => {
+    const fillColor = colorMap[color as string] || color
+    return (
+      <svg
+        ref={ref}
+        className={cn(
+          'self-center shrink-0',
+          spin && 'animate-[rotate_2s_linear_infinite]',
+          className,
+        )}
+        style={{ fill: fillColor, ...style }}
+        width={width}
+        xmlns="http://www.w3.org/2000/svg"
+        {...props}
+      />
+    )
+  },
+)
+
+Svg.displayName = 'Svg'
 
 export default Svg

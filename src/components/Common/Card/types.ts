@@ -1,5 +1,4 @@
 import { HTMLAttributes } from 'react'
-import { SpaceProps } from 'styled-system'
 
 export type CardTheme = {
   background: string
@@ -16,7 +15,7 @@ export type CardTheme = {
   dropShadow: string
 }
 
-export interface CardProps extends SpaceProps, HTMLAttributes<HTMLDivElement> {
+export interface CardProps extends HTMLAttributes<HTMLDivElement> {
   isActive?: boolean
   isSuccess?: boolean
   isWarning?: boolean
@@ -24,4 +23,14 @@ export interface CardProps extends SpaceProps, HTMLAttributes<HTMLDivElement> {
   ribbon?: React.ReactNode
   borderBackground?: string
   background?: string
+  m?: string
+  mt?: string
+  mb?: string
+  ml?: string
+  mr?: string
+  p?: string
+  pt?: string
+  pb?: string
+  pl?: string
+  pr?: string
 }

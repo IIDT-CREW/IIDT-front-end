@@ -1,29 +1,6 @@
-import styled from 'styled-components'
 import Link from 'next/link'
+import cn from 'utils/cn'
 
-type StyledMenuItemProps = {
-  isActive: boolean
-}
-const St = {
-  StyledMenuItem: styled.div<StyledMenuItemProps>`
-    font-size: 12px;
-    margin: 0 10px;
-    align-items: center;
-    cursor: pointer;
-    font-weight: ${({ isActive }) => (isActive ? '600' : '400')};
-    &:hover {
-      background: ${({ theme }) => theme.colors.tertiary};
-    }
-    z-index: 9999;
-
-    ${({ theme }) => theme.mediaQueries.sm} {
-      font-size: 14px;
-    }
-    ${({ theme }) => theme.mediaQueries.lg} {
-      font-size: 18px;
-    }
-  `,
-}
 type MenuItemProps = {
   isActive: boolean
   children: React.ReactNode
@@ -31,9 +8,15 @@ type MenuItemProps = {
 }
 const MenuItem = ({ isActive, children, href }: MenuItemProps) => {
   return (
-    <St.StyledMenuItem isActive={isActive}>
+    <div
+      className={cn(
+        'text-xs mx-2.5 items-center cursor-pointer z-[9999] hover:bg-[var(--color-tertiary)]',
+        'sm:text-sm lg:text-lg',
+        isActive ? 'font-semibold' : 'font-normal',
+      )}
+    >
       <Link href={href}>{children}</Link>
-    </St.StyledMenuItem>
+    </div>
   )
 }
 

@@ -1,49 +1,53 @@
-import styled from 'styled-components'
-import { Colors } from 'theme'
+import React, { forwardRef } from 'react'
+import cn from 'utils/cn'
 
-export const StyledIconContainer = styled.div<{ activeBackgroundColor?: keyof Colors | any }>`
-  background: ${({ activeBackgroundColor, theme }) =>
-    activeBackgroundColor ? theme.colors[activeBackgroundColor] : 'transparent'};
-`
+const colorMap: Record<string, string> = {
+  primary: 'var(--color-primary)',
+  secondary: 'var(--color-secondary)',
+  success: 'var(--color-success)',
+  warning: 'var(--color-warning)',
+  error: 'var(--color-error)',
+  tertiary: 'var(--color-light-tertiary)',
+}
 
-export const StyledAnimatedIconComponent = styled.div<{
-  isActive: boolean
-  height?: string
-  width?: string
-  hasFillIcon: boolean
-}>`
-  position: relative;
-  ${({ height }) => height && `height: ${height}`};
-  ${({ width }) => `width: ${width || '100%'}`};
+export const StyledIconContainer = forwardRef<
+  HTMLDivElement,
+  React.HTMLAttributes<HTMLDivElement> & { activeBackgroundColor?: string }
+>(({ activeBackgroundColor, className, style, ...props }, ref) => {
+  const bg = activeBackgroundColor ? (colorMap[activeBackgroundColor] || activeBackgroundColor) : 'transparent'
+  return (
+    <div
+      ref={ref}
+      className={cn(className)}
+      style={{ background: bg, ...style }}
+      {...props}
+    />
+  )
+})
 
-  div:first-child {
-    ${({ height }) => height && `height: ${height}`};
-    ${({ width }) => `width: ${width || '100%'}`};
-    z-index: 0;
+StyledIconContainer.displayName = 'StyledIconContainer'
+
+export const StyledAnimatedIconComponent = forwardRef<
+  HTMLDivElement,
+  React.HTMLAttributes<HTMLDivElement> & {
+    isActive: boolean
+    height?: string
+    width?: string
+    hasFillIcon: boolean
   }
-  ${({ hasFillIcon }) =>
-    hasFillIcon &&
-    `
-    div, svg {
-      position: absolute;
-      left: 0;
-      bottom: 0;
-      overflow:hidden;
-    }
+>(({ isActive, height, width, hasFillIcon, className, children, ...props }, ref) => {
+  return (
+    <div
+      ref={ref}
+      className={cn('relative animated-icon-component', className)}
+      style={{ height, width: width || '100%' }}
+      data-active={isActive}
+      data-has-fill-icon={hasFillIcon}
+      {...props}
+    >
+      {children}
+    </div>
+  )
+})
 
-    div:last-child {
-      height: 0;
-      z-index: 5;
-      transition: height 0.25s ease;
-    }
-  `}
-
-  ${({ isActive, height, width, hasFillIcon }) =>
-    isActive &&
-    `
-    div:last-child {
-      ${height && hasFillIcon && `height:${height}`};
-      ${`width: ${width || '100%'}`};
-    }
-  `}
-`
+StyledAnimatedIconComponent.displayName = 'StyledAnimatedIconComponent'

@@ -1,54 +1,28 @@
 import { Modal } from 'components/Common'
 import { Flex, Box, Text } from 'components/Common'
-import styled from 'styled-components'
+import cn from 'utils/cn'
 
 type variant = 'primary' | 'secondary'
-const St = {
-  ConfirmButton: styled.div<{ variant?: variant }>`
-    /* Auto layout */
 
-    display: flex;
-    flex-direction: row;
-    justify-content: center;
-    align-items: center;
-    gap: 10px;
-    height: 50px;
-    padding: 10px 12px;
-    font-size: 14px;
-    width: auto;
-    font-weight: 600;
-    color: #fff;
-
-    ${({ theme }) => theme.mediaQueries.sm} {
-      padding: 14px 16px;
-      width: 195px;
-      font-size: 16px;
-    }
-
-    ${({ variant, theme }) => {
-      if (variant === 'primary') {
-        return `
-        background-color: ${theme.colors.grayscale7};
-        color: ${theme.colors.grayscale0};
-        `
-      }
-      return `
-        background-color: ${theme.colors.grayscale2};
-        color: ${theme.colors.grayscale7};
-      `
-    }}
-    border-radius: 4px;
-
-    /* Inside auto layout */
-
-    flex: none;
-    order: 0;
-    flex-grow: 1;
-    cursor: pointer;
-    font-family: SUIT;
-    ${({ theme }) => theme.isDark && 'border: 1px solid rgb(203, 212, 255, 0.5)'};
-  `,
-}
+const ConfirmButton = ({
+  variant,
+  className,
+  ...props
+}: React.HTMLAttributes<HTMLDivElement> & { variant?: variant }) => (
+  <div
+    className={cn(
+      'flex flex-row justify-center items-center gap-2.5 h-[50px] py-2.5 px-3 text-sm font-semibold text-white w-auto',
+      'sm:py-3.5 sm:px-4 sm:w-[195px] sm:text-base',
+      'rounded flex-none grow cursor-pointer font-[SUIT]',
+      'dark:border dark:border-[rgb(203,212,255,0.5)]',
+      variant === 'primary'
+        ? 'bg-grayscale-7 text-grayscale-0'
+        : 'bg-grayscale-2 text-grayscale-7',
+      className,
+    )}
+    {...props}
+  />
+)
 
 const WarningHistoryBackModal = ({ onDismiss, ...props }: any) => {
   const { goToBack } = props
@@ -67,10 +41,10 @@ const WarningHistoryBackModal = ({ onDismiss, ...props }: any) => {
         </Text>
         <Box mt="20px">
           <Flex style={{ gap: '8px' }}>
-            <St.ConfirmButton onClick={handleGoToMain}>나중에 다시 쓸게요</St.ConfirmButton>
-            <St.ConfirmButton variant="primary" onClick={onDismiss}>
+            <ConfirmButton onClick={handleGoToMain}>나중에 다시 쓸게요</ConfirmButton>
+            <ConfirmButton variant="primary" onClick={onDismiss}>
               지금 계속 쓸게요
-            </St.ConfirmButton>
+            </ConfirmButton>
           </Flex>
         </Box>
       </Flex>
