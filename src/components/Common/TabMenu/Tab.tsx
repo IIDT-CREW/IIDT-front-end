@@ -1,32 +1,24 @@
-import styled from 'styled-components'
-import { color } from 'styled-system'
+import { forwardRef } from 'react'
+import cn from 'utils/cn'
 import { TabProps } from './types'
 
-const getBorderRadius = ({ scale }: TabProps) => (scale === 'md' ? '4px 4px 0 0' : '8px 8px 0 0')
+const Tab = forwardRef<HTMLButtonElement, TabProps & React.ButtonHTMLAttributes<HTMLButtonElement>>(
+  ({ scale = 'md', className, color, backgroundColor, ...props }, ref) => {
+    return (
+      <button
+        ref={ref}
+        className={cn(
+          'inline-flex justify-center cursor-pointer border-0 outline-0 grow text-base font-semibold md:grow-0',
+          scale === 'md' ? 'p-2 rounded-t' : 'p-4 rounded-t-lg',
+          className,
+        )}
+        style={{ color, backgroundColor }}
+        {...props}
+      />
+    )
+  },
+)
 
-const getPadding = ({ scale }: TabProps) => (scale === 'md' ? '8px' : '16px')
-
-const Tab = styled.button<TabProps>`
-  display: inline-flex;
-  justify-content: center;
-  cursor: pointer;
-  border: 0;
-  outline: 0;
-  flex-grow: 1;
-  padding: ${getPadding};
-  border-radius: ${getBorderRadius};
-  font-size: 16px;
-  font-weight: 600;
-
-  ${({ theme }) => theme.mediaQueries.md} {
-    flex-grow: 0;
-  }
-
-  ${color}
-`
-
-Tab.defaultProps = {
-  scale: 'md',
-}
+Tab.displayName = 'Tab'
 
 export default Tab

@@ -1,35 +1,11 @@
 import Page from '@components/Layout/Page'
 import { Flex, Box } from '@components/Common'
-import styled from 'styled-components'
 import WillCard from '@views/Will/components/WillShareCard'
 import TitleBanner from '@views/Will/components/TitleBanner'
 import { ABOUT_INFO } from '@views/About/data'
 import { useEffect } from 'react'
 import AOS from 'aos'
 import { useIsScrollDown, useMenuOff } from '@store/navi/hooks'
-
-const St = {
-  Container: styled(Box)`
-    min-height: calc(100% - 231px);
-  `,
-  Main: styled(Box)`
-    height: calc(100% - 231px);
-  `,
-
-  MenuWrapper: styled<any>(Box)`
-    width: 200px;
-    background: ${({ theme }) => theme.colors.background};
-    box-shadow: 0px 0px 1px rgba(0, 0, 0, 0.08), 0px 16px 30px 4px rgba(0, 0, 0, 0.1);
-    border-radius: 4px;
-    padding: 18px;
-    ${({ isOpen }) =>
-      !isOpen &&
-      `
-  pointer-events: none;
-  visibility: hidden;
-`};
-  `,
-}
 
 const WillTitle = () => {
   return (
@@ -69,10 +45,10 @@ const AboutPage = () => {
 
   return (
     <Page title={ABOUT_INFO.TITLE} content={ABOUT_INFO.CONTENT} isFullPage>
-      <St.Container>
+      <div style={{ minHeight: 'calc(100% - 231px)' }}>
         <WillTitle />
         <WillContent />
-      </St.Container>
+      </div>
     </Page>
   )
 }

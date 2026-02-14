@@ -1,31 +1,10 @@
-import styled from 'styled-components'
-import { Button, Heading, Text, LogoIcon, Box } from 'components/Common'
-import Page from 'components/Layout/Page'
+import { Text, Box } from 'components/Common'
 import Link from 'next/link'
 import { MainButton } from 'views/Home'
-
-const StyledNotFound = styled.div`
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  flex-direction: column;
-`
 
 const NotFound = () => {
   return (
     <Box style={{ minHeight: 'calc(100vh - 64px)', justifyContent: 'center', alignItems: 'center', display: 'flex' }}>
-      {/* <img
-        src="/images/home/joshua-sortino-XMcoTHgNcQA-unsplash.jpg"
-        alt=""
-        style={{
-          width: '100%',
-          minHeight: 'calc(100vh - 64px)',
-          position: 'absolute',
-          zIndex: '-1',
-          background:
-            'linear-gradient(0deg, rgba(255, 255, 255, 0.6), rgba(255, 255, 255, 0.6)), url("/images/home/joshua-sortino-XMcoTHgNcQA-unsplash.jpg)',
-        }}
-      /> */}
       <Box
         style={{
           width: '100%',
@@ -36,7 +15,7 @@ const NotFound = () => {
             'linear-gradient(0deg, rgba(255, 255, 255, 0.6), rgba(255, 255, 255, 0.6)), url(/images/home/joshua-sortino-XMcoTHgNcQA-unsplash.jpg)',
         }}
       ></Box>
-      <StyledNotFound>
+      <div className="flex items-center justify-center flex-col">
         <Text fontSize="36px" mb="18px">
           길을 잃으셨나요?
         </Text>
@@ -55,7 +34,7 @@ const NotFound = () => {
         <Link href="/">
           <MainButton style={{ fontFamily: 'SUIT' }}>홈으로 가기</MainButton>
         </Link>
-      </StyledNotFound>
+      </div>
     </Box>
   )
 }

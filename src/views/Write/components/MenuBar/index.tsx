@@ -1,8 +1,7 @@
-import { ArrowLeft, ArrowRight } from 'components/Common/Svg'
-import styled, { CSSProp, useTheme } from 'styled-components'
-import { FOOTER_HEIGHT, IS_DEFAULT_MODE, MENU_HEIGHT } from 'config/constants/default'
+import { ArrowLeft } from 'components/Common/Svg'
+import { MENU_HEIGHT } from 'config/constants/default'
 import React, { useCallback } from 'react'
-import { Flex } from 'components/Common'
+import cn from 'utils/cn'
 import useToast from 'hooks/useToast'
 import { PREV, NEXT, DONE } from 'views/Write/data'
 import PrivateToggle from '@components/PrivateToggle'
@@ -10,74 +9,27 @@ import { useRouter } from 'next/router'
 import MenuButton from '@views/Write/components/MenuBar/MenuButton'
 type Variant = 'primary' | 'secondary'
 
-export const StyleMenuButton = styled.button<{ variant?: Variant; isFull?: boolean; css?: CSSProp }>`
-  width: ${({ isFull }) => (isFull ? '100%' : '76px')};
-  height: 38px;
-  display: flex;
-  flex-direction: row;
-  justify-content: center;
-  align-items: center;
-  gap: 10px;
-  font-weight: 500;
-  font-size: 14px;
-  font-family: 'SUIT-Medium';
-  font-style: normal;
-  border-radius: 4px;
-  border: none;
-  line-height: 18px;
-  cursor: pointer;
-  ${({ variant, theme }) => {
-    if (variant === 'primary') {
-      return `
-  background-color: ${theme.colors.grayscale7};
-  color: ${theme.colors.grayscale0};
-  `
-    }
-    // if (variant === 'disable') {
-    //   return `
-    //   background-color: ${theme.colors.grayscale5};
-    //   color: ${theme.colors.grayscale0};
-    //   `
-    // }
-    return `
-  border: 1px solid ${theme.colors.grayscale7};
-  background-color: ${theme.colors.grayscale0};
-  color: ${theme.colors.grayscale7};
-`
-  }}
-  :disabled {
-    color: ${({ theme }) => theme.colors.grayscale5};
-    background-color: ${({ theme }) => theme.colors.grayscale1};
-    cursor: not-allowed;
-  }
-  ${({ theme }) => theme.isDark && 'border: 1px solid rgb(203, 212, 255, 0.5)'};
-  ${({ css }) => css}
-`
-const St = {
-  MenuBar: styled.nav`
-    border: none;
-    height: ${MENU_HEIGHT}px;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    width: 100%;
-    padding: 0 24px;
-    background-color: ${({ theme }) => theme.colors.background};
-  `,
-  GoToHistoryButton: styled.button`
-    display: flex;
-    border: none;
-    background: none;
-    font-family: 'SUIT';
-    justify-content: space-between;
-    width: 72px;
-    height: 24px;
-    padding: unset;
-    align-items: center;
-    color: ${({ theme }) => theme.colors.text};
-    cursor: pointer;
-  `,
+const variantStyles: Record<string, string> = {
+  primary: 'bg-grayscale-7 text-grayscale-0',
+  secondary: 'border border-grayscale-7 bg-grayscale-0 text-grayscale-7',
 }
+
+export const StyleMenuButton = ({
+  variant = 'primary',
+  isFull,
+  className,
+  ...props
+}: React.ButtonHTMLAttributes<HTMLButtonElement> & { variant?: Variant; isFull?: boolean }) => (
+  <button
+    className={cn(
+      'h-[38px] flex flex-row justify-center items-center gap-2.5 font-medium text-sm font-[SUIT-Medium] not-italic rounded border-none leading-[18px] cursor-pointer dark:border dark:border-[rgb(203,212,255,0.5)] disabled:text-grayscale-5 disabled:bg-grayscale-1 disabled:cursor-not-allowed',
+      isFull ? 'w-full' : 'w-[76px]',
+      variantStyles[variant] || variantStyles.secondary,
+      className,
+    )}
+    {...props}
+  />
+)
 
 type MenuButtonListProps = {
   isMobile: boolean
@@ -96,7 +48,7 @@ const MenuButtonList = ({
   isDefaultPostType,
 }: MenuButtonListProps) => {
   return (
-    <Flex style={{ gap: '10px' }}>
+    <div className="flex gap-2.5">
       {!isDefaultPostType && page !== 0 && (
         <MenuButton
           text="이전 질문"
@@ -136,23 +88,10 @@ const MenuButtonList = ({
           buttonType={DONE}
         />
       )}
-    </Flex>
+    </div>
   )
 }
 
-type MenuBarProps = {
-  isMobile: boolean
-  text: string
-  isDisabled: boolean
-  handlePage: () => void
-  handleUpsert: () => void
-  handleMenuButton: (e: any) => void
-  variant?: Variant
-  buttonType: 'prev' | 'next' | 'done'
-  isDefaultPostType: boolean
-  isPrivate: boolean
-  handleSetIsPrivate: () => void
-}
 const MenuBar = ({
   isMobile,
   handlePage,
@@ -168,7 +107,6 @@ const MenuBar = ({
   const goToMain = useCallback(() => {
     router.push('/main')
   }, [router])
-  const theme = useTheme()
   const onToast = useToast()
 
   const handleMenuButton = useCallback(
@@ -181,8 +119,8 @@ const MenuBar = ({
             position: 'top-center',
             style: {
               top: `${MENU_HEIGHT}px`,
-              backgroundColor: `${theme.colors.background}`,
-              color: `${theme.colors.error}`,
+              backgroundColor: 'var(--color-bg)',
+              color: 'var(--color-error, #f3213b)',
               border: '1px solid #EFEFEF',
               boxShadow: '0px 0px 1px rgb(0 0 0 / 8%), 0px 2px 6px rgb(0 0 0 / 5%)',
               borderRadius: '2px',
@@ -201,15 +139,21 @@ const MenuBar = ({
 
       return handleUpsert()
     },
-    [handlePage, handleUpsert, isDisabled, onToast, page, theme.colors.background, theme.colors.error],
+    [handlePage, handleUpsert, isDisabled, onToast, page],
   )
 
   return (
-    <St.MenuBar>
-      <St.GoToHistoryButton onClick={goToMain}>
-        <ArrowLeft fill={theme.colors.text} width="26px" />내 기록
-      </St.GoToHistoryButton>
-      <Flex justifyContent={'center'} alignItems="center">
+    <nav
+      className="border-none flex justify-between items-center w-full px-6 bg-theme-bg"
+      style={{ height: `${MENU_HEIGHT}px` }}
+    >
+      <button
+        onClick={goToMain}
+        className="flex border-none bg-none font-[SUIT] justify-between w-[72px] h-6 p-0 items-center text-theme-text cursor-pointer"
+      >
+        <ArrowLeft fill="var(--color-text)" width="26px" />내 기록
+      </button>
+      <div className="flex justify-center items-center">
         <PrivateToggle isPrivate={isPrivate} handleSetIsPrivate={handleSetIsPrivate} />
         <MenuButtonList
           handleMenuButton={handleMenuButton}
@@ -219,8 +163,8 @@ const MenuBar = ({
           isDisabled={isDisabled}
           isDefaultPostType={isDefaultPostType}
         />
-      </Flex>
-    </St.MenuBar>
+      </div>
+    </nav>
   )
 }
 

@@ -1,7 +1,6 @@
 import React, { useState, useCallback } from 'react'
 import { useRouter } from 'next/router'
 import { Box, Text, Flex, useModal } from 'components/Common'
-import styled from 'styled-components'
 import { usePopper } from 'react-popper'
 import Ellipsis from 'components/Common/Svg/Icons/Ellipsis'
 import Export from 'components/Common/Svg/Icons/Export'
@@ -13,42 +12,22 @@ import WriteDeleteModal from 'views/Main/components/modal/WriteDeleteModal'
 import ShareModal from 'views/Main/components/modal/ShareModal'
 import { useIsLogin } from '@/hooks/useAuth'
 import { Will } from '@api/will/types'
+import cn from 'utils/cn'
 
-const St = {
-  Container: styled(Box)`
-    min-height: calc(100% - 231px);
-  `,
-  Main: styled(Box)`
-    height: calc(100% - 231px);
-  `,
-  Contents: styled.pre`
-    white-space: break-spaces;
-    font-weight: 400;
-    line-height: 1.5;
-    font-size: 18px;
-    color: ${({ theme }) => theme.colors.text};
-  `,
-  MenuWrapper: styled<any>(Box)`
-    width: 200px;
-    background: ${({ theme }) => theme.colors.background};
-    box-shadow: 0px 0px 1px rgba(0, 0, 0, 0.08), 0px 16px 30px 4px rgba(0, 0, 0, 0.1);
-    border-radius: 4px;
-    padding: 18px;
-    ${({ isOpen }) =>
-      !isOpen &&
-      `
-        pointer-events: none;
-        visibility: hidden;
-      `};
-  `,
-  CardWrapper: styled(Box)`
-    box-shadow: 0px 0px 1px rgba(0, 0, 0, 0.15), 0px 2px 6px rgba(0, 0, 0, 0.13);
-  `,
-
-  Author: styled(Text)`
-    color: ${({ theme }) => theme.colors.grayscale5};
-  `,
-}
+const MenuWrapper = ({
+  isOpen,
+  className,
+  ...props
+}: React.HTMLAttributes<HTMLDivElement> & { isOpen: boolean }) => (
+  <div
+    className={cn(
+      'w-[200px] bg-[var(--color-bg)] shadow-[0px_0px_1px_rgba(0,0,0,0.08),0px_16px_30px_4px_rgba(0,0,0,0.1)] rounded p-[18px]',
+      !isOpen && 'pointer-events-none invisible',
+      className,
+    )}
+    {...props}
+  />
+)
 
 const MenuItem = ({ presentDeleteModal, presentShareModal, handleEdit, handlePreview }) => {
   return (
@@ -72,6 +51,7 @@ const MenuItem = ({ presentDeleteModal, presentShareModal, handleEdit, handlePre
     </Box>
   )
 }
+
 type HeaderProps = {
   will?: Will
   handleDelete?: () => void
@@ -119,14 +99,14 @@ const Header = ({ will, handleDelete, handleShare, isPrivate = true }: HeaderPro
               <>
                 <Ellipsis />
                 {isOpen && (
-                  <St.MenuWrapper ref={setTooltipRef} style={styles.popper} {...attributes.popper} isOpen={isOpen}>
+                  <MenuWrapper ref={setTooltipRef} style={styles.popper} {...attributes.popper} isOpen={isOpen}>
                     <MenuItem
                       presentDeleteModal={presentDeleteModal}
                       presentShareModal={presentShareModal}
                       handleEdit={handleEdit}
                       handlePreview={handlePreview}
                     />
-                  </St.MenuWrapper>
+                  </MenuWrapper>
                 )}
               </>
             )}

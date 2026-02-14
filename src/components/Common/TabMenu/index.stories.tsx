@@ -1,5 +1,4 @@
 import React, { useState } from 'react'
-import styled from 'styled-components'
 import { Meta } from '@storybook/react/types-6-0'
 import TabMenu from './TabMenu'
 import Tab from './Tab'
@@ -10,9 +9,11 @@ export default {
   argTypes: {},
 } as Meta
 
-const Row = styled.div`
-  margin-bottom: 32px;
-`
+const Row = ({ children, ...props }: React.HTMLAttributes<HTMLDivElement>) => (
+  <div className="mb-8" {...props}>
+    {children}
+  </div>
+)
 
 export const Default: React.FC = () => {
   const [index, setIndex] = useState(0)

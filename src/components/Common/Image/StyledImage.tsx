@@ -1,27 +1,32 @@
 import React, { useEffect, useRef, useState } from 'react'
-import styled from 'styled-components'
+import cn from 'utils/cn'
 import observerOptions from './options'
 import Wrapper from './Wrapper'
 import { ImageProps } from './types'
 import { Skeleton } from '../Skeleton'
 import Placeholder from './Placeholder'
 
-type StyledImageProps = {
+const StyledImg = ({
+  isImageLoaded,
+  objectFit,
+  position,
+  className,
+  ...props
+}: React.ImgHTMLAttributes<HTMLImageElement> & {
   isImageLoaded: boolean
   objectFit: string
   position: 'absolute' | 'fixed'
-}
-const StyledImage = styled.img<StyledImageProps>`
-  height: 100%;
-  left: 0;
-  position: ${({ position }) => position};
-  top: 0;
-  width: 100%;
-  transition: opacity 0.6s;
-  //background: ${({ theme }) => theme.colors.background};
-  opacity: ${({ isImageLoaded }) => (isImageLoaded ? 1 : 0.3)};
-  object-fit: ${({ objectFit }) => objectFit};
-`
+}) => (
+  <img
+    className={cn(
+      'h-full left-0 top-0 w-full transition-opacity duration-[600ms]',
+      isImageLoaded ? 'opacity-100' : 'opacity-30',
+      className,
+    )}
+    style={{ position, objectFit }}
+    {...props}
+  />
+)
 
 const Image: React.FC<ImageProps> = ({
   src,
@@ -69,7 +74,7 @@ const Image: React.FC<ImageProps> = ({
     <Wrapper ref={imgRef} height={height} width={width} {...props}>
       {isLoaded && (
         <>
-          <StyledImage
+          <StyledImg
             isImageLoaded={isImageLoaded}
             src={src}
             alt={alt}

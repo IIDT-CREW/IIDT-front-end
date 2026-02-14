@@ -1,6 +1,5 @@
 import { useEffect, useContext, useMemo, useState } from 'react'
 import { Box, Flex, Heading } from 'components/Common'
-import styled from 'styled-components'
 import WillCard from 'components/WillCard'
 import { useQueryClient } from '@tanstack/react-query'
 import { toastContext } from 'contexts/Toast'
@@ -11,28 +10,6 @@ import { Skeleton } from 'components/Common/Skeleton'
 import moment from 'moment'
 import isEmpty from 'lodash/isEmpty'
 
-const St = {
-  Container: styled(Box)`
-    min-height: calc(100% - 231px);
-  `,
-  Main: styled(Box)`
-    height: calc(100% - 231px);
-  `,
-
-  MenuWrapper: styled<any>(Box)`
-    width: 200px;
-    background: ${({ theme }) => theme.colors.background};
-    box-shadow: 0px 0px 1px rgba(0, 0, 0, 0.08), 0px 16px 30px 4px rgba(0, 0, 0, 0.1);
-    border-radius: 4px;
-    padding: 18px;
-    ${({ isOpen }) =>
-      !isOpen &&
-      `
-    pointer-events: none;
-    visibility: hidden;
-  `};
-  `,
-}
 const makeDateList = (year: string, nextYear: string) => {
   const dateList = [
     {
@@ -193,13 +170,13 @@ const WillContainer = () => {
 
 const Memorials = () => {
   return (
-    <St.Container mt="78px">
+    <Box mt="78px" style={{ minHeight: 'calc(100% - 231px)' }}>
       <Flex flexDirection="column" justifyContent="center" alignItems="center">
         <Flex flexDirection="column" justifyContent="center" alignItems="center">
           <WillContainer />
         </Flex>
       </Flex>
-    </St.Container>
+    </Box>
   )
 }
 

@@ -1,13 +1,6 @@
 import React from 'react'
-import styled from 'styled-components'
 import { Will } from '@api/will/types'
 import { Text, Flex } from 'components/Common'
-
-const St = {
-  Author: styled(Text)`
-    color: ${({ theme }) => theme.colors.grayscale5};
-  `,
-}
 
 type WillCardProps = {
   will?: Will
@@ -18,7 +11,7 @@ const Footer = ({ will }: WillCardProps) => {
 
   return (
     <Flex mt="18px" justifyContent="end">
-      <St.Author>{memNickname ? memNickname : '익명'} 마침.</St.Author>
+      <Text color="grayscale5">{memNickname ? memNickname : '익명'} 마침.</Text>
     </Flex>
   )
 }

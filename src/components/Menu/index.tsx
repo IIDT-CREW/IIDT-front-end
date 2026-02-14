@@ -1,12 +1,12 @@
 import { useRouter } from 'next/router'
 import { useMemo, useState, useEffect, useRef, useCallback } from 'react'
 import { useDispatch } from 'react-redux'
-import styled, { css } from 'styled-components'
 import useScrollDown from 'hooks/useScrollDown'
 import Flex from '../Common/Box/Flex'
 import { Box, Text, useModal } from 'components/Common'
 import { Heading } from '../Common'
 import Link from 'next/link'
+import cn from 'utils/cn'
 
 import { Button } from 'components/Common/Button'
 import MenuItem from 'components/Menu/MenuItem'
@@ -23,95 +23,21 @@ import LoginModal from 'components/LoginModal'
 import { useNaviState } from '@store/navi/hooks'
 import useOnClickOutside from '@hooks/useOnClickOutside'
 
-type StyledNavigationProps = {
-  isSharePage: boolean
-}
-const navigationBackgroundCss = css`
-  background-color: rgba(19, 23, 64, 0.5);
-  backdrop-filter: blur(8px);
-  border: none;
+const MenuBoxBase = ({ className, ...props }: React.HTMLAttributes<HTMLDivElement>) => (
+  <div
+    className={cn(
+      'rounded bg-[var(--color-bg)] absolute w-48 p-4 flex items-center',
+      '-translate-x-[190px] translate-y-[25px]',
+      'shadow-[0px_0px_1px_rgba(0,0,0,0.08),0px_16px_30px_4px_rgba(0,0,0,0.1)]',
+      className,
+    )}
+    {...props}
+  />
+)
 
-  div {
-    color: #fff !important;
-  }
-  svg {
-    fill: #fff;
-  }
-`
-export const St = {
-  Wrapper: styled.div`
-    position: relative;
-    width: 100%;
-    z-index: 10;
-  `,
-  StyledNav: styled.nav<StyledNavigationProps>`
-    transition: background, border 0.5s;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    width: 100%;
-    height: 100%;
-    background-color: ${({ theme }) => theme?.nav?.background};
-    border-bottom: 1px solid ${({ theme }) => theme.colors.cardBorder};
-    transform: translate3d(0, 0, 0);
-    padding-left: 16px;
-    padding-right: 16px;
-
-    ${({ isSharePage }) => {
-      return isSharePage ? `${navigationBackgroundCss}` : null
-    }}
-  `,
-  NavigationInner: styled.div`
-    display: flex;
-    height: 100%;
-  `,
-  NavigationContainerLinkWrapper: styled.ul`
-    flex-flow: row nowrap;
-    display: flex;
-    align-items: center;
-  `,
-  FixedContainer: styled.div<{ showMenu: boolean; height: number; isScrollDown: boolean }>`
-    position: fixed;
-    top: ${({ showMenu, height }) => (showMenu ? 0 : `-${height}px`)};
-    left: 0;
-    transition: all 0.5s;
-    height: ${({ height }) => `${height}px`};
-    width: 100%;
-    transform: ${({ isScrollDown }) => (isScrollDown ? 'translate3d(0px, -100%, 0px)' : 'translate3d(0px, 0px, 0px)')};
-  `,
-  TextLink: styled(Text)`
-    cursor: pointer;
-  `,
-  MobileMenuBoxWrapper: styled(Box)`
-    border-radius: 4px;
-    background: ${({ theme }) => theme.colors.background};
-    position: absolute;
-    width: 192px;
-    padding: 16px 16px;
-    display: flex;
-    align-items: center;
-    transform: translateX(-190px) translateY(25px);
-    box-shadow: 0px 0px 1px rgba(0, 0, 0, 0.08), 0px 16px 30px 4px rgba(0, 0, 0, 0.1);
-  `,
-  MenuBoxWrapper: styled(Box)`
-    border-radius: 4px;
-    background: ${({ theme }) => theme.colors.background};
-    position: absolute;
-    width: 192px;
-    padding: 16px 16px;
-    display: flex;
-    align-items: center;
-    transform: translateX(-190px) translateY(25px);
-    box-shadow: 0px 0px 1px rgba(0, 0, 0, 0.08), 0px 16px 30px 4px rgba(0, 0, 0, 0.1);
-  `,
-
-  MenuFlex: styled(Flex)`
-    display: none;
-    ${({ theme }) => theme.mediaQueries.sm} {
-      display: flex;
-    }
-  `,
-}
+const TextLink = ({ className, ...props }: React.HTMLAttributes<HTMLDivElement>) => (
+  <Text className={cn('cursor-pointer', className)} {...props} />
+)
 
 const MobileMenuBox = () => {
   const dispatch = useDispatch()
@@ -121,27 +47,25 @@ const MobileMenuBox = () => {
     dispatch(naviActions.menuOff())
   }
   return (
-    <St.MobileMenuBoxWrapper>
+    <MenuBoxBase>
       <Flex flexDirection={'column'}>
-        <St.TextLink mb="24px" onClick={() => handleRoute('/')}>
+        <TextLink mb="24px" onClick={() => handleRoute('/')}>
           HOME
-        </St.TextLink>
-        <St.TextLink mb="24px" onClick={() => handleRoute('/main')}>
+        </TextLink>
+        <TextLink mb="24px" onClick={() => handleRoute('/main')}>
           MAIN
-        </St.TextLink>
-        <St.TextLink mb="24px" onClick={() => handleRoute('/about')}>
+        </TextLink>
+        <TextLink mb="24px" onClick={() => handleRoute('/about')}>
           소개
-        </St.TextLink>
-        <St.TextLink mb="24px" onClick={() => handleRoute('/memorials')}>
+        </TextLink>
+        <TextLink mb="24px" onClick={() => handleRoute('/memorials')}>
           어느날의 기록
-        </St.TextLink>
-        {/* <St.TextLink mb="24px" onClick={handleLogout}>
-          로그아웃
-        </St.TextLink> */}
+        </TextLink>
       </Flex>
-    </St.MobileMenuBoxWrapper>
+    </MenuBoxBase>
   )
 }
+
 const MenuBox = () => {
   const dispatch = useDispatch()
   const router = useRouter()
@@ -159,27 +83,28 @@ const MenuBox = () => {
     dispatch(naviActions.menuOff())
   }
   return (
-    <St.MenuBoxWrapper>
+    <MenuBoxBase>
       <Flex flexDirection={'column'}>
-        <St.TextLink mb="24px" onClick={() => handleRoute('/')}>
+        <TextLink mb="24px" onClick={() => handleRoute('/')}>
           HOME
-        </St.TextLink>
-        <St.TextLink mb="24px" onClick={() => handleRoute('/main')}>
+        </TextLink>
+        <TextLink mb="24px" onClick={() => handleRoute('/main')}>
           MAIN
-        </St.TextLink>
-        <St.TextLink mb="24px" onClick={() => handleRoute('/about')}>
+        </TextLink>
+        <TextLink mb="24px" onClick={() => handleRoute('/about')}>
           소개
-        </St.TextLink>
-        <St.TextLink mb="24px" onClick={() => handleRoute('/memorials')}>
+        </TextLink>
+        <TextLink mb="24px" onClick={() => handleRoute('/memorials')}>
           어느날의 기록
-        </St.TextLink>
-        <St.TextLink mb="24px" onClick={handleLogout}>
+        </TextLink>
+        <TextLink mb="24px" onClick={handleLogout}>
           로그아웃
-        </St.TextLink>
+        </TextLink>
       </Flex>
-    </St.MenuBoxWrapper>
+    </MenuBoxBase>
   )
 }
+
 const MenuWrapper = ({ themeMode, toggleTheme }) => {
   const router = useRouter()
   const dispatch = useDispatch()
@@ -194,7 +119,6 @@ const MenuWrapper = ({ themeMode, toggleTheme }) => {
   }
   useOnClickOutside(targetRef, onClickEvent)
   const handleLogin = useCallback(() => {
-    //todo login
     presentLoginModal()
   }, [presentLoginModal])
 
@@ -215,9 +139,24 @@ const MenuWrapper = ({ themeMode, toggleTheme }) => {
   }, [isSharePage, handleSetIsScrollDown])
 
   return (
-    <St.Wrapper>
-      <St.FixedContainer showMenu={showMenu} height={MENU_HEIGHT} isScrollDown={isScrollDown} id="app-bar">
-        <St.StyledNav isSharePage={isSharePage}>
+    <div className="relative w-full z-10">
+      <div
+        className="fixed left-0 transition-all duration-500 w-full"
+        style={{
+          top: showMenu ? 0 : `-${MENU_HEIGHT}px`,
+          height: `${MENU_HEIGHT}px`,
+          transform: isScrollDown ? 'translate3d(0px, -100%, 0px)' : 'translate3d(0px, 0px, 0px)',
+        }}
+        id="app-bar"
+      >
+        <nav
+          className={cn(
+            'transition-all duration-500 flex justify-between items-center w-full h-full',
+            'bg-[var(--color-bg)] border-b border-[var(--color-card-border)]',
+            'translate-z-0 px-4',
+            isSharePage && 'bg-[rgba(19,23,64,0.5)] backdrop-blur-[8px] border-none [&_div]:!text-white [&_svg]:fill-white',
+          )}
+        >
           <Flex justifyContent="center" alignItems="center">
             <Flex style={{ cursor: 'pointer', paddingRight: '20px' }}>
               <Link href={isLogin ? '/main' : '/'}>
@@ -225,14 +164,13 @@ const MenuWrapper = ({ themeMode, toggleTheme }) => {
               </Link>
             </Flex>
             <Flex>
-              {/* 필수 띄우기 항목 */}
               <DropdownMenu items={[]}>
                 <MenuItem isActive={router?.asPath?.includes('/about')} href={'/about'}>
                   소개
                 </MenuItem>
               </DropdownMenu>
             </Flex>
-            <St.MenuFlex>
+            <Flex className="hidden sm:flex">
               {MenuConfig?.map((menuItem, i) => {
                 return (
                   <DropdownMenu key={`${menuItem}-${i}`} items={menuItem?.items}>
@@ -242,7 +180,7 @@ const MenuWrapper = ({ themeMode, toggleTheme }) => {
                   </DropdownMenu>
                 )
               })}
-            </St.MenuFlex>
+            </Flex>
           </Flex>
           <Flex justifyContent="center" alignItems="center">
             <Box width="40px" height="40px" borderRadius="50%"></Box>
@@ -260,10 +198,9 @@ const MenuWrapper = ({ themeMode, toggleTheme }) => {
               </Box>
             )}
           </Flex>
-        </St.StyledNav>
-      </St.FixedContainer>
-      {/* <MobileMenuBox /> */}
-    </St.Wrapper>
+        </nav>
+      </div>
+    </div>
   )
 }
 

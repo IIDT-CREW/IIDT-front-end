@@ -1,32 +1,10 @@
 import React, { useState } from 'react'
-import styled from 'styled-components'
-import Text from 'components/Common/Text/Text'
 import { LinkOutlined } from '@ant-design/icons'
+import cn from 'utils/cn'
+
 interface Props {
   toCopy: string
 }
-
-const StyleButton = styled(Text).attrs({ role: 'button' })`
-  position: relative;
-  display: flex;
-  align-items: center;
-  color: ${({ theme }) => theme.colors.primary};
-`
-
-const Tooltip = styled.div<{ isTooltipDisplayed: boolean }>`
-  opacity: ${({ isTooltipDisplayed }) => (isTooltipDisplayed ? '0.7' : '0')};
-  position: absolute;
-  bottom: -22px;
-  right: 0;
-  left: 0;
-  text-align: center;
-  background-color: ${({ theme }) => theme.colors.contrast};
-  color: ${({ theme }) => theme.colors.invertedContrast};
-  box-shadow: 0px 20px 36px -8px rgb(14 14 44 / 10%), 0px 1px 1px rgb(0 0 0 / 5%);
-  width: 80px;
-  border-radius: 4px;
-  transition: all 0.6s;
-`
 
 const CopyToClipboard: React.FC<Props> = ({ toCopy, ...props }) => {
   const [isTooltipDisplayed, setIsTooltipDisplayed] = useState(false)
@@ -48,9 +26,10 @@ const CopyToClipboard: React.FC<Props> = ({ toCopy, ...props }) => {
   }
 
   return (
-    <StyleButton
-      small
-      bold
+    <div
+      role="button"
+      className="relative flex items-center cursor-pointer"
+      style={{ color: 'var(--color-primary)' }}
       onClick={() => {
         if (navigator.clipboard && navigator.permissions) {
           navigator.clipboard.writeText(toCopy).then(() => displayTooltip())
@@ -61,10 +40,21 @@ const CopyToClipboard: React.FC<Props> = ({ toCopy, ...props }) => {
       }}
       {...props}
     >
-      {/* {children} */}
       <LinkOutlined style={{ width: '40px', height: '40px', fontSize: '32px', color: '#000' }} />
-      <Tooltip isTooltipDisplayed={isTooltipDisplayed}>복사 완료.</Tooltip>
-    </StyleButton>
+      <div
+        className={cn(
+          'absolute bottom-[-22px] right-0 left-0 text-center w-20 rounded transition-all duration-600',
+        )}
+        style={{
+          opacity: isTooltipDisplayed ? 0.7 : 0,
+          backgroundColor: 'var(--color-contrast)',
+          color: 'var(--color-inverted-contrast)',
+          boxShadow: '0px 20px 36px -8px rgb(14 14 44 / 10%), 0px 1px 1px rgb(0 0 0 / 5%)',
+        }}
+      >
+        복사 완료.
+      </div>
+    </div>
   )
 }
 

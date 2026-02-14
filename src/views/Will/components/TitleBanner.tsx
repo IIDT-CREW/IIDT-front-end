@@ -1,37 +1,9 @@
 import { useCallback, useState } from 'react'
 import { Box, Text, Flex } from 'components/Common'
 import moment from 'moment'
-import styled from 'styled-components'
 import StyledImage from 'components/Common/Image/StyledImage'
 import Typing from 'views/Home/components/Typing'
-type DateTextWrapperProps = {
-  isStart: boolean
-}
-const St = {
-  TextWrapper: styled(Text)`
-    background: #000000;    
-    color : #fff
-    padding: ${({ theme }) => (theme.isDark ? '0px 10px' : '')};
-    width: 80%;
-    text-align: center;
-    span{
-        color : #fff
-    }
-  `,
-  DateTextWrapper: styled(Text)`
-    color: #fff;
-    padding: ${({ theme }) => (theme.isDark ? '0px 10px' : '')};
-    opacity: 0;
-    transition: all 1s;
-    transform: translate3d(0px, 15px, 0px);
-    ${({ isStart }: DateTextWrapperProps) => {
-      return isStart
-        ? `opacity: 1;
-         transform: translate3d(0px,0px,0px);`
-        : null
-    }}
-  `,
-}
+import cn from 'utils/cn'
 
 type TitleBannerProps = {
   height: string
@@ -66,12 +38,25 @@ const TitleBanner = ({ height, title, date, imagePath }: TitleBannerProps) => {
         />
         <Box width="100%" height={height} position="relative">
           <Flex flexDirection="column" justifyContent="center" alignItems="center" height="100%" position="relative">
-            <St.TextWrapper fontSize={['18px', null, null, '32px']} bold>
-              <Typing str={title} handleStatus={handleStatus} status={status} />
-            </St.TextWrapper>
-            <St.DateTextWrapper fontSize={['14px', null, null, '18px']} bold isStart={status === 'is_done'}>
+            <div
+              className="dark:px-2.5 text-[18px] lg:text-[32px] font-semibold bg-black text-white w-4/5 text-center"
+              style={{ lineHeight: 1.5 }}
+            >
+              <span className="text-white">
+                <Typing str={title} handleStatus={handleStatus} status={status} />
+              </span>
+            </div>
+            <div
+              className={cn(
+                'dark:px-2.5 text-[14px] lg:text-[18px] font-semibold text-white transition-all duration-1000',
+                status === 'is_done'
+                  ? 'opacity-100 translate-y-0'
+                  : 'opacity-0 translate-y-[15px]',
+              )}
+              style={{ lineHeight: 1.5 }}
+            >
               {moment(date).format('YYYY년 MM월 DD일 hh시 mm분')}
-            </St.DateTextWrapper>
+            </div>
           </Flex>
         </Box>
       </Box>

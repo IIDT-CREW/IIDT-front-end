@@ -1,28 +1,7 @@
-import styled from 'styled-components'
 import Head from 'next/head'
 import { useRouter } from 'next/router'
 import { DEFAULT_META, getCustomMeta } from 'config/constants/meta'
-import Box from '../Common/Box/Box'
-// import Container from './Container'
-
-type StyledPageProps = {
-  isFullPage: boolean
-}
-const StyledPage = styled(Box)`
-  ${({ theme }) => theme.mediaQueries.sm} {
-    padding-top: 50px;
-    padding-bottom: 24px;
-  }
-
-  ${({ theme }) => theme.mediaQueries.lg} {
-    padding-top: 50px;
-    padding-bottom: 32px;
-  }
-
-  ${({ isFullPage }: StyledPageProps) => {
-    return isFullPage ? `padding-top : 0px !important; ` : null
-  }}
-`
+import cn from 'utils/cn'
 
 export const PageMeta: React.FC<{ title?: string; content?: string }> = ({ title: mainTitle, content }) => {
   const { pathname } = useRouter()
@@ -47,13 +26,20 @@ interface PageProps extends React.HTMLAttributes<HTMLDivElement> {
   isFullPage?: boolean
 }
 
-const Page: React.FC<PageProps> = ({ children, title, content, isFullPage = false, ...props }) => {
+const Page: React.FC<PageProps> = ({ children, title, content, isFullPage = false, className, ...props }) => {
   return (
     <>
       <PageMeta title={title} content={content} />
-      <StyledPage {...props} isFullPage={isFullPage}>
+      <div
+        className={cn(
+          'sm:pt-[50px] sm:pb-6 lg:pt-[50px] lg:pb-8',
+          isFullPage && '!pt-0',
+          className,
+        )}
+        {...props}
+      >
         {children}
-      </StyledPage>
+      </div>
     </>
   )
 }

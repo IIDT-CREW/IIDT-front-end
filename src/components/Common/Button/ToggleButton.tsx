@@ -1,4 +1,4 @@
-import styled from 'styled-components'
+import cn from 'utils/cn'
 import { ButtonProps } from './types'
 
 interface ToggleButtonProps {
@@ -6,37 +6,24 @@ interface ToggleButtonProps {
 }
 
 const ToggleButton = (props: ButtonProps | ToggleButtonProps) => {
+  const { selected } = props as ToggleButtonProps
   return (
-    <StyledButton {...props}>
-      <StyledSpan {...props} />
-    </StyledButton>
+    <button
+      className={cn(
+        'w-14 h-8 block relative border-none rounded-[2rem] cursor-pointer transition-all duration-200 ease-in shadow-[0_0_1rem_3px_rgba(0,0,0,0.15)]',
+        selected ? 'bg-[#fdb11a]' : 'bg-white',
+      )}
+      {...props}
+    >
+      <span
+        className={cn(
+          'w-[1.6rem] h-[1.6rem] absolute top-1/2 -translate-y-1/2 rounded-full transition-all duration-150 ease-in',
+          selected ? 'bg-white' : 'bg-[#fdb11a]',
+        )}
+        style={{ left: selected ? 'calc(100% - 1.8rem)' : '0.2rem' }}
+      />
+    </button>
   )
 }
-
-const StyledButton = styled.button<ToggleButtonProps>`
-  width: 3.5rem;
-  height: 2rem;
-  display: block;
-  position: relative;
-  border: none;
-  border-radius: 2rem;
-  background-color: ${(props) => (props.selected ? '#fdb11a' : '#fff')};
-  box-shadow: 0 0 1rem 3px rgba(0 0 0 / 15%);
-  cursor: pointer;
-
-  transition: all 0.2s ease-in;
-`
-const StyledSpan = styled.span<ToggleButtonProps>`
-  width: 1.6rem;
-  height: 1.6rem;
-  position: absolute;
-  top: 50%;
-  left: ${(props) => (props.selected ? 'calc(100% - 1.8rem);' : '0.2rem')};
-  transform: translateY(-50%);
-  border-radius: 50%;
-  background: ${(props) => (props.selected ? '#fff' : '#fdb11a')};
-
-  transition: all 0.15s ease-in;
-`
 
 export default ToggleButton

@@ -1,16 +1,8 @@
 import { useState, useEffect } from 'react'
 import useClock from 'hooks/useClock'
 import { Box, Text, Flex } from 'components/Common'
-import styled from 'styled-components'
-// import StyledImage from 'components/Common/Image/StyledImage'
 import useProgressiveImage from 'hooks/useProgressiveImage'
 import { Skeleton } from 'components/Common/Skeleton'
-const St = {
-  TextWrapper: styled(Text)`
-    padding: ${({ theme }) => (theme.isDark ? '0px 10px' : '')};
-    color: inherit;
-  `,
-}
 
 const bannerJson = [
   {
@@ -87,15 +79,15 @@ const BannerCard = ({ height = '231px' }) => {
               filter: 'invert(1) grayscale(1) contrast(7) drop-shadow(2px 2px 2px black)',
             }}
           >
-            <St.TextWrapper fontSize={['14px', null, null, '18px']} bold>
+            <Text className="dark:px-2.5 text-[14px] lg:text-[18px]" color="inherit" bold>
               {firstLine}
-            </St.TextWrapper>
-            <St.TextWrapper fontSize={['14px', null, null, '18px']} bold>
+            </Text>
+            <Text className="dark:px-2.5 text-[14px] lg:text-[18px]" color="inherit" bold>
               {secondLine}
-            </St.TextWrapper>
-            <St.TextWrapper fontSize={['14px', null, null, '18px']} bold>
+            </Text>
+            <Text className="dark:px-2.5 text-[14px] lg:text-[18px]" color="inherit" bold>
               {author}
-            </St.TextWrapper>
+            </Text>
 
             <Text bold fontSize="48px" color="inherit">
               {time}

@@ -1,45 +1,88 @@
-import styled from 'styled-components'
-import { Box } from 'components/Common/Box'
+import React, { forwardRef } from 'react'
+import cn from 'utils/cn'
 
-const Row = styled(Box)<{
+export interface RowProps extends React.HTMLAttributes<HTMLDivElement> {
   width?: string
   align?: string
   justify?: string
   padding?: string
   border?: string
   borderRadius?: string
-}>`
-  width: ${({ width }) => width ?? '100%'};
-  display: flex;
-  align-items: ${({ align }) => align ?? 'center'};
-  justify-content: ${({ justify }) => justify ?? 'flex-start'};
-  padding: ${({ padding }) => padding ?? '0'};
-  border: ${({ border }) => border};
-  border-radius: ${({ borderRadius }) => borderRadius};
-`
+}
 
-export const RowBetween = styled(Row)`
-  justify-content: space-between;
-`
+const Row = forwardRef<HTMLDivElement, RowProps>(
+  ({ width, align, justify, padding, border, borderRadius, className, style, ...props }, ref) => (
+    <div
+      ref={ref}
+      className={cn('flex', className)}
+      style={{
+        width: width ?? '100%',
+        alignItems: align ?? 'center',
+        justifyContent: justify ?? 'flex-start',
+        padding: padding ?? '0',
+        border,
+        borderRadius,
+        ...style,
+      }}
+      {...props}
+    />
+  ),
+)
 
-export const RowFlat = styled.div`
-  display: flex;
-  align-items: flex-end;
-`
+Row.displayName = 'Row'
 
-export const AutoRow = styled(Row)<{ gap?: string; justify?: string }>`
-  flex-wrap: wrap;
-  margin: ${({ gap }) => gap && `-${gap}`};
-  justify-content: ${({ justify }) => justify};
+export const RowBetween = forwardRef<HTMLDivElement, RowProps>(
+  ({ className, ...props }, ref) => (
+    <Row ref={ref} className={className} justify="space-between" {...props} />
+  ),
+)
 
-  & > * {
-    margin: ${({ gap }) => gap} !important;
-  }
-`
+RowBetween.displayName = 'RowBetween'
 
-export const RowFixed = styled(Row)<{ gap?: string; justify?: string }>`
-  width: fit-content;
-  margin: ${({ gap }) => gap && `-${gap}`};
-`
+export const RowFlat = forwardRef<HTMLDivElement, React.HTMLAttributes<HTMLDivElement>>(
+  ({ className, ...props }, ref) => (
+    <div ref={ref} className={cn('flex items-end', className)} {...props} />
+  ),
+)
+
+RowFlat.displayName = 'RowFlat'
+
+export interface AutoRowProps extends RowProps {
+  gap?: string
+}
+
+export const AutoRow = forwardRef<HTMLDivElement, AutoRowProps>(
+  ({ gap, justify, className, style, ...props }, ref) => (
+    <Row
+      ref={ref}
+      className={cn('flex-wrap', className)}
+      justify={justify}
+      style={{
+        margin: gap ? `-${gap}` : undefined,
+        ...style,
+      }}
+      {...props}
+    />
+  ),
+)
+
+AutoRow.displayName = 'AutoRow'
+
+export const RowFixed = forwardRef<HTMLDivElement, AutoRowProps>(
+  ({ gap, justify, className, style, ...props }, ref) => (
+    <Row
+      ref={ref}
+      className={cn('w-fit', className)}
+      justify={justify}
+      style={{
+        margin: gap ? `-${gap}` : undefined,
+        ...style,
+      }}
+      {...props}
+    />
+  ),
+)
+
+RowFixed.displayName = 'RowFixed'
 
 export default Row

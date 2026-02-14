@@ -1,93 +1,57 @@
 import { AnimatePresence, domAnimation, LazyMotion, m as Motion } from 'framer-motion'
-import React, { useRef } from 'react'
-import styled, { keyframes } from 'styled-components'
-import { layout, space } from 'styled-system'
+import React, { forwardRef, useRef } from 'react'
+import cn from 'utils/cn'
 import { animation as ANIMATION, SkeletonProps, SkeletonV2Props, variant as VARIANT } from './types'
 import {
-  appearAnimation,
-  disappearAnimation,
   animationVariants,
   animationMap,
   animationHandler,
 } from '../../../utils/animationToolkit'
 
-const waves = keyframes`
-   from {
-        left: -150px;
-    }
-    to   {
-        left: 100%;
-    }
-`
+const Root = forwardRef<HTMLDivElement, SkeletonProps & { className?: string; style?: React.CSSProperties }>(
+  ({ variant = VARIANT.RECT, width, height, className, style, ...props }, ref) => (
+    <div
+      ref={ref}
+      className={cn(
+        'min-h-5 block bg-light-bg-disabled dark:bg-dark-bg-disabled',
+        variant === VARIANT.CIRCLE ? 'rounded-full' : 'rounded-small',
+        className,
+      )}
+      style={{ width, height, ...style }}
+      {...props}
+    />
+  ),
+)
+Root.displayName = 'Root'
 
-const pulse = keyframes`
-  0% {
-    opacity: 1;
-  }
-  50% {
-    opacity: 0.4;
-  }
-  100% {
-    opacity: 1;
-  }
-`
+const PulseComponent = forwardRef<HTMLDivElement, SkeletonProps & { style?: React.CSSProperties }>(
+  (props, ref) => (
+    <Root
+      ref={ref}
+      className="animate-[skeletonPulse_2s_infinite_ease-out] [transform:translate3d(0,0,0)]"
+      {...props}
+    />
+  ),
+)
+PulseComponent.displayName = 'PulseComponent'
 
-const AnimationWrapper = styled<any>(Motion.div)`
-  position: relative;
-  will-change: opacity;
-  opacity: 0;
-  &.appear {
-    animation: ${appearAnimation} 0.3s ease-in-out forwards;
-  }
-  &.disappear {
-    animation: ${disappearAnimation} 0.3s ease-in-out forwards;
-  }
-  width: ${({ width }) => width || '100%'};
-  height: ${({ height }) => height || '100%'};
-`
-
-const SkeletonWrapper = styled.div<SkeletonProps>`
-  position: relative;
-  ${layout}
-  ${space}
-`
-
-const Root = styled.div<SkeletonProps>`
-  min-height: 20px;
-  display: block;
-  background-color: ${({ theme }) => theme.colors.backgroundDisabled};
-  border-radius: ${({ variant, theme }) => (variant === VARIANT.CIRCLE ? theme.radii.circle : theme.radii.small)};
-
-  ${layout}
-  ${space}
-`
-
-const Pulse = styled(Root)`
-  animation: ${pulse} 2s infinite ease-out;
-  transform: translate3d(0, 0, 0);
-`
-
-const Waves = styled(Root)`
-  overflow: hidden;
-  transform: translate3d(0, 0, 0);
-  &:before {
-    content: '';
-    position: absolute;
-    background-image: linear-gradient(90deg, transparent, rgba(243, 243, 243, 0.5), transparent);
-    top: 0;
-    left: -150px;
-    height: 100%;
-    width: 150px;
-    animation: ${waves} 2s cubic-bezier(0.4, 0, 0.2, 1) infinite;
-  }
-`
+const WavesComponent = forwardRef<HTMLDivElement, SkeletonProps & { style?: React.CSSProperties }>(
+  (props, ref) => (
+    <Root
+      ref={ref}
+      className="overflow-hidden [transform:translate3d(0,0,0)] before:content-[''] before:absolute before:bg-gradient-to-r before:from-transparent before:via-[rgba(243,243,243,0.5)] before:to-transparent before:top-0 before:-left-[150px] before:h-full before:w-[150px] before:animate-[skeletonWaves_2s_cubic-bezier(0.4,0,0.2,1)_infinite]"
+      {...props}
+    />
+  ),
+)
+WavesComponent.displayName = 'WavesComponent'
 
 const Skeleton: React.FC<SkeletonProps> = ({ variant = VARIANT.RECT, animation = ANIMATION.PULSE, ...props }) => {
   if (animation === ANIMATION.WAVES) {
-    return <Waves variant={variant} {...props} />
+    return <WavesComponent variant={variant} {...props} />
   }
 
-  return <Pulse variant={variant} {...props} />
+  return <PulseComponent variant={variant} {...props} />
 }
 
 export const SkeletonV2: React.FC<SkeletonV2Props> = ({
@@ -108,41 +72,48 @@ export const SkeletonV2: React.FC<SkeletonV2Props> = ({
   const animationRef = useRef<HTMLDivElement>(null)
   const skeletonRef = useRef<HTMLDivElement>(null)
   return (
-    <SkeletonWrapper width={width} height={height} mr={mr} ml={ml} mb={mb} {...wrapperProps}>
+    <div
+      className="relative"
+      style={{ width, height, marginRight: mr as any, marginLeft: ml as any, marginBottom: mb as any }}
+      {...wrapperProps}
+    >
       <LazyMotion features={domAnimation}>
         <AnimatePresence>
           {isDataReady && (
-            <AnimationWrapper
+            <Motion.div
               key="content"
               ref={animationRef}
               onAnimationStart={() => animationHandler(animationRef.current)}
               {...animationMap}
               variants={animationVariants}
               transition={{ duration: 0.3 }}
+              className="relative will-change-[opacity] opacity-0 [&.appear]:animate-[appearAnimation_0.3s_ease-in-out_forwards] [&.disappear]:animate-[disappearAnimation_0.3s_ease-in-out_forwards]"
+              style={{ width: width || '100%', height: height || '100%' }}
             >
               {children}
-            </AnimationWrapper>
+            </Motion.div>
           )}
           {!isDataReady && (
-            <AnimationWrapper
+            <Motion.div
               key="skeleton"
-              style={{ position: 'absolute', top: skeletonTop, left: skeletonLeft }}
+              style={{ position: 'absolute', top: skeletonTop, left: skeletonLeft, width: width || '100%', height: height || '100%' }}
               ref={skeletonRef}
               onAnimationStart={() => animationHandler(skeletonRef.current)}
               {...animationMap}
               variants={animationVariants}
               transition={{ duration: 0.3 }}
+              className="relative will-change-[opacity] opacity-0 [&.appear]:animate-[appearAnimation_0.3s_ease-in-out_forwards] [&.disappear]:animate-[disappearAnimation_0.3s_ease-in-out_forwards]"
             >
               {animation === ANIMATION.WAVES ? (
-                <Waves variant={variant} {...props} width={width} height={height} />
+                <WavesComponent variant={variant} {...props} width={width} height={height} />
               ) : (
-                <Pulse variant={variant} {...props} width={width} height={height} />
+                <PulseComponent variant={variant} {...props} width={width} height={height} />
               )}
-            </AnimationWrapper>
+            </Motion.div>
           )}
         </AnimatePresence>
       </LazyMotion>
-    </SkeletonWrapper>
+    </div>
   )
 }
 

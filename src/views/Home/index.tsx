@@ -1,4 +1,3 @@
-import styled from 'styled-components'
 import Heading from 'components/Common/Heading/Heading'
 import { Box, Flex } from 'components/Common/Box'
 import { Text } from 'components/Common/Text'
@@ -8,55 +7,34 @@ import Link from 'next/link'
 import { useIsLogin } from '@/hooks/useAuth'
 import MainCard from './components/MainCard'
 import Clock from './components/Clock'
+import cn from 'utils/cn'
 
-//aos
-//offest
-//easing
-//duration
-//anchor
-//placement
-
-export const MainButton = styled.button`
-  display: flex;
-  flex-direction: row;
-  justify-content: center;
-  align-items: center;
-  padding: 14px 16px;
-  gap: 10px;
-
-  width: 335px;
-  height: 50px;
-
-  ${({ theme }) => theme.mediaQueries.sm} {
-    height: 44px;
-  }
-
-  /* Color/Grayscale 7 */
-
-  background: ${({ theme }) => theme.colors.contrast};
-  color: ${({ theme }) => theme.colors.background};
-  border-radius: 4px;
-  border: none;
-  /* Inside auto layout */
-
-  flex: none;
-  order: 0;
-  flex-grow: 1;
-
-  cursor: pointer;
-
-  font-family: SUIT;
-`
+export const MainButton = ({
+  className,
+  ...props
+}: React.ButtonHTMLAttributes<HTMLButtonElement>) => (
+  <button
+    className={cn(
+      'flex flex-row justify-center items-center px-4 py-3.5 gap-2.5',
+      'w-[335px] h-[50px] sm:h-[44px]',
+      'rounded border-none cursor-pointer font-[SUIT]',
+      'flex-none order-0 grow',
+      className,
+    )}
+    style={{
+      background: 'var(--color-contrast)',
+      color: 'var(--color-bg)',
+    }}
+    {...props}
+  />
+)
 
 const Home: React.FC = () => {
-  // const { isMobile, isDesktop } = useMatchBreakpoints()
   useEffect(() => {
     AOS.init()
     AOS.refresh()
   }, [])
   const isLogin = useIsLogin()
-  // const { theme } = useTheme()
-  // const { accessToken } = useSelector<AppState, AppState['auth']>((state) => state.auth)
 
   return (
     <>
@@ -68,7 +46,7 @@ const Home: React.FC = () => {
           mt="16px"
           fontFamily="Cormorant"
           fontWeight="700"
-          fontSize={['48px', '48px', '96px', '96px']}
+          className="text-[48px] md:text-[96px]"
           textAlign="center"
         >
           IF I DIE
@@ -77,7 +55,7 @@ const Home: React.FC = () => {
         <Text
           fontFamily="Cormorant"
           fontWeight="700"
-          fontSize={['48px', '48px', '96px', '96px']}
+          className="text-[48px] md:text-[96px]"
           mb="24px"
           textAlign="center"
         >
@@ -103,12 +81,12 @@ const Home: React.FC = () => {
 
         <Box mb="50px" style={{ textAlign: 'center' }} height="100vh">
           <Flex justifyContent="center" alignItems="center" height="100%" position="relative" flexDirection="column">
-            <Text fontSize={['16px', '16px', '36px', '36px']} data-aos="fade-up" data-aos-duration="1000">
+            <Text className="text-[16px] md:text-[36px]" data-aos="fade-up" data-aos-duration="1000">
               만약 내일 생을 마감한다면,
             </Text>
             <Text
               bold
-              fontSize={['16px', '16px', '36px', '36px']}
+              className="text-[16px] md:text-[36px]"
               mb="24px"
               data-aos="fade-up"
               data-aos-duration="3000"
@@ -120,7 +98,7 @@ const Home: React.FC = () => {
 
         <Box mb="50px" style={{ textAlign: 'center' }}>
           <Flex justifyContent="center" flexDirection="column" alignItems="center">
-            <Text fontSize={['16px', '16px', '36px', '48px']} mb="24px">
+            <Text className="text-[16px] md:text-[36px] lg:text-[48px]" mb="24px">
               다시 한 번 삶을 되돌아보는 시간
             </Text>
             <Link href={isLogin ? '/write' : '/main'}>

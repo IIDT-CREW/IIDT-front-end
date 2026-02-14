@@ -1,21 +1,8 @@
 import React from 'react'
 import { ArrowLeft, ArrowRight } from 'components/Common/Svg'
-import styled from 'styled-components'
 import { PREV } from 'views/Write/data'
 import { StyleMenuButton } from '@views/Write/components/MenuBar'
 type Variant = 'primary' | 'secondary'
-
-const St = {
-  RoundIconButton: styled.button`
-    width: 24px;
-    height: 24px;
-    border-radius: 100%;
-    border: 1px solid ${({ theme }) => theme.colors.grayscale2};
-    background-color: ${({ theme }) => theme.colors.grayscale0};
-    padding: 0;
-    box-sizing: border-box;
-  `,
-}
 
 type MenuButtonProps = {
   isMobile: boolean
@@ -36,13 +23,16 @@ const MenuButton = ({
 }: MenuButtonProps) => {
   if (isMobile) {
     return (
-      <St.RoundIconButton onClick={() => handleMenuButton(buttonType)}>
+      <button
+        onClick={() => handleMenuButton(buttonType)}
+        className="w-6 h-6 rounded-full border border-grayscale-2 bg-grayscale-0 p-0 box-border"
+      >
         {buttonType === PREV ? (
-          <ArrowLeft css={{ fill: '#000', width: '21px' }} />
+          <ArrowLeft style={{ fill: '#000', width: '21px' }} />
         ) : (
-          <ArrowRight css={{ fill: '#000', width: '21px' }} />
+          <ArrowRight style={{ fill: '#000', width: '21px' }} />
         )}
-      </St.RoundIconButton>
+      </button>
     )
   }
   return (

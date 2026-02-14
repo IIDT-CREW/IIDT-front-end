@@ -1,5 +1,4 @@
 import React from 'react'
-import styled from 'styled-components'
 import { BaseLayout, CardsLayout } from '.'
 
 export default {
@@ -7,17 +6,15 @@ export default {
   argTypes: {},
 }
 
-const Stub = styled.div`
-  width: 100%;
-  background: #1fc7d4;
-  height: 300px;
-`
+const Stub = () => (
+  <div className="w-full bg-[#1fc7d4] h-[300px]" />
+)
 
 export const Base: React.FC = () => {
   return (
     <BaseLayout>
-      {[...Array(24)].map((value) => (
-        <Stub key={value} />
+      {[...Array(24)].map((_, i) => (
+        <Stub key={i} />
       ))}
     </BaseLayout>
   )
@@ -26,8 +23,8 @@ export const Base: React.FC = () => {
 export const Cards: React.FC = () => {
   return (
     <CardsLayout>
-      {[...Array(10)].map((value) => (
-        <Stub key={value} />
+      {[...Array(10)].map((_, i) => (
+        <Stub key={i} />
       ))}
     </CardsLayout>
   )

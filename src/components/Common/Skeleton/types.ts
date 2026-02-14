@@ -1,5 +1,3 @@
-import { LayoutProps, SpaceProps } from 'styled-system'
-
 export const animation = {
   WAVES: 'waves',
   PULSE: 'pulse',
@@ -13,17 +11,25 @@ export const variant = {
 export type Animation = typeof animation[keyof typeof animation]
 export type Variant = typeof variant[keyof typeof variant]
 
-export interface SkeletonProps extends SpaceProps, LayoutProps {
+export interface SkeletonProps {
   animation?: Animation
   variant?: Variant
+  width?: string | number
+  height?: string | number
+  className?: string
 }
 
-export interface SkeletonV2Props extends SpaceProps, LayoutProps {
+export interface SkeletonV2Props {
   animation?: Animation
   variant?: Variant
   isDataReady?: boolean
-  wrapperProps?: SpaceProps & LayoutProps
+  wrapperProps?: React.HTMLAttributes<HTMLDivElement>
   skeletonTop?: string
   skeletonLeft?: string
   children?: any
+  width?: string | number
+  height?: string | number
+  mr?: string | number
+  ml?: string | number
+  mb?: string | number
 }

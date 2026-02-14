@@ -1,13 +1,20 @@
-import styled from 'styled-components'
+import { forwardRef } from 'react'
+import cn from 'utils/cn'
 import BaseLayout from './BaseLayout'
 
-const GridLayout = styled(BaseLayout)`
-  & > div {
-    grid-column: span 6;
-    ${({ theme }) => theme.mediaQueries.sm} {
-      grid-column: span 4;
-    }
-  }
-`
+const CardsLayout = forwardRef<HTMLDivElement, React.HTMLAttributes<HTMLDivElement>>(
+  ({ className, ...props }, ref) => (
+    <BaseLayout
+      ref={ref}
+      className={cn(
+        '[&>div]:col-span-6 sm:[&>div]:col-span-4',
+        className,
+      )}
+      {...props}
+    />
+  ),
+)
 
-export default GridLayout
+CardsLayout.displayName = 'CardsLayout'
+
+export default CardsLayout

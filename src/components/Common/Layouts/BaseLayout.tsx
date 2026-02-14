@@ -1,21 +1,22 @@
-import styled from 'styled-components'
-import Grid from '../Box/Grid'
+import { forwardRef } from 'react'
+import cn from 'utils/cn'
 
-const GridLayout = styled(Grid)`
-  grid-template-columns: repeat(6, 1fr);
-  grid-gap: 16px;
-  ${({ theme }) => theme.mediaQueries.sm} {
-    grid-template-columns: repeat(8, 1fr);
-    grid-gap: 24px;
-  }
-  ${({ theme }) => theme.mediaQueries.md} {
-    grid-template-columns: repeat(12, 1fr);
-    grid-gap: 24px;
-  }
-  ${({ theme }) => theme.mediaQueries.lg} {
-    grid-template-columns: repeat(12, 1fr);
-    grid-gap: 32px;
-  }
-`
+const GridLayout = forwardRef<HTMLDivElement, React.HTMLAttributes<HTMLDivElement>>(
+  ({ className, ...props }, ref) => (
+    <div
+      ref={ref}
+      className={cn(
+        'grid grid-cols-6 gap-4',
+        'sm:grid-cols-8 sm:gap-6',
+        'md:grid-cols-12 md:gap-6',
+        'lg:grid-cols-12 lg:gap-8',
+        className,
+      )}
+      {...props}
+    />
+  ),
+)
+
+GridLayout.displayName = 'GridLayout'
 
 export default GridLayout

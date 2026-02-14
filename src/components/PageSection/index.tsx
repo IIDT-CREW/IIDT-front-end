@@ -1,44 +1,15 @@
-import styled from 'styled-components'
-import { BoxProps, Box, Flex, FlexProps } from 'components/Common'
+import { Box, Flex, FlexProps } from 'components/Common'
 import Container from 'components/Layout/Container'
+import cn from 'utils/cn'
 
-interface PageSectionProps extends BackgroundColorProps {
+interface PageSectionProps extends FlexProps {
+  index?: number
+  background?: string
   svgFill?: string
   dividerComponent?: React.ReactNode
-  containerProps?: BoxProps
-  innerProps?: BoxProps
+  containerProps?: React.HTMLAttributes<HTMLDivElement>
+  innerProps?: React.HTMLAttributes<HTMLDivElement>
 }
-
-interface BackgroundColorProps extends FlexProps {
-  index: number
-  background?: string
-  getPadding?: () => string
-}
-
-const BackgroundColor = styled(Flex)<BackgroundColorProps>`
-  position: relative;
-  flex-direction: column;
-  align-items: center;
-  z-index: ${({ index }) => index - 1};
-  background: ${({ background, theme }) => background || theme.colors.background};
-  padding: ${({ getPadding }) => getPadding()};
-`
-
-const ChildrenWrapper = styled(Container)`
-  min-height: auto;
-  padding-top: 16px;
-  padding-bottom: 16px;
-
-  ${({ theme }) => theme.mediaQueries.sm} {
-    padding-top: 32px;
-    padding-bottom: 32px;
-  }
-
-  ${({ theme }) => theme.mediaQueries.lg} {
-    padding-top: 48px;
-    padding-bottom: 48px;
-  }
-`
 
 const PageSection: React.FC<PageSectionProps> = ({
   children,
@@ -49,15 +20,26 @@ const PageSection: React.FC<PageSectionProps> = ({
   innerProps,
   ...props
 }) => {
-  const getPadding = () => {
-    return '48px 0'
-  }
-
   return (
     <Box {...containerProps}>
-      <BackgroundColor background={background} index={index} getPadding={getPadding} {...props}>
-        <ChildrenWrapper {...innerProps}>{children}</ChildrenWrapper>
-      </BackgroundColor>
+      <Flex
+        className="relative flex-col items-center"
+        style={{
+          zIndex: index - 1,
+          background: background || 'var(--color-bg)',
+          padding: '48px 0',
+        }}
+        {...props}
+      >
+        <div
+          className={cn(
+            'min-h-[auto] py-4 sm:py-8 lg:py-12',
+          )}
+          {...innerProps}
+        >
+          {children}
+        </div>
+      </Flex>
     </Box>
   )
 }

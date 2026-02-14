@@ -1,3 +1,5 @@
+export const API_URL = process.env.NEXT_PUBLIC_SITE_URL || 'https://www.if-i-die-tomorrow.com'
+
 export const API_CODE = {
   SUCCESS: '0000', // 성공
 

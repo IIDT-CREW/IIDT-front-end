@@ -1,5 +1,4 @@
 import React from 'react'
-import { Colors } from '../../theme'
 import { BoxProps } from '../Common/Box'
 
 export interface DropdownMenuProps extends BoxProps {
@@ -31,7 +30,7 @@ export enum DropdownMenuItemType {
 
 export interface LinkStatus {
   text: string
-  color: keyof Colors
+  color: string
 }
 
 export interface DropdownMenuItems {

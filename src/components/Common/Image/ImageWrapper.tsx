@@ -1,25 +1,20 @@
-import React, { forwardRef } from 'react'
-import styled from 'styled-components'
-import { space } from 'styled-system'
 import { WrapperProps } from './types'
 
-const StyledWrapper = styled.div<{ $width: number; $height: number }>`
-  max-height: ${({ $height }) => $height}px;
-  max-width: ${({ $width }) => $width}px;
-  position: relative;
-  width: 100%;
-
-  &:after {
-    content: '';
-    display: block;
-    padding-top: ${({ $width, $height }) => ($height / $width) * 100}%;
-  }
-
-  ${space}
-`
-
-const Wrapper = ({ width, height, ...props }: WrapperProps) => {
-  return <StyledWrapper $width={width} $height={height} {...props} />
+const ImageWrapper = ({ width, height, className, style, ...props }: WrapperProps) => {
+  return (
+    <div
+      className={`relative w-full after:content-[''] after:block ${className ?? ''}`}
+      style={{
+        maxHeight: `${height}px`,
+        maxWidth: `${width}px`,
+        ...style,
+      }}
+      {...props}
+    >
+      <div style={{ paddingTop: `${(height / width) * 100}%` }} />
+      {props.children}
+    </div>
+  )
 }
 
-export default Wrapper
+export default ImageWrapper

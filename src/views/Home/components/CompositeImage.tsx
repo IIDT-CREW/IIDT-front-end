@@ -1,59 +1,4 @@
-import styled, { keyframes } from 'styled-components'
-import { Box } from 'components/Common'
-
-const floatingAnim = (x: string, y: string) => keyframes`
-  from {
-    transform: translate(0,  0px);
-  }
-  50% {
-    transform: translate(${x}, ${y});
-  }
-  to {
-    transform: translate(0, 0px);
-  }
-`
-
-const Wrapper = styled(Box)<{ maxHeight: string }>`
-  position: relative;
-  max-height: ${({ maxHeight }) => maxHeight};
-
-  & :nth-child(2) {
-    animation: ${floatingAnim('3px', '15px')} 3s ease-in-out infinite;
-    animation-delay: 1s;
-  }
-
-  & :nth-child(3) {
-    animation: ${floatingAnim('5px', '10px')} 3s ease-in-out infinite;
-    animation-delay: 0.66s;
-  }
-
-  & :nth-child(4) {
-    animation: ${floatingAnim('6px', '5px')} 3s ease-in-out infinite;
-    animation-delay: 0.33s;
-  }
-
-  & :nth-child(5) {
-    animation: ${floatingAnim('4px', '12px')} 3s ease-in-out infinite;
-    animation-delay: 0s;
-  }
-`
-
-const DummyImg = styled.img<{ maxHeight: string }>`
-  max-height: ${({ maxHeight }) => maxHeight};
-  visibility: hidden;
-`
-
-const ImageWrapper = styled(Box)`
-  height: 100%;
-  position: absolute;
-  top: 0;
-  left: 0;
-
-  img {
-    max-height: 100%;
-    width: auto;
-  }
-`
+import cn from 'utils/cn'
 
 enum Resolution {
   MD = '1.5x',
@@ -85,22 +30,39 @@ export const getSrcSet = (base: string, imageSrc: string, extension = '.png') =>
 
 const CompositeImage: React.FC<ComponentProps> = ({ path, attributes, maxHeight = '512px' }) => {
   return (
-    <Wrapper maxHeight={maxHeight}>
+    <div
+      className={cn(
+        'relative',
+        '[&>:nth-child(2)]:animate-[float1_3s_ease-in-out_infinite_1s]',
+        '[&>:nth-child(3)]:animate-[float2_3s_ease-in-out_infinite_0.66s]',
+        '[&>:nth-child(4)]:animate-[float3_3s_ease-in-out_infinite_0.33s]',
+        '[&>:nth-child(5)]:animate-[float4_3s_ease-in-out_infinite_0s]',
+      )}
+      style={{ maxHeight }}
+    >
       <picture>
         <source type="image/webp" srcSet={getSrcSet(path, attributes[0].src, '.webp')} />
         <source type="image/png" srcSet={getSrcSet(path, attributes[0].src)} />
-        <DummyImg src={getImageUrl(path, attributes[0].src)} maxHeight={maxHeight} loading="lazy" decoding="async" />
+        <img
+          src={getImageUrl(path, attributes[0].src)}
+          style={{ maxHeight, visibility: 'hidden' }}
+          loading="lazy"
+          decoding="async"
+        />
       </picture>
       {attributes.map((image) => (
-        <ImageWrapper key={image.src}>
+        <div
+          key={image.src}
+          className="h-full absolute top-0 left-0 [&_img]:max-h-full [&_img]:w-auto"
+        >
           <picture>
             <source type="image/webp" srcSet={getSrcSet(path, image.src, '.webp')} />
             <source type="image/png" srcSet={getSrcSet(path, image.src)} />
             <img src={getImageUrl(path, image.src)} alt={image.alt} loading="lazy" decoding="async" />
           </picture>
-        </ImageWrapper>
+        </div>
       ))}
-    </Wrapper>
+    </div>
   )
 }
 

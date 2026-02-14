@@ -1,20 +1,9 @@
 import React from 'react'
 import { Box, Text } from 'components/Common'
-import styled from 'styled-components'
 import moment from 'moment'
 import { IS_DEFAULT_MODE } from 'config/constants/default'
 import { Will } from '@api/will/types'
 import { QUESTION_LIST } from '@views/Write/data'
-
-const St = {
-  Contents: styled.pre`
-    white-space: break-spaces;
-    font-weight: 400;
-    line-height: 1.5;
-    font-size: 18px;
-    color: ${({ theme }) => theme.colors.text};
-  `,
-}
 
 type BodyProps = {
   will?: Will
@@ -35,9 +24,11 @@ const Body = ({ will }: BodyProps) => {
       </Text>
 
       {isDefaultType ? (
-        <St.Contents>{content}</St.Contents>
+        <pre className="whitespace-break-spaces font-normal leading-[1.5] text-lg text-[var(--color-text)]">
+          {content}
+        </pre>
       ) : (
-        <St.Contents>
+        <pre className="whitespace-break-spaces font-normal leading-[1.5] text-lg text-[var(--color-text)]">
           {answerList?.map((answer, index) => {
             return (
               <Box key={`answer_${index}`}>
@@ -49,7 +40,7 @@ const Body = ({ will }: BodyProps) => {
               </Box>
             )
           })}
-        </St.Contents>
+        </pre>
       )}
     </Box>
   )

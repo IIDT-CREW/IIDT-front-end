@@ -1,6 +1,4 @@
 import { Flex } from 'components/Common'
-import useTheme from 'hooks/useTheme'
-import styled from 'styled-components'
 import { ReactElement } from 'react'
 
 type LayoutContainerProps = {
@@ -10,37 +8,26 @@ type LayoutContainerProps = {
   rightAosArray: string[]
 }
 
-const LeftContainer = styled.div`
-  flex: 1 1;
-  justify-content: center;
-  text-align: center;
-`
-const RightContainer = styled.div`
-  flex: 1 1;
-  justify-content: center;
-  text-align: center;
-`
 const LayoutContainer = ({ leftChildren, rightChildren, leftAosArray, rightAosArray }: LayoutContainerProps) => {
-  const { theme } = useTheme()
-
   return (
     <Flex
       position="relative"
       flexDirection={'column'}
-      alignItems={['flex-end', null, null, 'center']}
+      alignItems={'center'}
       justifyContent="center"
-      mt={['50px', null, 0]}
+      mt={'50px'}
       id="homepage-hero"
     >
       <Flex
-        height={['100%', null, null, '100%']}
-        width={['100%', null, null, '100%']}
-        flex={[null, null, null, '1']}
-        mb={['0', null, null, '0']}
+        height={'100%'}
+        width={'100%'}
+        flex={'1'}
+        mb={'0'}
         position="relative"
         justifyContent="center"
       >
-        <LeftContainer
+        <div
+          className="flex-1 justify-center text-center"
           data-aos={leftAosArray[0] && leftAosArray[0]}
           data-aos-offset={leftAosArray[1] && leftAosArray[1]}
           data-aos-easing={leftAosArray[2] && leftAosArray[2]}
@@ -49,8 +36,9 @@ const LayoutContainer = ({ leftChildren, rightChildren, leftAosArray, rightAosAr
           data-aos-placement={leftAosArray[5] && leftAosArray[5]}
         >
           {leftChildren}
-        </LeftContainer>
-        <RightContainer
+        </div>
+        <div
+          className="flex-1 justify-center text-center"
           data-aos={rightAosArray[0] && rightAosArray[0]}
           data-aos-offset={rightAosArray[1] && rightAosArray[1]}
           data-aos-easing={rightAosArray[2] && rightAosArray[2]}
@@ -59,7 +47,7 @@ const LayoutContainer = ({ leftChildren, rightChildren, leftAosArray, rightAosAr
           data-aos-placement={rightAosArray[5] && rightAosArray[5]}
         >
           {rightChildren}
-        </RightContainer>
+        </div>
       </Flex>
     </Flex>
   )

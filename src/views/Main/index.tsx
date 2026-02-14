@@ -2,7 +2,6 @@ import { useEffect, useContext, useMemo } from 'react'
 import { useRouter } from 'next/router'
 import { Box, Flex, useModal } from 'components/Common'
 import BannerCard from './components/BannerCard'
-import styled from 'styled-components'
 import MainInfo from './components/MainInfo'
 import { MainButton } from '../Home'
 import WriteWarningInfoModal from './components/modal/WriteWarningInfoModal'
@@ -15,29 +14,6 @@ import { DEFAULT_PAGE_NO, DEFAULT_PAGE_SIZE } from 'config/constants/default'
 import useIntersect from './hooks/useIntersect'
 import { useInfiniteMyWill, useDeleteWill, queryKeys } from '@/queries'
 import { Skeleton } from 'components/Common/Skeleton'
-
-const St = {
-  Container: styled(Box)`
-    min-height: calc(100% - 231px);
-  `,
-  Main: styled(Box)`
-    height: calc(100% - 231px);
-  `,
-
-  MenuWrapper: styled<any>(Box)`
-    width: 200px;
-    background: ${({ theme }) => theme.colors.background};
-    box-shadow: 0px 0px 1px rgba(0, 0, 0, 0.08), 0px 16px 30px 4px rgba(0, 0, 0, 0.1);
-    border-radius: 4px;
-    padding: 18px;
-    ${({ isOpen }) =>
-      !isOpen &&
-      `
-    pointer-events: none;
-    visibility: hidden;
-  `};
-  `,
-}
 
 const WillContainer = () => {
   const queryClient = useQueryClient()
@@ -131,7 +107,7 @@ const Main = () => {
   }
 
   return (
-    <St.Container mt="78px">
+    <Box mt="78px" style={{ minHeight: 'calc(100% - 231px)' }}>
       <Box mb="36px">
         <BannerCard />
       </Box>
@@ -144,7 +120,7 @@ const Main = () => {
           {isLogin && <WillContainer />}
         </Flex>
       </Flex>
-    </St.Container>
+    </Box>
   )
 }
 
