@@ -26,8 +26,7 @@ export function useCreateWill({ onSuccessCallback }: UseCreateWillOptions = {}) 
 
       onSuccessCallback?.()
     },
-    onError: (error) => {
-      console.error('Failed to create will:', error)
+    onError: () => {
       onToast({
         type: 'error',
         message: '작성에 실패했습니다',

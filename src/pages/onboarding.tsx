@@ -4,6 +4,7 @@ import { useRouter } from 'next/router'
 import { useCheckNickname } from '@/queries/auth'
 import { Flex, Box, Text } from 'components/Common'
 import { Button } from 'components/Common/Button'
+import SEOHead from 'components/SEO/SEOHead'
 
 export default function OnboardingPage() {
   const { data: session, update } = useSession()
@@ -76,12 +77,16 @@ export default function OnboardingPage() {
   const showRegisterButton = isValid && !isDuplicate && isFetched && checkResult
 
   return (
+    <>
+    <SEOHead noindex />
     <Flex className="min-h-screen items-center justify-center flex-col p-5">
       <Text fontSize="24px" mb="8px">
         마지막으로...
       </Text>
+      <label htmlFor="nickname-input" className="sr-only">닉네임</label>
       <Text textAlign="center">닉네임을 결정해주세요</Text>
       <input
+        id="nickname-input"
         className="outline-none border border-current my-8 resize-none w-full max-w-[320px] text-lg font-normal font-[Nanum_Myeongjo] p-2 text-[var(--color-text-secondary)] leading-7 bg-inherit placeholder:text-center placeholder:text-grayscale-5"
         value={nickname}
         onChange={handleChange}
@@ -91,7 +96,7 @@ export default function OnboardingPage() {
 
       {isDuplicate && isFetched && (
         <Box mb="16px">
-          <Text color="red">아쉽지만 다른 닉네임을 사용해주세요.</Text>
+          <Text color="red" role="alert">아쉽지만 다른 닉네임을 사용해주세요.</Text>
         </Box>
       )}
 
@@ -105,5 +110,6 @@ export default function OnboardingPage() {
         </Button>
       )}
     </Flex>
+    </>
   )
 }

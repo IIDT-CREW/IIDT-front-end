@@ -4,9 +4,9 @@ import { Flex, Box, Text } from 'components/Common'
 const ConfirmButton = ({
   background,
   ...props
-}: React.HTMLAttributes<HTMLDivElement> & { background?: string }) => (
-  <div
-    className="flex flex-row justify-center items-center py-3.5 px-4 gap-2.5 w-[195px] h-[50px] rounded cursor-pointer flex-none grow text-white"
+}: React.ButtonHTMLAttributes<HTMLButtonElement> & { background?: string }) => (
+  <button
+    className="flex flex-row justify-center items-center py-3.5 px-4 gap-2.5 w-[195px] h-[50px] rounded cursor-pointer flex-none grow text-white border-none"
     style={{ background: background || '#000' }}
     {...props}
   />

@@ -21,6 +21,7 @@ import { ToastContainer } from 'react-toastify'
 import ModalProvider from 'components/Common/Modal/ModalContext'
 import { Provider } from 'react-redux'
 import { ToastContextProvider } from 'contexts/Toast'
+import ErrorBoundary from 'components/Common/ErrorBoundary'
 import 'style/custom-react-toastify.css'
 import 'aos/dist/aos.css'
 const scrollMemories: { [asPath: string]: number } = {}
@@ -32,7 +33,6 @@ scrollPositionRestorer()
 
 /* 스크롤 restore  */
 function scrollPositionRestorer() {
-  console.log('scrollMemories= ', scrollMemories)
   let isPop = false
 
   if (process.browser) {
@@ -43,12 +43,10 @@ function scrollPositionRestorer() {
   }
 
   Router.events.on('routeChangeStart', () => {
-    console.log('routeChangeStart')
     saveScroll()
   })
 
   Router.events.on('routeChangeComplete', () => {
-    console.log('routeChangeComplete is pop', isPop)
     if (isPop) {
       restoreScroll()
       isPop = false
@@ -58,13 +56,11 @@ function scrollPositionRestorer() {
   })
 
   function saveScroll() {
-    console.log('save scroll ', Router.asPath, window.scrollY)
     scrollMemories[Router.asPath] = window.scrollY
   }
 
   function restoreScroll() {
     const prevScrollY = scrollMemories[Router.asPath]
-    console.log('restoreScroll ', prevScrollY)
     if (prevScrollY !== undefined) {
       window.requestAnimationFrame(() => window.scrollTo(0, prevScrollY))
     }
@@ -88,14 +84,8 @@ function MyApp(props: AppProps) {
           name="viewport"
           content="width=device-width, initial-scale=1, maximum-scale=5, minimum-scale=1, viewport-fit=cover"
         />
-        <meta name="title" content="IF I DIE TOMORROW" />
-        <meta name="description" content="만약 오늘이 마지막이라면" />
         <meta name="theme-color" content="#FFFFFF" media="(prefers-color-scheme: light)" />
         <meta name="theme-color" content="#000000" media="(prefers-color-scheme: dark)" />
-        <meta name="twitter:image" content="" />
-        <meta name="twitter:description" content="-" />
-        <meta name="twitter:card" content="summary_large_image" />
-        <meta name="twitter:title" content="" />
         <meta name="google-site-verification" content="PTFzfhsg8i8wffMXA_9m6MPEBWiP7uHIIcXZo2_unOI" />
         <meta name="naver-site-verification" content="42db81bfd2d4d29a8e0074a206cdf9532048a969" />
 
@@ -163,27 +153,29 @@ const App = ({ Component, pageProps }: AppPropsWithLayout) => {
   const isFooterDisable = useFooterDisable()
 
   const body = (
-    <ToastContextProvider>
-      <ModalProvider>
-        <Layout>
-          <Menu themeMode={themeMode} toggleTheme={toggleTheme} />
-          <div style={{ minHeight: `calc(100vh - ${MENU_HEIGHT}px - ${FOOTER_HEIGHT}px)` }}>
-            <Component {...pageProps} />
-          </div>
-        </Layout>
-        {!isFooterDisable && <Footer />}
+    <ErrorBoundary>
+      <ToastContextProvider>
+        <ModalProvider>
+          <Layout>
+            <Menu themeMode={themeMode} toggleTheme={toggleTheme} />
+            <main style={{ minHeight: `calc(100vh - ${MENU_HEIGHT}px - ${FOOTER_HEIGHT}px)` }}>
+              <Component {...pageProps} />
+            </main>
+          </Layout>
+          {!isFooterDisable && <Footer />}
 
-        <ToastContainer
-          position="bottom-right"
-          autoClose={3000}
-          closeOnClick
-          draggable={false}
-          pauseOnHover={false}
-          pauseOnFocusLoss={false}
-          hideProgressBar={true}
-        />
-      </ModalProvider>
-    </ToastContextProvider>
+          <ToastContainer
+            position="bottom-right"
+            autoClose={3000}
+            closeOnClick
+            draggable={false}
+            pauseOnHover={false}
+            pauseOnFocusLoss={false}
+            hideProgressBar={true}
+          />
+        </ModalProvider>
+      </ToastContextProvider>
+    </ErrorBoundary>
   )
 
   if (!mounted) {

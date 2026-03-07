@@ -25,8 +25,7 @@ export function useDeleteWill({ onSuccessCallback }: UseDeleteWillOptions = {}) 
 
       onSuccessCallback?.()
     },
-    onError: (error) => {
-      console.error('Failed to delete will:', error)
+    onError: () => {
       onToast({
         type: 'error',
         message: '삭제에 실패했습니다',

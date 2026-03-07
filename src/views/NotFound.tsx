@@ -1,9 +1,12 @@
 import { Text, Box } from 'components/Common'
 import Link from 'next/link'
 import { MainButton } from 'views/Home'
+import SEOHead from 'components/SEO/SEOHead'
 
 const NotFound = () => {
   return (
+    <>
+    <SEOHead title="페이지를 찾을 수 없습니다" noindex />
     <Box className="min-h-[calc(100vh-64px)] flex justify-center items-center">
       <Box
         className="w-full min-h-[calc(100vh-64px)] absolute -z-[1]"
@@ -33,6 +36,7 @@ const NotFound = () => {
         </Link>
       </div>
     </Box>
+    </>
   )
 }
 

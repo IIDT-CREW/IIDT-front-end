@@ -27,8 +27,7 @@ export function useUpdateWill({ onSuccessCallback }: UseUpdateWillOptions = {}) 
 
       onSuccessCallback?.()
     },
-    onError: (error) => {
-      console.error('Failed to update will:', error)
+    onError: () => {
       onToast({
         type: 'error',
         message: '수정에 실패했습니다',
