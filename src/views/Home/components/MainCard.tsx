@@ -20,14 +20,7 @@ const Card = ({
         isFill
         src={imagePath}
         alt={alt}
-        style={{
-          position: 'absolute',
-          width: '100%',
-          height: '100%',
-          zIndex: '-1',
-          objectFit: 'cover',
-          filter: 'blur(2px)',
-        }}
+        className="absolute w-full h-full -z-[1] object-cover blur-[2px]"
       />
 
       <Box width="100%" height={`${height}px`} position="relative">

@@ -23,14 +23,7 @@ const CountDown = ({ height = '550px', isCountDown = true, text = '' }) => {
         <img
           src="/images/home/matthew-mendez.jpg"
           alt="road"
-          style={{
-            position: 'absolute',
-            width: '100%',
-            height: '100%',
-            zIndex: '-1',
-            objectFit: 'cover',
-            filter: 'blur(2px)',
-          }}
+          className="absolute w-full h-full -z-[1] object-cover blur-[2px]"
         />
         <Box width="100%" height={height} position="relative">
           <Flex justifyContent="center" alignItems="center" height="100%" position="relative">

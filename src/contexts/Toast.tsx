@@ -36,8 +36,8 @@ export const CustomToast = (props) => {
   return (
     <div className="bg-[#191919]">
       <div className="flex justify-between items-center">
-        <span style={{ fontFamily: 'SUIT', color: '#fff' }}>{props.message}</span>
-        <span style={{ fontFamily: 'SUIT', color: '#fff' }}>닫기</span>
+        <span className="font-[SUIT] text-white">{props.message}</span>
+        <span className="font-[SUIT] text-white">닫기</span>
       </div>
     </div>
   )

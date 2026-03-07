@@ -107,7 +107,7 @@ const Main = () => {
   }
 
   return (
-    <Box mt="78px" style={{ minHeight: 'calc(100% - 231px)' }}>
+    <Box mt="78px" className="min-h-[calc(100%-231px)]">
       <Box mb="36px">
         <BannerCard />
       </Box>

@@ -170,7 +170,7 @@ const WillContainer = () => {
 
 const Memorials = () => {
   return (
-    <Box mt="78px" style={{ minHeight: 'calc(100% - 231px)' }}>
+    <Box mt="78px" className="min-h-[calc(100%-231px)]">
       <Flex flexDirection="column" justifyContent="center" alignItems="center">
         <Flex flexDirection="column" justifyContent="center" alignItems="center">
           <WillContainer />

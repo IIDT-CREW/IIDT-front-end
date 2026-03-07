@@ -62,7 +62,7 @@ const WillCard = ({ will, handleDelete, handleShare, isPrivate = true }: WillCar
           left="45%"
           onClick={handleIsOpen}
         >
-          <MoreOutlined style={{ fontSize: '40px', cursor: 'pointer' }} />
+          <MoreOutlined className="text-[40px] cursor-pointer" />
         </Box>
       )}
       {isOverflowContent?.current && !isOverflow && (
@@ -73,7 +73,7 @@ const WillCard = ({ will, handleDelete, handleShare, isPrivate = true }: WillCar
           left="45%"
           onClick={handleIsOpen}
         >
-          <CaretUpOutlined style={{ fontSize: '30px', cursor: 'pointer' }} />
+          <CaretUpOutlined className="text-[30px] cursor-pointer" />
         </Box>
       )}
     </Box>

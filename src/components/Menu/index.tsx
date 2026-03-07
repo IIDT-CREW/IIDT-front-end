@@ -158,9 +158,9 @@ const MenuWrapper = ({ themeMode, toggleTheme }) => {
           )}
         >
           <Flex justifyContent="center" alignItems="center">
-            <Flex style={{ cursor: 'pointer', paddingRight: '20px' }}>
+            <Flex className="cursor-pointer pr-5">
               <Link href={isLogin ? '/main' : '/'}>
-                <Heading style={{ fontFamily: 'Cormorant' }}>IIDT</Heading>
+                <Heading className="font-[Cormorant]">IIDT</Heading>
               </Link>
             </Flex>
             <Flex>
@@ -186,7 +186,7 @@ const MenuWrapper = ({ themeMode, toggleTheme }) => {
             <Box width="40px" height="40px" borderRadius="50%"></Box>
             <ThemeToggleButton selected={themeMode === 'dark'} onClick={handleDark} />
             {isLogin ? (
-              <Box onClick={handleMenu} style={{ cursor: 'pointer' }}>
+              <Box onClick={handleMenu} className="cursor-pointer">
                 <MenuOutline stroke={isSharePage && '#fff'} themeMode={themeMode} />
               </Box>
             ) : (

@@ -141,9 +141,9 @@ const Write = () => {
 
   return (
     <article
+      className="relative"
       style={{
         marginTop: `${MENU_HEIGHT}px`,
-        position: 'relative',
         height: `calc(100vh - ${MENU_HEIGHT}px - ${FOOTER_HEIGHT}px)`,
       }}
     >
@@ -172,14 +172,13 @@ const Write = () => {
             'font-[Nanum_Myeongjo] text-[var(--color-text-secondary)]',
             'placeholder:text-[var(--color-grayscale-5)]',
             'sm:text-[16px] md:text-[26px]',
+            'h-[30px] mb-6 overflow-hidden',
           )}
-          style={{ height: '30px', marginBottom: '24px', overflow: 'hidden' }}
         />
 
         {isDefaultPostType || (
           <div
-            className="font-[Nanum_Myeongjo] font-bold text-[26px] mb-4 sm:text-[16px] md:text-[26px]"
-            style={{ color: 'var(--color-text-primary)' }}
+            className="font-[Nanum_Myeongjo] font-bold text-[26px] mb-4 sm:text-[16px] md:text-[26px] text-[var(--color-text-primary)]"
           >
             {QUESTION_LIST[page]?.question}
           </div>
@@ -202,7 +201,7 @@ const Write = () => {
             variant="primary"
             onClick={handleUpsert}
             disabled={false}
-            style={{ marginBottom: '16px' }}
+            className="mb-4"
           >
             작성 완료
           </StyleMenuButton>
@@ -213,7 +212,7 @@ const Write = () => {
             variant="primary"
             onClick={handleUpsert}
             disabled={isDisableSave}
-            style={{ marginBottom: '16px' }}
+            className="mb-4"
           >
             모두 다 작성했어요
           </StyleMenuButton>

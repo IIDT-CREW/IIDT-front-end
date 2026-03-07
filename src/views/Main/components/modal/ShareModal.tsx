@@ -73,7 +73,7 @@ const ShareModal = ({ onDismiss, content, willId, title, ...props }: any) => {
         <Text mb="20px">마음이 힘들다면 1577-0199로 전화해주세요.</Text>
         <Text mb="20px">당신은 그 누구보다 소중합니다.</Text>
         <Box>
-          <Flex justifyContent="center" alignItems="center" flexWrap="wrap" style={{ gap: '10px' }}>
+          <Flex justifyContent="center" alignItems="center" flexWrap="wrap" className="gap-2.5">
             <CopyToClipboard toCopy={`${API_URL}/will/${willId}`} />
             <div onClick={handleKakao} type="button">
               <img alt="" src="//developers.kakao.com/assets/img/about/logos/kakaolink/kakaolink_btn_small.png" />

@@ -6,12 +6,8 @@ const TooltipText = forwardRef<HTMLDivElement, React.ComponentProps<typeof Text>
   ({ className, style, ...props }, ref) => (
     <Text
       ref={ref}
-      className={cn(className)}
-      style={{
-        textDecoration: `underline dotted var(--color-text-subtle)`,
-        textUnderlineOffset: '0.1em',
-        ...style,
-      }}
+      className={cn('underline decoration-dotted decoration-[var(--color-text-subtle)] underline-offset-[0.1em]', className)}
+      style={style}
       {...props}
     />
   ),

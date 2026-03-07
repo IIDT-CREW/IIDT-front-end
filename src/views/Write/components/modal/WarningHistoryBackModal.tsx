@@ -40,7 +40,7 @@ const WarningHistoryBackModal = ({ onDismiss, ...props }: any) => {
           지금까지 작성된 내용은 저장되지 않습니다
         </Text>
         <Box mt="20px">
-          <Flex style={{ gap: '8px' }}>
+          <Flex className="gap-2">
             <ConfirmButton onClick={handleGoToMain}>나중에 다시 쓸게요</ConfirmButton>
             <ConfirmButton variant="primary" onClick={onDismiss}>
               지금 계속 쓸게요

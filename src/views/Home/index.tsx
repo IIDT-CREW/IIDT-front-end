@@ -19,12 +19,9 @@ export const MainButton = ({
       'w-[335px] h-[50px] sm:h-[44px]',
       'rounded border-none cursor-pointer font-[SUIT]',
       'flex-none order-0 grow',
+      'bg-[var(--color-contrast)] text-[var(--color-bg)]',
       className,
     )}
-    style={{
-      background: 'var(--color-contrast)',
-      color: 'var(--color-bg)',
-    }}
     {...props}
   />
 )
@@ -79,7 +76,7 @@ const Home: React.FC = () => {
           alt=""
         />
 
-        <Box mb="50px" style={{ textAlign: 'center' }} height="100vh">
+        <Box mb="50px" className="text-center" height="100vh">
           <Flex justifyContent="center" alignItems="center" height="100%" position="relative" flexDirection="column">
             <Text className="text-[16px] md:text-[36px]" data-aos="fade-up" data-aos-duration="1000">
               만약 내일 생을 마감한다면,
@@ -96,7 +93,7 @@ const Home: React.FC = () => {
           </Flex>
         </Box>
 
-        <Box mb="50px" style={{ textAlign: 'center' }}>
+        <Box mb="50px" className="text-center">
           <Flex justifyContent="center" flexDirection="column" alignItems="center">
             <Text className="text-[16px] md:text-[36px] lg:text-[48px]" mb="24px">
               다시 한 번 삶을 되돌아보는 시간
@@ -108,7 +105,7 @@ const Home: React.FC = () => {
         </Box>
       </Box>
 
-      <div style={{ marginBottom: '50px' }}></div>
+      <div className="mb-[50px]"></div>
     </>
   )
 }

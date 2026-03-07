@@ -86,7 +86,7 @@ const WillPage = () => {
 
   return (
     <Page title={data?.TITLE} content={data?.CONTENT} isFullPage>
-      <Box style={{ minHeight: 'calc(100% - 231px)' }}>
+      <Box className="min-h-[calc(100%-231px)]">
         <WillTitle data={data} />
         <WillContent data={data} isLoading={isLoading} />
         <WillFooter handleWrite={handleWrite} />

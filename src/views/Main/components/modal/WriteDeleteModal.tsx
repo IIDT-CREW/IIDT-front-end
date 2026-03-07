@@ -26,7 +26,7 @@ const WriteDeleteModal = ({ onDismiss, ...props }: any) => {
         <Text>삭제한 유서는 복구할 수 없어요</Text>
         <Text>하지만 이 유서를 통해 하루하루의 삶이 빛나고 소중해졌다면 삭제해도 좋아요</Text>
         <Box mt="20px">
-          <Flex style={{ gap: '8px' }}>
+          <Flex className="gap-2">
             <ConfirmButton background="grey" onClick={onDismiss}>
               나중에 할게요
             </ConfirmButton>

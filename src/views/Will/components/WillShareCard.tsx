@@ -20,22 +20,18 @@ const WillCard = ({ will, isDisplayHeader = true }: WillCardProps) => {
 
   return (
     <Box
-      className="box"
+      className="box bg-[var(--color-bg)]"
       mb="40px"
       padding="20px"
       minWidth="362px"
       maxWidth="582px"
       borderRadius="4px"
-      style={{ background: 'var(--color-bg)' }}
     >
       <Box data-aos="fade" data-aos-duration="2500">
         {isDisplayHeader && (
           <Box
             height="25px"
-            style={{
-              boxShadow: '0 -1px 4px rgb(0 0 0 / 70%)',
-              background: 'var(--color-contrast)',
-            }}
+            className="shadow-[0_-1px_4px_rgb(0_0_0/70%)] bg-[var(--color-contrast)]"
           >
             <Text color="#fff" fontSize="18px" textAlign="center">
               마지막으로...

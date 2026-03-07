@@ -13,7 +13,7 @@ const Footer = () => {
         IIDT
       </Text>
       <Flex>
-        <Text mr="10px" fontSize="12px" onClick={handleNotion} style={{ cursor: 'pointer' }}>
+        <Text mr="10px" fontSize="12px" onClick={handleNotion} className="cursor-pointer">
           * 팀 소개 | Notion
         </Text>
         <Text mr="10px" fontSize="12px">
