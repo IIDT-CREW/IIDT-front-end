@@ -76,7 +76,7 @@ const ShareModal = ({ onDismiss, content, willId, title, ...props }: any) => {
           <Flex justifyContent="center" alignItems="center" flexWrap="wrap" className="gap-2.5">
             <CopyToClipboard toCopy={`${API_URL}/will/${willId}`} />
             <div onClick={handleKakao} type="button">
-              <img alt="" src="//developers.kakao.com/assets/img/about/logos/kakaolink/kakaolink_btn_small.png" />
+              <img alt="카카오톡으로 공유하기" src="//developers.kakao.com/assets/img/about/logos/kakaolink/kakaolink_btn_small.png" />
             </div>
           </Flex>
           <div></div>

@@ -73,8 +73,8 @@ const MenuBox = () => {
     try {
       dispatch(naviActions.menuOnOff())
       await signOut({ callbackUrl: '/' })
-    } catch (e) {
-      console.log('logout ', e)
+    } catch {
+      // sign out failed silently
     }
   }
 
@@ -186,9 +186,14 @@ const MenuWrapper = ({ themeMode, toggleTheme }) => {
             <Box width="40px" height="40px" borderRadius="50%"></Box>
             <ThemeToggleButton selected={themeMode === 'dark'} onClick={handleDark} />
             {isLogin ? (
-              <Box onClick={handleMenu} className="cursor-pointer">
+              <button
+                onClick={handleMenu}
+                className="cursor-pointer bg-transparent border-none p-0"
+                aria-label="메뉴 열기"
+                aria-expanded={isMenuOpen}
+              >
                 <MenuOutline stroke={isSharePage && '#fff'} themeMode={themeMode} />
-              </Box>
+              </button>
             ) : (
               <Button onClick={handleLogin}>시작하기</Button>
             )}

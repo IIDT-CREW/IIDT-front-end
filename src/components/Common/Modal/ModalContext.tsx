@@ -83,6 +83,8 @@ const ModalProvider = ({ children }: ModalProviderProps) => {
               {/* Modal Content */}
               <m.div
                 className="relative z-10"
+                role="dialog"
+                aria-modal="true"
                 initial={{ scale: 0.95, opacity: 0 }}
                 animate={{ scale: 1, opacity: 1 }}
                 exit={{ scale: 0.95, opacity: 0 }}

@@ -1,4 +1,3 @@
-/* eslint-disable react/no-array-index-key */
 import React, { useEffect, useState } from 'react'
 import { usePopper } from 'react-popper'
 import useOnClickOutside from 'hooks/useOnClickOutside'
@@ -152,7 +151,7 @@ const DropdownMenu: React.FC<DropdownMenuProps> = ({
         >
           {items
             .filter((item) => !item.isMobileOnly)
-            .map(({ type = DropdownMenuItemType.INTERNAL_LINK, label, href = '/', status, ...itemProps }, itemItem) => {
+            .map(({ type = DropdownMenuItemType.INTERNAL_LINK, label, href = '/', status, ...itemProps }) => {
               const MenuItemContent = (
                 <>
                   {label}
@@ -165,7 +164,7 @@ const DropdownMenu: React.FC<DropdownMenuProps> = ({
               )
               const isActive = href === activeItem
               return (
-                <StyledDropdownMenuItemContainer key={itemItem}>
+                <StyledDropdownMenuItemContainer key={`${label}-${href}`}>
                   <DropdownMenuItem isActive={isActive} type="button" {...itemProps}>
                     <Link href={href}>{MenuItemContent}</Link>
                   </DropdownMenuItem>

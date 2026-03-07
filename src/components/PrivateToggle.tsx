@@ -10,6 +10,8 @@ const PrivateToggle = ({ isPrivate, handleSetIsPrivate }: PrivateToggleProps) =>
   return (
     <button
       onClick={handleSetIsPrivate}
+      aria-label={isPrivate ? '공개로 전환' : '비공개로 전환'}
+      aria-pressed={isPrivate}
       className={cn(
         'mx-[5px] transition-all duration-250 ease-out delay-100 border border-[#d1d5da] rounded-[30px] cursor-pointer',
         'flex text-[0.5rem] justify-between items-center overflow-hidden p-2 z-[1] w-16 h-8',

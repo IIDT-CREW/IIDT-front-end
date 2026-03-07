@@ -18,8 +18,8 @@ const MenuWrapper = () => {
     try {
       dispatch(naviActions.menuOnOff())
       await signOut({ callbackUrl: '/' })
-    } catch (e) {
-      console.log('logout ', e)
+    } catch {
+      // sign out failed silently
     }
   }
 

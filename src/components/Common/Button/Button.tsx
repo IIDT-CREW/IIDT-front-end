@@ -29,7 +29,7 @@ const Button = forwardRef<HTMLButtonElement, ButtonProps<'button'>>(
         className={cn(
           // Base styles
           'inline-flex items-center justify-center',
-          'outline-none border-none box-border',
+          'outline-none border-none box-border focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:ring-current',
           'text-xs xl:text-sm font-semibold leading-none',
           'rounded cursor-pointer',
           'transition-colors duration-200',

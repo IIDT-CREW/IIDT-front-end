@@ -32,7 +32,6 @@ const WillCard = ({ will, handleDelete, handleShare, isPrivate = true }: WillCar
     setIsOverflow((prev) => !prev)
   }, [])
 
-  console.log(will, ref?.current?.clientHeight)
   return (
     <Box position="relative">
       <Box

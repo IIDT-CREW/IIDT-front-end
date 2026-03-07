@@ -65,7 +65,7 @@ const Home: React.FC = () => {
           title="내일이 내생에"
           secondTitle="마지막이라고 생각해보신적 있나요?"
           imagePath="/images/home/patrick-ryan-3kUIaB2EPp8-unsplash.jpg"
-          alt=""
+          alt="내일이 마지막이라면 - 석양 풍경"
         />
         <Box mb={'100px'} />
         <MainCard
@@ -73,7 +73,7 @@ const Home: React.FC = () => {
           title=" 만약 내일 생을 마감한다면,"
           secondTitle="소중한 이들에게 하고싶은 말이 있나요?"
           imagePath="/images/home/huyen-pham--PTlx55R-KU-unsplash.jpg"
-          alt=""
+          alt="소중한 이들에게 전하는 마지막 메시지"
         />
 
         <Box mb="50px" className="text-center" height="100vh">

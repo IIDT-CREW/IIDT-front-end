@@ -113,3 +113,10 @@ src/
 - `AUTH_KAKAO_ID` / `AUTH_KAKAO_SECRET` - Kakao OAuth
 - `AUTH_NAVER_ID` / `AUTH_NAVER_SECRET` - Naver OAuth
 - `NEXT_PUBLIC_SUPABASE_URL` / `SUPABASE_SERVICE_ROLE_KEY` - Supabase 연결
+- `NEXT_PUBLIC_SITE_URL` - 사이트 URL (OG 메타 태그용)
+
+## PR 기록
+
+| 날짜 | 주제 | 문서 |
+|------|------|------|
+| 2026-03-08 | SEO, 코드 품질, 접근성 개선 | [docs/pr/2026-03-08-seo-code-quality-a11y.md](docs/pr/2026-03-08-seo-code-quality-a11y.md) |
