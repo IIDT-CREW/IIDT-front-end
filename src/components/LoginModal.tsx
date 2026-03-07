@@ -74,10 +74,10 @@ const LoginModal: React.FC<ModalProps> = ({ onDismiss, ...props }) => {
         </LoginButton>
 
         <Box mt="64px" mb="32px">
-          <Text fontSize="10px" color="#A4A2A3" style={{ textDecorationLine: 'underline' }}>
+          <Text fontSize="10px" color="#A4A2A3" className="underline">
             개인정보 처리방침
           </Text>
-          <Text fontSize="10px" color="#A4A2A3" style={{ textDecorationLine: 'underline' }}>
+          <Text fontSize="10px" color="#A4A2A3" className="underline">
             서비스 이용약관
           </Text>
         </Box>

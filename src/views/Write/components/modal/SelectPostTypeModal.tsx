@@ -39,7 +39,7 @@ const SelectPostTypeModal = ({ handlePostType, onDismiss }: customModalProps) =>
     <Modal title="일기 작성 방식을 선택할 수 있어요" onDismiss={onDismiss}>
       <Flex flexDirection="column" justifyContent="center" alignItems="center">
         <Box mb="20px">
-          <Flex justifyContent="center" flexDirection="column" style={{ textAlign: 'center', wordBreak: 'keep-all' }}>
+          <Flex justifyContent="center" flexDirection="column" className="text-center break-keep">
             <Text fontSize={['13px', , '18px']}>
               오늘 유서를 처음 작성하시는 분들을 위해 두 가지의 선택방식을 두었어요.
             </Text>

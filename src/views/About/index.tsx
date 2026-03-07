@@ -45,7 +45,7 @@ const AboutPage = () => {
 
   return (
     <Page title={ABOUT_INFO.TITLE} content={ABOUT_INFO.CONTENT} isFullPage>
-      <div style={{ minHeight: 'calc(100% - 231px)' }}>
+      <div className="min-h-[calc(100%-231px)]">
         <WillTitle />
         <WillContent />
       </div>

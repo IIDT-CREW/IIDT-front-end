@@ -187,7 +187,7 @@ const App = ({ Component, pageProps }: AppPropsWithLayout) => {
   )
 
   if (!mounted) {
-    return <div style={{ visibility: 'hidden' }}>{body}</div>
+    return <div className="invisible">{body}</div>
   }
   return <>{body}</>
 }

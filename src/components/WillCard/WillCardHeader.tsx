@@ -32,19 +32,19 @@ const MenuWrapper = ({
 const MenuItem = ({ presentDeleteModal, presentShareModal, handleEdit, handlePreview }) => {
   return (
     <Box>
-      <Flex padding="8px" style={{ gap: '8px' }} onClick={handleEdit}>
+      <Flex padding="8px" className="gap-2" onClick={handleEdit}>
         <Edit />
         <Text>수정하기</Text>
       </Flex>
-      <Flex padding="8px" style={{ gap: '8px' }} onClick={presentShareModal}>
+      <Flex padding="8px" className="gap-2" onClick={presentShareModal}>
         <Export />
         <Text>공유하기</Text>
       </Flex>
-      <Flex padding="8px" style={{ gap: '8px' }} onClick={handlePreview}>
+      <Flex padding="8px" className="gap-2" onClick={handlePreview}>
         <Panorama />
         <Text>미리보기</Text>
       </Flex>
-      <Flex padding="8px" style={{ gap: '8px' }} onClick={presentDeleteModal}>
+      <Flex padding="8px" className="gap-2" onClick={presentDeleteModal}>
         <Trash />
         <Text color="#F3213B">삭제하기</Text>
       </Flex>
@@ -94,7 +94,7 @@ const Header = ({ will, handleDelete, handleShare, isPrivate = true }: HeaderPro
       <Flex justifyContent="space-between" alignItems="center">
         <Text>{moment(regDate).format('YYYY.MM.DD')}</Text>
         {isLogin && (
-          <Text style={{ cursor: 'pointer' }} onClick={handleIsOpen} ref={setTargetRef}>
+          <Text className="cursor-pointer" onClick={handleIsOpen} ref={setTargetRef}>
             {isPrivate && (
               <>
                 <Ellipsis />

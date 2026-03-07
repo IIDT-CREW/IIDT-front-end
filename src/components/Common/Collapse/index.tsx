@@ -24,9 +24,9 @@ const Collapse = ({ title, children, noIcon }: any) => {
   )
 
   return (
-    <div style={{ marginBottom: '12px' }}>
-      <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-        <div style={{ display: 'flex', padding: '5px 0' }}>
+    <div className="mb-3">
+      <div className="flex justify-between items-center">
+        <div className="flex py-[5px]">
           {!noIcon && <div className="flex justify-center items-center px-[5px]">{iconMap?.AlignLeftOutlined}</div>}
           <Text fontSize="16px" bold>
             {title}

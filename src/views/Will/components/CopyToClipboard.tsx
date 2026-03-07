@@ -28,8 +28,7 @@ const CopyToClipboard: React.FC<Props> = ({ toCopy, ...props }) => {
   return (
     <div
       role="button"
-      className="relative flex items-center cursor-pointer"
-      style={{ color: 'var(--color-primary)' }}
+      className="relative flex items-center cursor-pointer text-[var(--color-primary)]"
       onClick={() => {
         if (navigator.clipboard && navigator.permissions) {
           navigator.clipboard.writeText(toCopy).then(() => displayTooltip())
@@ -40,16 +39,15 @@ const CopyToClipboard: React.FC<Props> = ({ toCopy, ...props }) => {
       }}
       {...props}
     >
-      <LinkOutlined style={{ width: '40px', height: '40px', fontSize: '32px', color: '#000' }} />
+      <LinkOutlined className="w-10 h-10 text-[32px] text-black" />
       <div
         className={cn(
           'absolute bottom-[-22px] right-0 left-0 text-center w-20 rounded transition-all duration-600',
+          'bg-[var(--color-contrast)] text-[var(--color-inverted-contrast)]',
+          'shadow-[0px_20px_36px_-8px_rgb(14_14_44/10%),0px_1px_1px_rgb(0_0_0/5%)]',
         )}
         style={{
           opacity: isTooltipDisplayed ? 0.7 : 0,
-          backgroundColor: 'var(--color-contrast)',
-          color: 'var(--color-inverted-contrast)',
-          boxShadow: '0px 20px 36px -8px rgb(14 14 44 / 10%), 0px 1px 1px rgb(0 0 0 / 5%)',
         }}
       >
         복사 완료.

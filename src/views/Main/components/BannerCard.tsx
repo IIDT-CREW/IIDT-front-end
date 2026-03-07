@@ -71,13 +71,7 @@ const BannerCard = ({ height = '231px' }) => {
             height="100%"
             position="relative"
             background="inherit"
-            style={{
-              color: 'transparent',
-              WebkitBackgroundClip: 'text',
-              backgroundClip: 'text',
-              textAlign: 'center',
-              filter: 'invert(1) grayscale(1) contrast(7) drop-shadow(2px 2px 2px black)',
-            }}
+            className="text-transparent bg-clip-text text-center [filter:invert(1)_grayscale(1)_contrast(7)_drop-shadow(2px_2px_2px_black)]"
           >
             <Text className="dark:px-2.5 text-[14px] lg:text-[18px]" color="inherit" bold>
               {firstLine}
