@@ -12,7 +12,8 @@ export function useDeleteWill({ onSuccessCallback }: UseDeleteWillOptions = {}) 
   const onToast = useToast()
 
   return useMutation({
-    mutationFn: (willId: string) => willService.deleteWill(willId),
+    mutationFn: ({ willId, guestPassword }: { willId: string; guestPassword?: string }) =>
+      willService.deleteWill(willId, guestPassword),
     onSuccess: () => {
       onToast({
         type: '',

@@ -147,7 +147,7 @@ const WillContainer = () => {
                     key={`${i}-${will.WILL_ID}`}
                     isPrivate={false}
                     will={will}
-                    handleDelete={() => deleteMutation.mutate(will.WILL_ID as string)}
+                    handleDelete={() => deleteMutation.mutate({ willId: will.WILL_ID as string })}
                   />
                 )
               })}

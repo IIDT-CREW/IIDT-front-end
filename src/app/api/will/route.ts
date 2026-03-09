@@ -2,6 +2,7 @@ import { NextRequest } from 'next/server'
 import { auth } from '@/lib/auth'
 import { createSupabaseServerClient } from '@/lib/supabase/server'
 import { apiSuccess, apiError, mapWillRow } from '@/lib/supabase/helpers'
+import bcrypt from 'bcryptjs'
 
 // GET /api/will - 유언장 목록 (공개)
 export async function GET(req: NextRequest) {
@@ -23,10 +24,10 @@ export async function GET(req: NextRequest) {
     const totalCount = count ?? 0
     const totalPageCount = Math.ceil(totalCount / pageSize)
 
-    // 페이징 조회 (member 닉네임 조인)
+    // 페이징 조회 (member 닉네임 LEFT JOIN)
     const { data, error } = await supabase
       .from('will')
-      .select('*, member!inner(mem_nickname)')
+      .select('*, member(mem_nickname)')
       .eq('is_delete', 0)
       .eq('is_private', 0)
       .order('reg_date', { ascending: false })
@@ -55,25 +56,36 @@ export async function GET(req: NextRequest) {
 // POST /api/will - 유언장 작성
 export async function POST(req: NextRequest) {
   const session = await auth()
-  if (!session?.user?.memIdx || session.user.memIdx === -1) {
-    return apiError('4002', 'Unauthorized', 401)
-  }
+  const isGuest = !session?.user?.memIdx || session.user.memIdx === -1
 
   try {
     const body = await req.json()
+
+    if (isGuest) {
+      if (!body.guest_nickname?.trim()) {
+        return apiError('4003', '닉네임을 입력해주세요', 400)
+      }
+      if (!body.guest_password?.trim() || body.guest_password.length < 4) {
+        return apiError('4003', '비밀번호는 4자 이상 입력해주세요', 400)
+      }
+    }
+
     const supabase = createSupabaseServerClient()
+    const hashedPassword = isGuest ? await bcrypt.hash(body.guest_password, 10) : null
 
     // 유언장 삽입
     const { data: will, error } = await supabase
       .from('will')
       .insert({
         will_id: body.will_id,
-        mem_idx: session.user.memIdx,
+        mem_idx: isGuest ? null : session!.user!.memIdx,
         title: body.title,
         content: body.content || '',
         thumbnail: body.thumbnail || '',
         content_type: body.content_type ?? 0,
         is_private: body.is_private ? 1 : 0,
+        guest_nickname: isGuest ? body.guest_nickname.trim() : null,
+        guest_password: isGuest ? hashedPassword : null,
       })
       .select('*')
       .single()
@@ -94,7 +106,8 @@ export async function POST(req: NextRequest) {
       await supabase.from('will_answer').insert(answers)
     }
 
-    return apiSuccess(mapWillRow({ ...will, member: { mem_nickname: session.user.nickname } }))
+    const nickname = isGuest ? body.guest_nickname.trim() : session!.user!.nickname
+    return apiSuccess(mapWillRow({ ...will, member: isGuest ? null : { mem_nickname: nickname }, guest_nickname: isGuest ? nickname : null }))
   } catch {
     return apiError('9000', 'Internal server error', 500)
   }
