@@ -27,7 +27,7 @@ export type Will = {
   EDIT_DATE: string
   IS_DELETE: number
   IS_PRIVATE: number
-  MEM_IDX: number
+  MEM_IDX: number | null
   REG_DATE: string
   THUMBNAIL: string
   TITLE: string
@@ -35,6 +35,7 @@ export type Will = {
   CONTENT_TYPE: number
   ANSWER_LIST?: Answer[]
   MEM_NICKNAME?: string
+  IS_GUEST?: boolean
 }
 
 export type GetWillCount = Omit<DefaultResponse, 'result'> & {
@@ -59,11 +60,13 @@ export type InsertWillParams = {
   title: string
   content: string
   thumbnail: string
-  mem_idx: number
+  mem_idx?: number
   will_id: string
   content_type: number
   is_private: boolean
   answer_list?: AnswerInput[] | null
+  guest_nickname?: string
+  guest_password?: string
 }
 
 export type DeleteWillParams = {

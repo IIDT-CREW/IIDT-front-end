@@ -54,9 +54,18 @@ export const willService = {
     return response.result
   },
 
-  async deleteWill(willId: string) {
+  async deleteWill(willId: string, guestPassword?: string) {
     const response = await fetchClient<void>(`/api/will/${willId}`, {
       method: 'DELETE',
+      ...(guestPassword ? { body: { guest_password: guestPassword } as unknown as Record<string, unknown> } : {}),
+    })
+    return response.result
+  },
+
+  async verifyGuestPassword(willId: string, password: string) {
+    const response = await fetchClient<{ verified: boolean }>(`/api/will/${willId}/verify-password`, {
+      method: 'POST',
+      body: { password } as unknown as Record<string, unknown>,
     })
     return response.result
   },
