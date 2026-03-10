@@ -2,7 +2,7 @@ import { useEffect, useCallback } from 'react'
 import { useRouter } from 'next/router'
 import AOS from 'aos'
 import Page from '@components/Layout/Page'
-import { Flex, Box, Text, useModal } from '@components/Common'
+import { useModal } from '@components/Common'
 import { useWill } from '@/queries/will'
 import WillCard from '@views/Will/components/WillShareCard'
 import TitleBanner from '@views/Will/components/TitleBanner'
@@ -17,14 +17,14 @@ type WillTitleProps = {
 
 const WillTitle = ({ data }: WillTitleProps) => {
   return (
-    <Box mb="36px">
+    <div className="mb-9">
       <TitleBanner
         height="100vh"
         title={data?.TITLE}
         date={data?.REG_DATE}
         imagePath="https://images.unsplash.com/photo-1436891620584-47fd0e565afb?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1287&q=80"
       />
-    </Box>
+    </div>
   )
 }
 
@@ -34,11 +34,11 @@ type WillContentProps = {
 }
 const WillContent = ({ isLoading, data }: WillContentProps) => {
   return (
-    <Flex flexDirection="column" justifyContent="center" alignItems="center">
-      <Flex flexDirection="column" justifyContent="center" alignItems="center">
+    <div className="flex flex-col items-center justify-center">
+      <div className="flex flex-col items-center justify-center">
         {!isLoading && data && <WillCard will={data} />}
-      </Flex>
-    </Flex>
+      </div>
+    </div>
   )
 }
 type WillFooterProps = {
@@ -46,21 +46,21 @@ type WillFooterProps = {
 }
 const WillFooter = ({ handleWrite }: WillFooterProps) => {
   return (
-    <Box mt="50px" mb="50px">
-      <Flex flexDirection="column" justifyContent="center" alignItems="center">
-        <Flex flexDirection="column" justifyContent="center" alignItems="center">
-          <Text bold data-aos="fade-up" data-aos-duration="1000">
+    <div className="my-[50px]">
+      <div className="flex flex-col items-center justify-center">
+        <div className="flex flex-col items-center justify-center">
+          <p className="font-semibold leading-relaxed" data-aos="fade-up" data-aos-duration="1000">
             한번 하루 유서를 적어보시겠어요?
-          </Text>
-          <Text bold data-aos="fade-up" data-aos-duration="1500">
+          </p>
+          <p className="font-semibold leading-relaxed" data-aos="fade-up" data-aos-duration="1500">
             좋은 경험이 될거에요.
-          </Text>
-        </Flex>
-        <Box mt="30px" data-aos="fade" data-aos-duration="3000">
+          </p>
+        </div>
+        <div className="mt-[30px]" data-aos="fade" data-aos-duration="3000">
           <MainButton onClick={handleWrite}>네. 작성해보겠습니다.</MainButton>
-        </Box>
-      </Flex>
-    </Box>
+        </div>
+      </div>
+    </div>
   )
 }
 const WillPage = () => {
@@ -86,11 +86,11 @@ const WillPage = () => {
 
   return (
     <Page title={data?.TITLE} content={data?.CONTENT} isFullPage>
-      <Box className="min-h-[calc(100%-231px)]">
+      <div className="min-h-[calc(100%_-_231px)]">
         <WillTitle data={data} />
         <WillContent data={data} isLoading={isLoading} />
         <WillFooter handleWrite={handleWrite} />
-      </Box>
+      </div>
     </Page>
   )
 }

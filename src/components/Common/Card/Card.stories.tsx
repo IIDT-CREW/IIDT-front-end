@@ -1,6 +1,5 @@
 import React from 'react'
 import { Meta } from '@storybook/react/types-6-0'
-import Box from '../Box/Box'
 import Heading from '../Heading/Heading'
 import UIKitCardHeader from './CardHeader'
 import CardBody from './CardBody'
@@ -68,20 +67,26 @@ export const CardHeader: React.FC = () => {
     <div style={{ padding: '32px', width: '500px' }}>
       <Row>
         <Card borderBackground={borderBackground}>
-          <Box background={customHeadingColor} p="16px" height={headerHeight}>
+          <div style={{ background: customHeadingColor, padding: '16px', height: headerHeight }}>
             <Heading scale="xl" color="white">
               Custom overlapping Header
             </Heading>
-          </Box>
+          </div>
           <CardBody>The border on sides of header is covered</CardBody>
           <CardFooter>Footer</CardFooter>
         </Card>
       </Row>
       <Row>
         <Card borderBackground={gradientBorderColor}>
-          <Box background="linear-gradient(111.68deg, #F2ECF2 0%, #E8F2F6 100%)" p="16px" height={headerHeight}>
+          <div
+            style={{
+              background: 'linear-gradient(111.68deg, #F2ECF2 0%, #E8F2F6 100%)',
+              padding: '16px',
+              height: headerHeight,
+            }}
+          >
             <Heading scale="xl">Gradient overlapping Header</Heading>
-          </Box>
+          </div>
           <CardBody>The border on sides of header is covered</CardBody>
           <CardFooter>Footer</CardFooter>
         </Card>

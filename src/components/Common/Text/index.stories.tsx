@@ -1,6 +1,5 @@
 import React from 'react'
-import Text from './Text'
-import TooltipText from './TooltipText'
+import { Text, TooltipText } from '.'
 
 export default {
   title: 'Components/Text',
@@ -45,23 +44,23 @@ export const Default: React.FC = () => {
       <Text>Default</Text>
       <Text bold>Bold text</Text>
       <Text small>Small text</Text>
-      <Text fontSize="24px">Custom fontsize</Text>
-      <Text color="red">Custom color</Text>
+      <Text className="text-2xl">Custom fontsize</Text>
+      <Text className="text-red-500">Custom color</Text>
       <Text color="primary">Custom color from theme</Text>
-      <Text color="secondary" textTransform="uppercase">
+      <Text color="secondary" className="uppercase">
         with text transform
       </Text>
-      <Text textAlign="center">center</Text>
-      <Text display="inline" color="textSubtle" textTransform="uppercase">
+      <Text className="text-center">center</Text>
+      <Text as="span" color="subtle" className="inline uppercase">
         Example of{' '}
       </Text>
-      <Text display="inline" bold textTransform="uppercase">
+      <Text as="span" bold className="inline uppercase">
         inline{' '}
       </Text>
-      <Text display="inline" color="textSubtle" textTransform="uppercase">
+      <Text as="span" color="subtle" className="inline uppercase">
         Text
       </Text>
-      <Text ellipsis width="250px">
+      <Text ellipsis className="w-[250px]">
         Ellipsis: a long text with an ellipsis just for the example
       </Text>
     </div>

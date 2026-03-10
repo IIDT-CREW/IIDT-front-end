@@ -1,5 +1,3 @@
-import { BoxProps } from '../Box'
-
 export interface ModalTheme {
   background: string
 }
@@ -10,7 +8,7 @@ export interface InjectedProps {
   onDismiss?: Handler
 }
 
-export interface ModalProps extends InjectedProps, BoxProps {
+export interface ModalProps extends InjectedProps, React.HTMLAttributes<HTMLDivElement> {
   title?: string
   hideTitle?: boolean
   hideCloseButton?: boolean

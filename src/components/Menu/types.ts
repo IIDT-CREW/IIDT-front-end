@@ -1,7 +1,6 @@
 import React from 'react'
-import { BoxProps } from '../Common/Box'
 
-export interface DropdownMenuProps extends BoxProps {
+export interface DropdownMenuProps extends React.HTMLAttributes<HTMLDivElement> {
   items?: DropdownMenuItems[]
   activeItem?: string
   /**

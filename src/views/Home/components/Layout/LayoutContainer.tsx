@@ -1,4 +1,3 @@
-import { Flex } from 'components/Common'
 import { ReactElement } from 'react'
 
 type LayoutContainerProps = {
@@ -10,22 +9,8 @@ type LayoutContainerProps = {
 
 const LayoutContainer = ({ leftChildren, rightChildren, leftAosArray, rightAosArray }: LayoutContainerProps) => {
   return (
-    <Flex
-      position="relative"
-      flexDirection={'column'}
-      alignItems={'center'}
-      justifyContent="center"
-      mt={'50px'}
-      id="homepage-hero"
-    >
-      <Flex
-        height={'100%'}
-        width={'100%'}
-        flex={'1'}
-        mb={'0'}
-        position="relative"
-        justifyContent="center"
-      >
+    <div className="relative mt-[50px] flex flex-col items-center justify-center" id="homepage-hero">
+      <div className="relative mb-0 flex h-full w-full flex-1 justify-center">
         <div
           className="flex-1 justify-center text-center"
           data-aos={leftAosArray[0] && leftAosArray[0]}
@@ -48,8 +33,8 @@ const LayoutContainer = ({ leftChildren, rightChildren, leftAosArray, rightAosAr
         >
           {rightChildren}
         </div>
-      </Flex>
-    </Flex>
+      </div>
+    </div>
   )
 }
 

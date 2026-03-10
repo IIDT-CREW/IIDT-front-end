@@ -1,9 +1,10 @@
-import { Box, BoxProps } from 'components/Common/Box'
+import { HTMLAttributes } from 'react'
+import { cn } from '@lib/utils'
 
-const Container: React.FC<BoxProps> = ({ children, ...props }) => (
-  <Box px={['16px', '24px']} mx="auto" maxWidth="1200px" {...props}>
+const Container: React.FC<HTMLAttributes<HTMLDivElement>> = ({ children, className, ...props }) => (
+  <div className={cn('mx-auto max-w-[1200px] px-4 sm:px-6', className)} {...props}>
     {children}
-  </Box>
+  </div>
 )
 
 export default Container

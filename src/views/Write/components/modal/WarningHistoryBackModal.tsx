@@ -1,5 +1,5 @@
 import { Modal } from 'components/Common'
-import { Flex, Box, Text } from 'components/Common'
+import { Button } from 'components/ui/button'
 import cn from 'utils/cn'
 
 type variant = 'primary' | 'secondary'
@@ -8,25 +8,19 @@ const ConfirmButton = ({
   variant,
   className,
   ...props
-}: React.HTMLAttributes<HTMLDivElement> & { variant?: variant }) => (
-  <div
+}: React.ButtonHTMLAttributes<HTMLButtonElement> & { variant?: variant }) => (
+  <Button
     className={cn(
-      'flex flex-row justify-center items-center gap-2.5 h-[50px] py-2.5 px-3 text-sm font-semibold text-white w-auto',
-      'sm:py-3.5 sm:px-4 sm:w-[195px] sm:text-base',
-      'rounded flex-none grow cursor-pointer font-[SUIT]',
-      'dark:border dark:border-[rgb(203,212,255,0.5)]',
-      variant === 'primary'
-        ? 'bg-grayscale-7 text-grayscale-0'
-        : 'bg-grayscale-2 text-grayscale-7',
+      'h-[50px] px-3 text-sm font-semibold sm:w-[195px] sm:px-4 sm:text-base',
+      'font-[SUIT] dark:border dark:border-[rgb(203,212,255,0.5)]',
+      variant === 'primary' ? 'bg-grayscale-7 text-grayscale-0 hover:bg-grayscale-7/90' : 'bg-grayscale-2 text-grayscale-7 hover:bg-grayscale-2/90',
       className,
     )}
     {...props}
   />
 )
 
-const WarningHistoryBackModal = ({ onDismiss, ...props }: any) => {
-  const { goToBack } = props
-
+const WarningHistoryBackModal = ({ onDismiss, goToBack, ...props }: any) => {
   const handleGoToMain = () => {
     onDismiss()
     goToBack()
@@ -34,20 +28,16 @@ const WarningHistoryBackModal = ({ onDismiss, ...props }: any) => {
 
   return (
     <Modal title="일기 작성을 나중에 하시겠어요?" onDismiss={onDismiss} {...props} minWidth="272px">
-      <Flex flexDirection="column" justifyContent="center" alignItems="center">
-        <Text>일기 작성을 나중에 하시겠어요?</Text>
-        <Text css={{ fontWeight: '600', textAlign: 'center', wordBreak: 'keep-all' }}>
-          지금까지 작성된 내용은 저장되지 않습니다
-        </Text>
-        <Box mt="20px">
-          <Flex className="gap-2">
-            <ConfirmButton onClick={handleGoToMain}>나중에 다시 쓸게요</ConfirmButton>
-            <ConfirmButton variant="primary" onClick={onDismiss}>
-              지금 계속 쓸게요
-            </ConfirmButton>
-          </Flex>
-        </Box>
-      </Flex>
+      <div className="flex flex-col items-center justify-center text-center">
+        <p className="leading-relaxed">일기 작성을 나중에 하시겠어요?</p>
+        <p className="break-keep leading-relaxed font-semibold">지금까지 작성된 내용은 저장되지 않습니다</p>
+        <div className="mt-5 flex gap-2">
+          <ConfirmButton onClick={handleGoToMain}>나중에 다시 쓸게요</ConfirmButton>
+          <ConfirmButton variant="primary" onClick={onDismiss}>
+            지금 계속 쓸게요
+          </ConfirmButton>
+        </div>
+      </div>
     </Modal>
   )
 }

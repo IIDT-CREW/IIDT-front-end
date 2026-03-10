@@ -1,10 +1,9 @@
 import Heading from 'components/Common/Heading/Heading'
-import { Box, Flex } from 'components/Common/Box'
-import { Text } from 'components/Common/Text'
 import React, { useEffect } from 'react'
 import AOS from 'aos'
 import Link from 'next/link'
 import { useIsLogin } from '@/hooks/useAuth'
+import { Button } from 'components/ui/button'
 import MainCard from './components/MainCard'
 import Clock from './components/Clock'
 import cn from 'utils/cn'
@@ -12,14 +11,12 @@ import cn from 'utils/cn'
 export const MainButton = ({
   className,
   ...props
-}: React.ButtonHTMLAttributes<HTMLButtonElement>) => (
-  <button
+}: React.ComponentProps<typeof Button>) => (
+  <Button
+    size="md"
     className={cn(
-      'flex flex-row justify-center items-center px-4 py-3.5 gap-2.5',
-      'w-[335px] h-[50px] sm:h-[44px]',
-      'rounded border-none cursor-pointer font-[SUIT]',
-      'flex-none order-0 grow',
-      'bg-[var(--color-contrast)] text-[var(--color-bg)]',
+      'w-[335px] sm:h-[44px] font-[SUIT]',
+      'bg-[var(--color-contrast)] text-[var(--color-bg)] hover:bg-[var(--color-contrast)]/90',
       className,
     )}
     {...props}
@@ -35,29 +32,17 @@ const Home: React.FC = () => {
 
   return (
     <>
-      <Box pt="50px">
+      <div className="pt-[50px]">
         <Heading scale="lg" mt="56px" textAlign="center">
           IIDT
         </Heading>
-        <Text
-          mt="16px"
-          fontFamily="Cormorant"
-          fontWeight="700"
-          className="text-[48px] md:text-[96px]"
-          textAlign="center"
-        >
+        <p className="mt-4 text-center font-[Cormorant] text-[48px] font-bold leading-none md:text-[96px]">
           IF I DIE
-        </Text>
+        </p>
 
-        <Text
-          fontFamily="Cormorant"
-          fontWeight="700"
-          className="text-[48px] md:text-[96px]"
-          mb="24px"
-          textAlign="center"
-        >
+        <p className="mb-6 text-center font-[Cormorant] text-[48px] font-bold leading-none md:text-[96px]">
           Tomorrow
-        </Text>
+        </p>
         <Clock />
 
         <MainCard
@@ -67,7 +52,7 @@ const Home: React.FC = () => {
           imagePath="/images/home/patrick-ryan-3kUIaB2EPp8-unsplash.jpg"
           alt="내일이 마지막이라면 - 석양 풍경"
         />
-        <Box mb={'100px'} />
+        <div className="mb-[100px]" />
         <MainCard
           height={469}
           title=" 만약 내일 생을 마감한다면,"
@@ -76,34 +61,32 @@ const Home: React.FC = () => {
           alt="소중한 이들에게 전하는 마지막 메시지"
         />
 
-        <Box mb="50px" className="text-center" height="100vh">
-          <Flex justifyContent="center" alignItems="center" height="100%" position="relative" flexDirection="column">
-            <Text className="text-[16px] md:text-[36px]" data-aos="fade-up" data-aos-duration="1000">
+        <section className="mb-[50px] h-screen text-center">
+          <div className="relative flex h-full flex-col items-center justify-center">
+            <p className="text-[16px] leading-relaxed md:text-[36px]" data-aos="fade-up" data-aos-duration="1000">
               만약 내일 생을 마감한다면,
-            </Text>
-            <Text
-              bold
-              className="text-[16px] md:text-[36px]"
-              mb="24px"
+            </p>
+            <p
+              className="mb-6 text-[16px] leading-relaxed font-semibold md:text-[36px]"
               data-aos="fade-up"
               data-aos-duration="3000"
             >
               마지막으로 하고 싶은 말이 있나요?
-            </Text>
-          </Flex>
-        </Box>
+            </p>
+          </div>
+        </section>
 
-        <Box mb="50px" className="text-center">
-          <Flex justifyContent="center" flexDirection="column" alignItems="center">
-            <Text className="text-[16px] md:text-[36px] lg:text-[48px]" mb="24px">
+        <section className="mb-[50px] text-center">
+          <div className="flex flex-col items-center justify-center">
+            <p className="mb-6 text-[16px] leading-relaxed md:text-[36px] lg:text-[48px]">
               다시 한 번 삶을 되돌아보는 시간
-            </Text>
-            <Link href={isLogin ? '/write' : '/main'}>
-              <MainButton>일기 작성하러가기</MainButton>
-            </Link>
-          </Flex>
-        </Box>
-      </Box>
+            </p>
+            <MainButton asChild>
+              <Link href={isLogin ? '/write' : '/main'}>일기 작성하러가기</Link>
+            </MainButton>
+          </div>
+        </section>
+      </div>
 
       <div className="mb-[50px]"></div>
     </>

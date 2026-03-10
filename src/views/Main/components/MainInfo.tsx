@@ -1,4 +1,3 @@
-import { Text } from 'components/Common'
 import { useWillCount } from '@/queries'
 import { SkeletonV2 } from 'components/Common/Skeleton'
 
@@ -7,20 +6,14 @@ const MainInfo = () => {
 
   return (
     <>
-      <Text fontSize={['18px']} bold mb="24px">
-        지금까지 작성된 오늘 유서
-      </Text>
+      <p className="mb-6 text-lg leading-relaxed font-semibold">지금까지 작성된 오늘 유서</p>
       {isLoading || isError ? (
         <SkeletonV2 height="24px" width="24px" mb="24px"></SkeletonV2>
       ) : (
-        <Text fontSize="26px" bold mb="24px">
-          {data}개
-        </Text>
+        <p className="mb-6 text-[26px] leading-relaxed font-semibold">{data}개</p>
       )}
 
-      <Text fontSize="18px" bold mb="24px">
-        당신의 오늘 유서를 작성해주세요.
-      </Text>
+      <p className="mb-6 text-lg leading-relaxed font-semibold">당신의 오늘 유서를 작성해주세요.</p>
     </>
   )
 }

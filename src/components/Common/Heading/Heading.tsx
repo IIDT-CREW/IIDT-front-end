@@ -1,7 +1,6 @@
 import { forwardRef } from 'react'
 import cn from 'utils/cn'
 import { scales, HeadingProps } from './types'
-import Text from '../Text/Text'
 
 const scaleStyles = {
   [scales.MD]: { fontSize: '18px', fontSizeLg: '18px' },
@@ -12,14 +11,13 @@ const scaleStyles = {
 
 const Heading = forwardRef<
   HTMLDivElement,
-  HeadingProps & React.ComponentProps<typeof Text>
+  HeadingProps & React.HTMLAttributes<HTMLDivElement>
 >(({ scale = scales.MD, as: _as, className, style, ...props }, ref) => {
   const s = scaleStyles[scale] || scaleStyles[scales.MD]
 
   return (
-    <Text
+    <div
       ref={ref}
-      bold
       className={cn('leading-[1.1]', className)}
       style={{
         fontSize: s.fontSize,

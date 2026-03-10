@@ -1,5 +1,4 @@
 import useClock from 'hooks/useClock'
-import { Box, Text, Flex } from 'components/Common'
 
 const Clock = ({ height = '300px' }) => {
   const { time } = useClock()
@@ -8,18 +7,16 @@ const Clock = ({ height = '300px' }) => {
   //const formatted = moment.utc(leftTime * 1000).format('HH:mm:ss')
 
   return (
-    <Box paddingTop="">
-      <Box width="100%" height={height} position="relative">
-        <Box width="100%" height={height} position="relative">
-          <Flex flexDirection="column" justifyContent="center" alignItems="center" height="100%" position="relative">
-            <Text fontSize={['18px', null, null, '26px']}>현재 시간</Text>
-            <Text fontWeight="700" fontSize={['36px', null, null, '48px']}>
-              {time}
-            </Text>
-          </Flex>
-        </Box>
-      </Box>
-    </Box>
+    <div>
+      <div className="relative w-full" style={{ height }}>
+        <div className="relative h-full w-full">
+          <div className="relative flex h-full flex-col items-center justify-center">
+            <p className="text-lg leading-relaxed lg:text-[26px]">현재 시간</p>
+            <p className="text-[36px] leading-relaxed font-bold lg:text-[48px]">{time}</p>
+          </div>
+        </div>
+      </div>
+    </div>
   )
 }
 

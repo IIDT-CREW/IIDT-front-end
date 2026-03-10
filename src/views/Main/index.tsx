@@ -1,23 +1,21 @@
 import { useEffect, useContext, useMemo } from 'react'
 import { useRouter } from 'next/router'
-import { Box, Flex, useModal } from 'components/Common'
+import { useModal } from 'components/Common'
 import BannerCard from './components/BannerCard'
 import MainInfo from './components/MainInfo'
 import { MainButton } from '../Home'
 import WriteWarningInfoModal from './components/modal/WriteWarningInfoModal'
 import LoginModal from 'components/LoginModal'
 import WillCard from 'components/WillCard'
-import { useQueryClient } from '@tanstack/react-query'
 import { toastContext } from 'contexts/Toast'
 import { useIsLogin, useUserInfo } from '@/hooks/useAuth'
-import { DEFAULT_PAGE_NO, DEFAULT_PAGE_SIZE } from 'config/constants/default'
+import { DEFAULT_PAGE_SIZE } from 'config/constants/default'
 import useIntersect from './hooks/useIntersect'
-import { useInfiniteMyWill, useDeleteWill, queryKeys } from '@/queries'
+import { useInfiniteMyWill, useDeleteWill } from '@/queries'
 import { Skeleton } from 'components/Common/Skeleton'
 
 const WillContainer = () => {
-  const queryClient = useQueryClient()
-  const { name, email, userid, memIdx } = useUserInfo()
+  const { memIdx } = useUserInfo()
   const { onToast } = useContext(toastContext)
 
   const handleToast = ({ message = '' }) => {
@@ -65,12 +63,12 @@ const WillContainer = () => {
     <>
       {!error &&
         willList?.map((myWill, i) => (
-          <Box key={`${i}-${myWill.WILL_ID}`}>
+          <div key={`${i}-${myWill.WILL_ID}`}>
             <WillCard
               will={myWill}
               handleDelete={() => deleteMutation.mutate(myWill.WILL_ID as string)}
             />
-          </Box>
+          </div>
         ))}
 
       {(status === 'pending' || isFetching) && (
@@ -107,20 +105,20 @@ const Main = () => {
   }
 
   return (
-    <Box mt="78px" className="min-h-[calc(100%-231px)]">
-      <Box mb="36px">
+    <div className="mt-[78px] min-h-[calc(100%_-_231px)]">
+      <div className="mb-9">
         <BannerCard />
-      </Box>
-      <Flex flexDirection="column" justifyContent="center" alignItems="center">
-        <Flex flexDirection="column" justifyContent="center" alignItems="center">
+      </div>
+      <div className="flex flex-col items-center justify-center">
+        <div className="flex flex-col items-center justify-center">
           <MainInfo />
-          <Box mb="55px">
+          <div className="mb-[55px]">
             <MainButton onClick={handleWrite}>작성하러가기</MainButton>
-          </Box>
+          </div>
           {isLogin && <WillContainer />}
-        </Flex>
-      </Flex>
-    </Box>
+        </div>
+      </div>
+    </div>
   )
 }
 

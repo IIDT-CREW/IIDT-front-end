@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react'
 import { Modal, useModal } from '.'
 import { ModalProps } from './types'
-import Button from '../Button/Button'
+import { Button } from '../Button'
 import Heading from '../Heading/Heading'
 
 export default {
@@ -86,7 +86,7 @@ export const ReactingToOusideChanges: React.FC = () => {
     return (
       <Modal title={title} onDismiss={onDismiss}>
         <h2>Counter: {count}</h2>
-        <Button mt="8px" onClick={onDismiss}>
+        <Button className="mt-2" onClick={onDismiss}>
           Close
         </Button>
       </Modal>
@@ -107,7 +107,7 @@ export const ReactingToOusideChanges: React.FC = () => {
     <div>
       <h2>Counter: {counter}</h2>
       <Button onClick={onPresent1}>Reactive modal</Button>
-      <Button ml="16px" onClick={onPresent2}>
+      <Button className="ml-4" onClick={onPresent2}>
         Non-reactive modal
       </Button>
     </div>

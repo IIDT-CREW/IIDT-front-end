@@ -1,8 +1,7 @@
-import { Box, Flex, FlexProps } from 'components/Common'
-import Container from 'components/Layout/Container'
+import { HTMLAttributes } from 'react'
 import cn from 'utils/cn'
 
-interface PageSectionProps extends FlexProps {
+interface PageSectionProps extends HTMLAttributes<HTMLDivElement> {
   index?: number
   background?: string
   svgFill?: string
@@ -21,8 +20,8 @@ const PageSection: React.FC<PageSectionProps> = ({
   ...props
 }) => {
   return (
-    <Box {...containerProps}>
-      <Flex
+    <div {...containerProps}>
+      <div
         className="relative flex-col items-center"
         style={{
           zIndex: index - 1,
@@ -39,8 +38,8 @@ const PageSection: React.FC<PageSectionProps> = ({
         >
           {children}
         </div>
-      </Flex>
-    </Box>
+      </div>
+    </div>
   )
 }
 
