@@ -36,6 +36,7 @@ const Image: React.FC<ImageProps> = ({
   isFill = false,
   objectFit = 'cover',
   position = 'absolute',
+  className,
   ...props
 }) => {
   const imgRef = useRef<HTMLDivElement>(null)
