@@ -1,5 +1,4 @@
 import React, { cloneElement, Children, ReactElement } from 'react'
-import cn from 'utils/cn'
 import { TabMenuProps } from './types'
 
 const ButtonMenu: React.FC<TabMenuProps> = ({ activeIndex = 0, onItemClick, children }) => {
@@ -12,7 +11,7 @@ const ButtonMenu: React.FC<TabMenuProps> = ({ activeIndex = 0, onItemClick, chil
             isActive,
             onClick: onItemClick ? () => onItemClick(index) : undefined,
             color: isActive ? 'var(--color-bg-alt)' : 'var(--color-text-subtle)',
-            backgroundColor: isActive ? 'var(--color-text-subtle)' : 'var(--color-input)',
+            backgroundColor: isActive ? 'var(--color-text-subtle)' : 'var(--color-surface-input)',
           })
         })}
       </div>

@@ -1,5 +1,5 @@
 /* eslint-disable no-sparse-arrays */
-import { TextareaHTMLAttributes, useCallback, useEffect, useState } from 'react'
+import { useCallback, useEffect, useState } from 'react'
 import { useRouter } from 'next/router'
 import { useModal } from 'components/Common'
 import SelectPostTypeModal from 'views/Write/components/modal/SelectPostTypeModal'
@@ -16,11 +16,16 @@ import useWarningHistoryBack from './hooks/useWarningHistoryBack'
 import useToast from 'hooks/useToast'
 import cn from 'utils/cn'
 
-const DEFAULT_TITLE = `${new Date().toLocaleDateString('ko-KR', {
-  year: '2-digit',
-  month: 'long',
-  day: 'numeric',
-})}에 쓰는 오늘 유서`
+const getDefaultTitle = (date = new Date()) => {
+  const formattedDate = new Intl.DateTimeFormat('ko-KR', {
+    year: '2-digit',
+    month: 'long',
+    day: 'numeric',
+    timeZone: 'Asia/Seoul',
+  }).format(date)
+
+  return `${formattedDate}에 쓰는 오늘 유서`
+}
 
 const Write = () => {
   const router = useRouter()
@@ -28,6 +33,7 @@ const Write = () => {
   const isLogin = useIsLogin()
   const { isMobile } = useMatchBreakpoints()
   const onToast = useToast()
+  const [defaultTitle, setDefaultTitle] = useState('')
   const goToBack = useCallback(() => {
     router.push('/main')
   }, [router])
@@ -67,6 +73,10 @@ const Write = () => {
   useEffect(() => {
     setIsDisableSave(contents[page].answer.length ? false : true)
   }, [contents, page])
+
+  useEffect(() => {
+    setDefaultTitle(getDefaultTitle())
+  }, [])
 
   const setPostWhenEditMode = useCallback(() => {
     if (!data) return
@@ -129,7 +139,7 @@ const Write = () => {
   const handlePostType = useCallback(() => {
     setIsDefaultPostType(false)
   }, [])
-  const [modal, onDismiss] = useModal(<SelectPostTypeModal handlePostType={handlePostType} />, false)
+  const [modal] = useModal(<SelectPostTypeModal handlePostType={handlePostType} />, false)
 
   const handleContents = useCallback(
     (e: React.ChangeEvent<HTMLTextAreaElement>) => {
@@ -166,7 +176,7 @@ const Write = () => {
     }
 
     const parameter = {
-      title: title.length ? title : DEFAULT_TITLE,
+      title: title.length ? title : defaultTitle || getDefaultTitle(),
       thumbnail: 'title',
       ...(isLogin ? { mem_idx: memIdx } : {}),
       ...(!isLogin && !isEditMode ? { guest_nickname: guestNickname, guest_password: guestPassword } : {}),
@@ -184,7 +194,23 @@ const Write = () => {
           })),
     }
     isEditMode ? updatePostMutate(parameter) : addPostMutate(parameter)
-  }, [addPostMutate, contents, editGuestPassword, guestNickname, guestPassword, isDefaultPostType, isEditMode, isLogin, isPrivate, memIdx, onToast, title, updatePostMutate, willId])
+  }, [
+    addPostMutate,
+    contents,
+    editGuestPassword,
+    guestNickname,
+    guestPassword,
+    isDefaultPostType,
+    isEditMode,
+    isLogin,
+    isPrivate,
+    memIdx,
+    onToast,
+    title,
+    updatePostMutate,
+    willId,
+    defaultTitle,
+  ])
 
   return (
     <article
@@ -243,10 +269,10 @@ const Write = () => {
           onChange={handleTitle}
           rows={1}
           wrap="off"
-          placeholder={DEFAULT_TITLE}
+          placeholder={defaultTitle}
           maxLength={30}
           className={cn(
-            'outline-none border-none resize-none w-full font-normal leading-7 bg-inherit',
+            'outline-none border-none resize-none w-full p-0 font-normal leading-7 bg-inherit',
             'font-[Nanum_Myeongjo] text-[var(--color-text-secondary)]',
             'placeholder:text-[var(--color-grayscale-5)]',
             'sm:text-[16px] md:text-[26px]',
@@ -255,9 +281,7 @@ const Write = () => {
         />
 
         {isDefaultPostType || (
-          <div
-            className="font-[Nanum_Myeongjo] font-bold text-[26px] mb-4 sm:text-[16px] md:text-[26px] text-[var(--color-text-primary)]"
-          >
+          <div className="font-[Nanum_Myeongjo] font-bold text-[26px] mb-4 sm:text-[16px] md:text-[26px] text-[var(--color-text-primary)]">
             {QUESTION_LIST[page]?.question}
           </div>
         )}
@@ -267,20 +291,14 @@ const Write = () => {
           onChange={handleContents}
           maxLength={1500}
           className={cn(
-            'outline-none border-none resize-none w-full font-normal leading-7 bg-inherit flex-auto',
+            'outline-none border-none resize-none w-full p-0 font-normal leading-7 bg-inherit flex-auto',
             'font-[Nanum_Myeongjo] text-[var(--color-text-secondary)]',
             'placeholder:text-[var(--color-grayscale-5)]',
             'sm:text-[16px] md:text-[18px]',
           )}
         />
         {isDefaultPostType && isMobile && (
-          <StyleMenuButton
-            isFull={true}
-            variant="primary"
-            onClick={handleUpsert}
-            disabled={false}
-            className="mb-4"
-          >
+          <StyleMenuButton isFull={true} variant="primary" onClick={handleUpsert} disabled={false} className="mb-4">
             작성 완료
           </StyleMenuButton>
         )}

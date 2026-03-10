@@ -11,10 +11,11 @@ export interface TwButtonProps extends ButtonHTMLAttributes<HTMLButtonElement> {
 }
 
 const variantStyles: Record<TwButtonVariant, string> = {
-  primary: 'bg-primary text-white hover:bg-primary/90',
-  secondary: 'bg-transparent border-2 border-primary text-primary hover:bg-primary/10 disabled:bg-transparent',
-  tertiary: 'bg-light-tertiary dark:bg-dark-tertiary text-primary',
-  text: 'bg-transparent text-primary shadow-none hover:bg-primary/10',
+  primary: 'bg-[var(--color-primary)] text-white hover:bg-[color-mix(in_srgb,var(--color-primary)_90%,black)]',
+  secondary:
+    'bg-transparent border-2 border-[var(--color-primary)] text-[var(--color-primary)] hover:bg-[color-mix(in_srgb,var(--color-primary)_10%,transparent)] disabled:bg-transparent',
+  tertiary: 'bg-light-tertiary dark:bg-dark-tertiary text-[var(--color-primary)]',
+  text: 'bg-transparent text-[var(--color-primary)] shadow-none hover:bg-[color-mix(in_srgb,var(--color-primary)_10%,transparent)]',
   danger: 'bg-failure text-white hover:bg-failure/90',
   subtle: 'bg-light-text-subtle dark:bg-dark-text-subtle text-light-bg dark:text-dark-bg',
   success: 'bg-success text-white hover:bg-success/90',

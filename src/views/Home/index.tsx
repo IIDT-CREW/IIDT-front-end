@@ -8,14 +8,11 @@ import MainCard from './components/MainCard'
 import Clock from './components/Clock'
 import cn from 'utils/cn'
 
-export const MainButton = ({
-  className,
-  ...props
-}: React.ComponentProps<typeof Button>) => (
+export const MainButton = ({ className, ...props }: React.ComponentProps<typeof Button>) => (
   <Button
     size="md"
     className={cn(
-      'w-[335px] sm:h-[44px] font-[SUIT]',
+      'h-[50px] w-[335px] gap-2.5 rounded-[4px] px-4 py-[14px] font-[SUIT] text-xs sm:h-[44px] xl:text-sm',
       'bg-[var(--color-contrast)] text-[var(--color-bg)] hover:bg-[var(--color-contrast)]/90',
       className,
     )}
@@ -36,13 +33,9 @@ const Home: React.FC = () => {
         <Heading scale="lg" mt="56px" textAlign="center">
           IIDT
         </Heading>
-        <p className="mt-4 text-center font-[Cormorant] text-[48px] font-bold leading-none md:text-[96px]">
-          IF I DIE
-        </p>
+        <p className="mt-4 text-center font-[Cormorant] text-[48px] font-bold leading-none md:text-[96px]">IF I DIE</p>
 
-        <p className="mb-6 text-center font-[Cormorant] text-[48px] font-bold leading-none md:text-[96px]">
-          Tomorrow
-        </p>
+        <p className="mb-6 text-center font-[Cormorant] text-[48px] font-bold leading-none md:text-[96px]">Tomorrow</p>
         <Clock />
 
         <MainCard

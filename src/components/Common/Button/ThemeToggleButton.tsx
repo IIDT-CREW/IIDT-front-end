@@ -10,7 +10,7 @@ const ThemeToggleButton = (props: ToggleButtonProps) => {
   const { selected } = props
   return (
     <button
-      className="w-8 h-8 flex items-center justify-center border-none rounded-[2rem] cursor-pointer bg-transparent"
+      className="relative flex h-8 w-8 items-center justify-center rounded-[2rem] border-none bg-transparent"
       aria-label={selected ? '라이트 모드로 전환' : '다크 모드로 전환'}
       {...props}
     >

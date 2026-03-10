@@ -1,8 +1,8 @@
 import { HTMLAttributes, ImgHTMLAttributes } from 'react'
 
 export interface WrapperProps extends HTMLAttributes<HTMLDivElement> {
-  width: number
-  height: number
+  width?: number
+  height?: number
   isFill?: boolean
 }
 

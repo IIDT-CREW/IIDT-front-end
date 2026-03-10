@@ -149,7 +149,7 @@ const MenuBar = ({
     >
       <button
         onClick={goToMain}
-        className="flex border-none bg-none font-[SUIT] justify-between w-[72px] h-6 p-0 items-center text-theme-text cursor-pointer"
+        className="flex min-w-[72px] items-center gap-1.5 whitespace-nowrap border-none bg-transparent p-0 font-[SUIT] text-sm text-theme-text cursor-pointer"
       >
         <ArrowLeft fill="var(--color-text)" width="26px" />내 기록
       </button>

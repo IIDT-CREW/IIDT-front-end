@@ -1,25 +1,22 @@
-import { useEffect, useRef, useState, Fragment } from 'react'
+import { useEffect, Fragment } from 'react'
 import Script from 'next/script'
 import '../style/index.css'
 import type { AppProps } from 'next/app'
 import Head from 'next/head'
 import { SessionProvider } from 'next-auth/react'
-import store from 'store'
 import { NextPage } from 'next'
 import Router, { useRouter } from 'next/router'
 import { QueryClientProvider, HydrationBoundary } from '@tanstack/react-query'
 import { ReactQueryDevtools } from '@tanstack/react-query-devtools'
-import { getQueryClient } from '@/queries/client'
+import { getQueryClient } from 'queries/client'
 import Menu from 'components/Menu'
 import Footer from 'components/Footer'
-import { useNaviState } from 'store/navi/hooks'
 import { MENU_HEIGHT, FOOTER_HEIGHT } from 'config/constants/default'
 import useFooterDisable from 'hooks/useFooterDisable'
 import * as gtag from 'utils/gtag'
 import { useDarkMode } from 'hooks/useDarkMode'
 import { ToastContainer } from 'react-toastify'
 import ModalProvider from 'components/Common/Modal/ModalContext'
-import { Provider } from 'react-redux'
 import { ToastContextProvider } from 'contexts/Toast'
 import ErrorBoundary from 'components/Common/ErrorBoundary'
 import 'style/custom-react-toastify.css'
@@ -94,9 +91,7 @@ function MyApp(props: AppProps) {
       <SessionProvider session={pageProps.session}>
         <QueryClientProvider client={queryClient}>
           <HydrationBoundary state={pageProps.dehydratedState}>
-            <Provider store={store}>
-              <App {...props} />
-            </Provider>
+            <App {...props} />
           </HydrationBoundary>
           <ReactQueryDevtools initialIsOpen={false} />
         </QueryClientProvider>
@@ -130,8 +125,6 @@ const App = ({ Component, pageProps }: AppPropsWithLayout) => {
   const router = useRouter()
   // Use the layout defined at the page level, if available
   const Layout = Component.Layout || Fragment
-  const { isMenuOpen } = useNaviState()
-  const scrollPos = useRef(0)
 
   useEffect(() => {
     const handleRouteChange = (url) => {
@@ -142,11 +135,6 @@ const App = ({ Component, pageProps }: AppPropsWithLayout) => {
       router.events.off('routeChangeComplete', handleRouteChange)
     }
   }, [router.events])
-
-  const [mounted, setMounted] = useState(false)
-  useEffect(() => {
-    setMounted(true)
-  }, [])
 
   const [themeMode, toggleTheme] = useDarkMode()
 
@@ -178,10 +166,7 @@ const App = ({ Component, pageProps }: AppPropsWithLayout) => {
     </ErrorBoundary>
   )
 
-  if (!mounted) {
-    return <div className="invisible">{body}</div>
-  }
-  return <>{body}</>
+  return body
 }
 
 export default MyApp

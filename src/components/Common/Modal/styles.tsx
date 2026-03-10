@@ -4,6 +4,18 @@ import { XIcon, ArrowLeftIcon } from 'lucide-react'
 import { Button } from 'components/ui/button'
 import { ModalProps } from './types'
 
+const BACKGROUND_TOKEN_MAP: Record<string, string> = {
+  primary: 'var(--color-primary)',
+  secondary: 'var(--color-secondary)',
+  tertiary: 'var(--color-tertiary)',
+  background: 'var(--color-bg)',
+}
+
+const resolveBackground = (background?: string) => {
+  if (!background) return 'transparent'
+  return BACKGROUND_TOKEN_MAP[background] ?? background
+}
+
 interface ModalHeaderProps {
   background?: string
   className?: string
@@ -15,7 +27,7 @@ export const ModalHeader = React.forwardRef<HTMLDivElement, ModalHeaderProps>(
     <div
       ref={ref}
       className={cn('relative flex items-center justify-center px-6 pt-8 pb-3.5 pl-8', className)}
-      style={{ background: background || 'transparent' }}
+      style={{ background: resolveBackground(background) }}
       {...props}
     >
       {children}
@@ -63,7 +75,7 @@ export const ModalCloseButton: React.FC<{ onDismiss: ModalProps['onDismiss'] }> 
 export const ModalBackButton: React.FC<{ onBack: ModalProps['onBack'] }> = ({ onBack }) => {
   return (
     <Button type="button" variant="ghost" size="icon" onClick={onBack} className="mr-2" aria-label="Go back">
-      <ArrowLeftIcon className="w-5 h-5 text-primary" />
+      <ArrowLeftIcon className="w-5 h-5 text-[var(--color-primary)]" />
     </Button>
   )
 }

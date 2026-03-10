@@ -20,4 +20,5 @@ export type Scales = typeof scales[keyof typeof scales]
 export interface HeadingProps {
   as?: Tags
   scale?: Scales
+  color?: string
 }

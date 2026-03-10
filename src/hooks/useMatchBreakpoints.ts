@@ -68,22 +68,30 @@ const getState = () => {
 }
 
 const useMatchBreakpoints = (): BreakpointChecks => {
-  const [state, setState] = useState<State>(() => getState())
+  const [state, setState] = useState<State>(() =>
+    Object.keys(mediaQueries).reduce(
+      (accum, size) => ({
+        ...accum,
+        [getKey(size)]: false,
+      }),
+      {},
+    ),
+  )
 
   useIsomorphicEffect(() => {
     // Create listeners for each media query returning a function to unsubscribe
     const handlers = Object.keys(mediaQueries).map((size) => {
       let mql: MediaQueryList
-      let handler: (matchMediaQuery: MediaQueryListEvent) => void
+      let handler: () => void
 
       if (typeof window?.matchMedia === 'function') {
         mql = window.matchMedia(mediaQueries[size])
 
-        handler = (matchMediaQuery: MediaQueryListEvent) => {
+        handler = () => {
           const key = getKey(size)
           setState((prevState) => ({
             ...prevState,
-            [key]: matchMediaQuery.matches,
+            [key]: mql.matches,
           }))
         }
 

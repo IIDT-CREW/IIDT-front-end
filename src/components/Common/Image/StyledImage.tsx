@@ -36,6 +36,7 @@ const Image: React.FC<ImageProps> = ({
   isFill = false,
   objectFit = 'cover',
   position = 'absolute',
+  className,
   ...props
 }) => {
   const imgRef = useRef<HTMLDivElement>(null)
@@ -71,7 +72,7 @@ const Image: React.FC<ImageProps> = ({
   }, [src])
 
   return (
-    <Wrapper ref={imgRef} height={height} width={width} {...props}>
+    <Wrapper ref={imgRef} height={height} width={width} isFill={isFill} {...props}>
       {isLoaded && (
         <>
           <StyledImg
@@ -82,6 +83,7 @@ const Image: React.FC<ImageProps> = ({
             onError={() => setIsImageLoadError(true)}
             objectFit={objectFit}
             position={position}
+            className={className}
           />
           {!isImageLoaded && !isImageLoadError && (
             <Skeleton animation={'pulse'} width={isFill ? '100%' : width} height={isFill ? '100%' : height} />

@@ -3,9 +3,9 @@ import { useCallback, useEffect, useRef } from 'react'
 import WarningHistoryBackModal from '../components/modal/WarningHistoryBackModal'
 
 const useWarningHistoryBack = ({ title, contents, goToBack, page }) => {
-  const isWriteDown = () => !contents.every((value) => value.length === 0)
+  const isWriteDown = () => contents.some(({ answer }) => answer.trim().length > 0)
   const [presentWarningHistoryBackModal] = useModal(<WarningHistoryBackModal goToBack={goToBack} />)
-  const isWriteDownTitleAndContent = title !== '' || contents[page] !== '' || isWriteDown()
+  const isWriteDownTitleAndContent = title.trim() !== '' || contents[page]?.answer?.trim() !== '' || isWriteDown()
   const isInsertPushState = useRef(false)
   const preventGoBack = useCallback(() => {
     if (isWriteDownTitleAndContent) {
