@@ -50,3 +50,4 @@ debug.log*
 
 # turbo
 .turbo
+tsconfig.tsbuildinfo

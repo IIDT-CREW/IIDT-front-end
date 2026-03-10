@@ -3,8 +3,9 @@ import { TextareaHTMLAttributes, useCallback, useEffect, useState } from 'react'
 import { useRouter } from 'next/router'
 import { useModal } from 'components/Common'
 import SelectPostTypeModal from 'views/Write/components/modal/SelectPostTypeModal'
+import GuestPasswordModal from 'views/Write/components/modal/GuestPasswordModal'
 import { FOOTER_HEIGHT, IS_DEFAULT_MODE, MENU_HEIGHT } from 'config/constants/default'
-import { useUserInfo } from '@/hooks/useAuth'
+import { useUserInfo, useIsLogin } from '@/hooks/useAuth'
 import { nanoid } from 'nanoid'
 import ProgressBar from 'components/Common/ProgressBar'
 import useMatchBreakpoints from 'hooks/useMatchBreakpoints'
@@ -12,6 +13,7 @@ import MenuBar, { StyleMenuButton } from 'views/Write/components/MenuBar'
 import { QUESTION_LIST } from 'views/Write/data'
 import { useWill, useCreateWill, useUpdateWill } from '@/queries'
 import useWarningHistoryBack from './hooks/useWarningHistoryBack'
+import useToast from 'hooks/useToast'
 import cn from 'utils/cn'
 
 const DEFAULT_TITLE = `${new Date().toLocaleDateString('ko-KR', {
@@ -23,7 +25,9 @@ const DEFAULT_TITLE = `${new Date().toLocaleDateString('ko-KR', {
 const Write = () => {
   const router = useRouter()
   const { memIdx } = useUserInfo()
+  const isLogin = useIsLogin()
   const { isMobile } = useMatchBreakpoints()
+  const onToast = useToast()
   const goToBack = useCallback(() => {
     router.push('/main')
   }, [router])
@@ -42,6 +46,12 @@ const Write = () => {
     })),
   )
   const [isDisableSave, setIsDisableSave] = useState(true)
+
+  // 비회원 필드
+  const [guestNickname, setGuestNickname] = useState('')
+  const [guestPassword, setGuestPassword] = useState('')
+  const [isGuestVerified, setIsGuestVerified] = useState(false)
+  const [editGuestPassword, setEditGuestPassword] = useState('')
 
   const { data, isSuccess: isPostLoaded } = useWill(willId, {
     enabled: router.isReady && isEditMode,
@@ -87,11 +97,28 @@ const Write = () => {
     if (answer) setContents(answer)
   }, [contents, data])
 
+  // 비회원 수정 시 비밀번호 확인 모달
+  const handleGuestPasswordVerified = useCallback((password: string) => {
+    setIsGuestVerified(true)
+    setEditGuestPassword(password)
+  }, [])
+
+  const [presentPasswordModal] = useModal(
+    <GuestPasswordModal willId={willId} onVerified={handleGuestPasswordVerified} />,
+    false,
+  )
+
   /* 모달 onOpen */
   useEffect(
     function initialScreenByEditMode() {
       if (router.isReady) {
-        if (isEditMode && isPostLoaded) setPostWhenEditMode()
+        if (isEditMode && isPostLoaded) {
+          // 비회원 글 수정 시 비밀번호 확인 필요
+          if (data?.IS_GUEST && !isGuestVerified) {
+            presentPasswordModal()
+          }
+          setPostWhenEditMode()
+        }
         if (!isEditMode) modal()
       }
     },
@@ -120,10 +147,30 @@ const Write = () => {
   }, [])
 
   const handleUpsert = useCallback(() => {
+    // 비회원 유효성 검사
+    if (!isLogin && !isEditMode) {
+      if (!guestNickname.trim()) {
+        return onToast({
+          type: 'error',
+          message: '닉네임을 입력해주세요',
+          option: { position: 'top-center' },
+        })
+      }
+      if (!guestPassword.trim() || guestPassword.length < 4) {
+        return onToast({
+          type: 'error',
+          message: '비밀번호는 4자 이상 입력해주세요',
+          option: { position: 'top-center' },
+        })
+      }
+    }
+
     const parameter = {
       title: title.length ? title : DEFAULT_TITLE,
       thumbnail: 'title',
-      mem_idx: memIdx,
+      ...(isLogin ? { mem_idx: memIdx } : {}),
+      ...(!isLogin && !isEditMode ? { guest_nickname: guestNickname, guest_password: guestPassword } : {}),
+      ...(isEditMode && editGuestPassword ? { guest_password: editGuestPassword } : {}),
       content: isDefaultPostType ? contents[0].answer : '',
       will_id: isEditMode ? willId : nanoid(),
       is_private: isPrivate,
@@ -137,7 +184,7 @@ const Write = () => {
           })),
     }
     isEditMode ? updatePostMutate(parameter) : addPostMutate(parameter)
-  }, [addPostMutate, contents, isDefaultPostType, isEditMode, isPrivate, memIdx, title, updatePostMutate, willId])
+  }, [addPostMutate, contents, editGuestPassword, guestNickname, guestPassword, isDefaultPostType, isEditMode, isLogin, isPrivate, memIdx, onToast, title, updatePostMutate, willId])
 
   return (
     <article
@@ -160,6 +207,37 @@ const Write = () => {
       />
 
       <section className="px-6 h-full flex flex-col">
+        {/* 비회원 닉네임/비밀번호 입력 */}
+        {!isLogin && !isEditMode && (
+          <div className="flex gap-3 mb-4">
+            <input
+              type="text"
+              value={guestNickname}
+              onChange={(e) => setGuestNickname(e.target.value)}
+              placeholder="닉네임"
+              maxLength={20}
+              className={cn(
+                'flex-1 h-10 px-3 border border-grayscale-3 rounded outline-none',
+                'font-[SUIT] text-sm bg-inherit text-[var(--color-text-primary)]',
+                'placeholder:text-[var(--color-grayscale-5)]',
+                'focus:border-grayscale-7',
+              )}
+            />
+            <input
+              type="password"
+              value={guestPassword}
+              onChange={(e) => setGuestPassword(e.target.value)}
+              placeholder="비밀번호 (4자 이상)"
+              className={cn(
+                'flex-1 h-10 px-3 border border-grayscale-3 rounded outline-none',
+                'font-[SUIT] text-sm bg-inherit text-[var(--color-text-primary)]',
+                'placeholder:text-[var(--color-grayscale-5)]',
+                'focus:border-grayscale-7',
+              )}
+            />
+          </div>
+        )}
+
         <textarea
           value={title}
           onChange={handleTitle}

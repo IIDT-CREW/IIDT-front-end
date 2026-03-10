@@ -5,7 +5,6 @@ import BannerCard from './components/BannerCard'
 import MainInfo from './components/MainInfo'
 import { MainButton } from '../Home'
 import WriteWarningInfoModal from './components/modal/WriteWarningInfoModal'
-import LoginModal from 'components/LoginModal'
 import WillCard from 'components/WillCard'
 import { toastContext } from 'contexts/Toast'
 import { useIsLogin, useUserInfo } from '@/hooks/useAuth'
@@ -66,7 +65,7 @@ const WillContainer = () => {
           <div key={`${i}-${myWill.WILL_ID}`}>
             <WillCard
               will={myWill}
-              handleDelete={() => deleteMutation.mutate(myWill.WILL_ID as string)}
+              handleDelete={() => deleteMutation.mutate({ willId: myWill.WILL_ID as string })}
             />
           </div>
         ))}
@@ -86,8 +85,6 @@ const WillContainer = () => {
 const Main = () => {
   const isLogin = useIsLogin()
   const [presentWarningModal] = useModal(<WriteWarningInfoModal />)
-  const [presentLoginModal] = useModal(<LoginModal />)
-
   useEffect(() => {
     const isPrecented = localStorage.getItem('isPrecented')
     if (!isPrecented) {
@@ -100,8 +97,7 @@ const Main = () => {
   const router = useRouter()
 
   const handleWrite = () => {
-    if (!isLogin) presentLoginModal()
-    if (isLogin) router.push('write')
+    router.push('write')
   }
 
   return (

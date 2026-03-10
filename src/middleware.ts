@@ -1,7 +1,7 @@
 import { auth } from '@/lib/auth'
 import { NextResponse } from 'next/server'
 
-const protectedRoutes = ['/write', '/memorials']
+const protectedRoutes = ['/memorials']
 
 export default auth((req) => {
   const { pathname } = req.nextUrl

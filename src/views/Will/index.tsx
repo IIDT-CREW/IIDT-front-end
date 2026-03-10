@@ -2,13 +2,10 @@ import { useEffect, useCallback } from 'react'
 import { useRouter } from 'next/router'
 import AOS from 'aos'
 import Page from '@components/Layout/Page'
-import { useModal } from '@components/Common'
 import { useWill } from '@/queries/will'
 import WillCard from '@views/Will/components/WillShareCard'
 import TitleBanner from '@views/Will/components/TitleBanner'
 import { MainButton } from '@views/Home'
-import LoginModal from '@components/LoginModal'
-import { useIsLogin } from '@/hooks/useAuth'
 import type { Will } from '@api/will/types'
 
 type WillTitleProps = {
@@ -64,16 +61,13 @@ const WillFooter = ({ handleWrite }: WillFooterProps) => {
   )
 }
 const WillPage = () => {
-  const isLogin = useIsLogin()
   const router = useRouter()
   const willId = router.query.id as string
   const { data, isLoading, isError } = useWill(willId, { enabled: !!willId })
-  const [presentLoginModal] = useModal(<LoginModal />)
 
   const handleWrite = useCallback(() => {
-    if (!isLogin) presentLoginModal()
-    if (isLogin) router.push('/write')
-  }, [isLogin, presentLoginModal, router])
+    router.push('/write')
+  }, [router])
 
   useEffect(() => {
     AOS.init()

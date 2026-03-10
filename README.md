@@ -119,4 +119,5 @@ src/
 
 | 날짜 | 주제 | 문서 |
 |------|------|------|
+| 2026-03-09 | 비회원 글쓰기 기능 | [docs/pr/2026-03-09-guest-write.md](docs/pr/2026-03-09-guest-write.md) |
 | 2026-03-08 | SEO, 코드 품질, 접근성 개선 | [docs/pr/2026-03-08-seo-code-quality-a11y.md](docs/pr/2026-03-08-seo-code-quality-a11y.md) |
