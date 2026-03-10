@@ -1,7 +1,5 @@
 import Page from '@components/Layout/Page'
-import dynamic from 'next/dynamic'
-
-const Main = dynamic(() => import('views/Main'))
+import Main from 'views/Main'
 
 const MainPage = () => {
   return (

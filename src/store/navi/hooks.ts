@@ -1,38 +1,32 @@
-import { useCallback } from 'react'
-import { useSelector, useDispatch } from 'react-redux'
-import { RootState } from 'store'
-import { naviActions } from '.'
+import { useShallow } from 'zustand/react/shallow'
+import { useNaviStore } from '.'
 
-export function useNaviState(): RootState['navi'] {
-  return useSelector<RootState, RootState['navi']>((state) => state.navi)
+export function useNaviState() {
+  return useNaviStore(
+    useShallow((state) => ({
+      isMenuOpen: state.isMenuOpen,
+      isScrollDown: state.isScrollDown,
+    })),
+  )
 }
 
 export function useGetIsScrollDown() {
-  return useSelector<RootState, boolean>((state) => state.navi.isScrollDown)
+  return useNaviStore((state) => state.isScrollDown)
 }
 
 export function useMenuOff() {
-  const dispatch = useDispatch()
-  const handleMenuOff = useCallback(() => {
-    dispatch(naviActions.menuOff())
-  }, [dispatch])
-
-  return handleMenuOff
+  return useNaviStore((state) => state.menuOff)
 }
+
+export function useMenuOnOff() {
+  return useNaviStore((state) => state.menuOnOff)
+}
+
 export function useIsScrollDown() {
-  const isScrollDown = useGetIsScrollDown()
-  const dispatch = useDispatch()
-  const handleSetIsScrollDown = useCallback(
-    (payload: boolean) => {
-      dispatch(naviActions.scrollDown(payload))
-    },
-    [dispatch],
+  return useNaviStore(
+    useShallow((state) => ({
+      isScrollDown: state.isScrollDown,
+      handleSetIsScrollDown: state.scrollDown,
+    })),
   )
-
-  return { isScrollDown, handleSetIsScrollDown }
 }
-
-// export function useUserInfo(): { name: string; email: string } {
-//   const { name, email } = useSelector<AppState, AppState['auth']>((state) => state.auth)
-//   return { name, email }
-// }

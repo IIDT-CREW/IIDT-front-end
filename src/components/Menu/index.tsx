@@ -1,25 +1,23 @@
 import { useRouter } from 'next/router'
-import { useMemo, useState, useEffect, useRef, useCallback } from 'react'
-import { useDispatch } from 'react-redux'
+import { useMemo, useEffect, useRef, useCallback } from 'react'
 import useScrollDown from 'hooks/useScrollDown'
 import { useModal } from 'components/Common'
 import { Heading } from '../Common'
 import Link from 'next/link'
 import cn from 'utils/cn'
 
-import { Button } from 'components/ui/button'
+import Button from 'components/Common/Button/Button'
 import MenuItem from 'components/Menu/MenuItem'
 import DropdownMenu from './DropdownMenu'
 import MenuConfig from './config'
-import { naviActions } from 'store/navi'
-import { useIsLogin } from '@/hooks/useAuth'
+import { useIsLogin } from 'hooks/useAuth'
 import { signOut } from 'next-auth/react'
 import ThemeToggleButton from '../Common/Button/ThemeToggleButton'
 
 import { MENU_HEIGHT } from 'config/constants/default'
 import MenuOutline from 'components/Common/Svg/Icons/MenuOutline'
 import LoginModal from 'components/LoginModal'
-import { useNaviState } from '@store/navi/hooks'
+import { useMenuOff, useMenuOnOff, useNaviState } from '@store/navi/hooks'
 import useOnClickOutside from '@hooks/useOnClickOutside'
 
 const MenuBoxBase = ({ className, ...props }: React.HTMLAttributes<HTMLDivElement>) => (
@@ -38,39 +36,13 @@ const TextLink = ({ className, ...props }: React.ButtonHTMLAttributes<HTMLButton
   <button type="button" className={cn('cursor-pointer bg-transparent p-0 text-left', className)} {...props} />
 )
 
-const MobileMenuBox = () => {
-  const dispatch = useDispatch()
-  const router = useRouter()
-  const handleRoute = (path: string) => {
-    router.push(path)
-    dispatch(naviActions.menuOff())
-  }
-  return (
-    <MenuBoxBase>
-      <div className="flex flex-col">
-        <TextLink className="mb-6" onClick={() => handleRoute('/')}>
-          HOME
-        </TextLink>
-        <TextLink className="mb-6" onClick={() => handleRoute('/main')}>
-          MAIN
-        </TextLink>
-        <TextLink className="mb-6" onClick={() => handleRoute('/about')}>
-          소개
-        </TextLink>
-        <TextLink className="mb-6" onClick={() => handleRoute('/memorials')}>
-          어느날의 기록
-        </TextLink>
-      </div>
-    </MenuBoxBase>
-  )
-}
-
 const MenuBox = () => {
-  const dispatch = useDispatch()
+  const menuOff = useMenuOff()
+  const menuOnOff = useMenuOnOff()
   const router = useRouter()
   const handleLogout = async () => {
     try {
-      dispatch(naviActions.menuOnOff())
+      menuOnOff()
       await signOut({ callbackUrl: '/' })
     } catch {
       // sign out failed silently
@@ -79,7 +51,7 @@ const MenuBox = () => {
 
   const handleRoute = (path: string) => {
     router.push(path)
-    dispatch(naviActions.menuOff())
+    menuOff()
   }
   return (
     <MenuBoxBase>
@@ -106,15 +78,15 @@ const MenuBox = () => {
 
 const MenuWrapper = ({ themeMode, toggleTheme }) => {
   const router = useRouter()
-  const dispatch = useDispatch()
-  const [showMenu, setShowMenu] = useState(true)
   const isLogin = useIsLogin()
   const { isScrollDown, handleSetIsScrollDown } = useScrollDown()
   const [presentLoginModal] = useModal(<LoginModal />)
   const { isMenuOpen } = useNaviState()
+  const menuOff = useMenuOff()
+  const menuOnOff = useMenuOnOff()
   const targetRef = useRef(null)
   const onClickEvent = () => {
-    dispatch(naviActions.menuOff())
+    menuOff()
   }
   useOnClickOutside(targetRef, onClickEvent)
   const handleLogin = useCallback(() => {
@@ -126,8 +98,8 @@ const MenuWrapper = ({ themeMode, toggleTheme }) => {
   }, [toggleTheme])
 
   const handleMenu = useCallback(() => {
-    dispatch(naviActions.menuOnOff())
-  }, [dispatch])
+    menuOnOff()
+  }, [menuOnOff])
 
   const isSharePage = useMemo(() => {
     return router.route === '/will/[id]'
@@ -142,7 +114,7 @@ const MenuWrapper = ({ themeMode, toggleTheme }) => {
       <div
         className="fixed left-0 transition-all duration-500 w-full"
         style={{
-          top: showMenu ? 0 : `-${MENU_HEIGHT}px`,
+          top: 0,
           height: `${MENU_HEIGHT}px`,
           transform: isScrollDown ? 'translate3d(0px, -100%, 0px)' : 'translate3d(0px, 0px, 0px)',
         }}
@@ -152,24 +124,25 @@ const MenuWrapper = ({ themeMode, toggleTheme }) => {
           className={cn(
             'transition-all duration-500 flex justify-between items-center w-full h-full',
             'bg-[var(--color-bg)] border-b border-[var(--color-card-border)]',
-            'translate-z-0 px-4',
-            isSharePage && 'bg-[rgba(19,23,64,0.5)] backdrop-blur-[8px] border-none [&_div]:!text-white [&_svg]:fill-white',
+            'translate-z-0 px-4 sm:px-6 lg:px-8',
+            isSharePage &&
+              'bg-[rgba(19,23,64,0.5)] backdrop-blur-[8px] border-none [&_div]:!text-white [&_svg]:fill-white',
           )}
         >
-          <div className="flex items-center justify-center">
-            <div className="cursor-pointer pr-5">
+          <div className="flex min-w-0 flex-1 items-center gap-4 sm:gap-6">
+            <div className="shrink-0 cursor-pointer pr-2 sm:pr-4">
               <Link href={isLogin ? '/main' : '/'}>
-                <Heading className="font-[Cormorant]">IIDT</Heading>
+                <Heading className="font-[Cormorant] text-[28px] sm:text-[32px]">IIDT</Heading>
               </Link>
             </div>
-            <div className="flex">
+            <div className="shrink-0">
               <DropdownMenu items={[]}>
                 <MenuItem isActive={router?.asPath?.includes('/about')} href={'/about'}>
                   소개
                 </MenuItem>
               </DropdownMenu>
             </div>
-            <div className="hidden sm:flex">
+            <div className="hidden items-center gap-1 sm:flex lg:gap-2">
               {MenuConfig?.map((menuItem, i) => {
                 return (
                   <DropdownMenu key={`${menuItem}-${i}`} items={menuItem?.items}>
@@ -181,8 +154,7 @@ const MenuWrapper = ({ themeMode, toggleTheme }) => {
               })}
             </div>
           </div>
-          <div className="flex items-center justify-center">
-            <div className="h-10 w-10 rounded-full" />
+          <div className="ml-4 flex shrink-0 items-center justify-end gap-3 sm:gap-4">
             <ThemeToggleButton selected={themeMode === 'dark'} onClick={handleDark} />
             {isLogin ? (
               <button

@@ -1,7 +1,7 @@
 @import 'tailwindcss';
 
 @plugin 'tailwindcss-animate';
-@import "tw-animate-css";
+@import 'tw-animate-css';
 
 @custom-variant dark (&:is(.dark *));
 
@@ -29,6 +29,7 @@
   --color-grayscale-0: #ffffff;
   --color-grayscale-1: #eceef0;
   --color-grayscale-2: #e8e9eb;
+  --color-grayscale-3: #dee0e3;
   --color-grayscale-4: #d4d4d4;
   --color-grayscale-5: #a4a2a3;
   --color-grayscale-6: #2e3237;
@@ -38,10 +39,13 @@
   --color-light-bg: #ffffff;
   --color-light-bg-disabled: #e9eaeb;
   --color-light-bg-alt: #ffffff;
+  --color-light-bg-alt2: rgba(255, 255, 255, 0.7);
+  --color-card-border: #e7e3eb;
   --color-light-card-border: #e7e3eb;
   --color-light-dropdown: #f6f6f6;
   --color-light-dropdown-deep: #eeeeee;
   --color-light-input: #ffffff;
+  --color-light-input-secondary: #d7caec;
   --color-light-tertiary: #eff4f5;
   --color-light-text: #000000;
   --color-light-text-secondary: #2e3237;
@@ -52,10 +56,12 @@
   --color-dark-bg: #000000;
   --color-dark-bg-disabled: #3c3742;
   --color-dark-bg-alt: #000000;
+  --color-dark-bg-alt2: rgba(39, 38, 44, 0.7);
   --color-dark-card-border: #383241;
   --color-dark-dropdown: #1e1d20;
   --color-dark-dropdown-deep: #100c18;
   --color-dark-input: #ffffff;
+  --color-dark-input-secondary: #262130;
   --color-dark-tertiary: #353547;
   --color-dark-text: #ffffff;
   --color-dark-text-secondary: #abb2bf;
@@ -70,7 +76,7 @@
   --color-theme-text-subtle: var(--color-text-subtle);
   --color-theme-card-border: var(--color-card-border);
   --color-theme-dropdown: var(--color-dropdown);
-  --color-theme-input: var(--color-input);
+  --color-theme-input: var(--color-surface-input);
 
   /* Custom shadows */
   --shadow-level1: 0px 2px 12px -8px rgba(25, 19, 38, 0.1), 0px 1px 1px rgba(25, 19, 38, 0.05);
@@ -86,9 +92,9 @@
   --radius-card: 12px;
 
   /* Custom z-index */
-  --z-ribbon: 9;
-  --z-dropdown: 10;
-  --z-modal: 100;
+  --z-index-ribbon: 9;
+  --z-index-dropdown: 10;
+  --z-index-modal: 100;
 
   /* Custom max-width */
   --width-site: 1200px;
@@ -103,7 +109,7 @@
   --color-text-subtle: #7c7c7c;
   --color-card-border: #e7e3eb;
   --color-dropdown: #f6f6f6;
-  --color-input: #ffffff;
+  --color-surface-input: #ffffff;
   --color-tertiary: #eff4f5;
   --color-contrast: #191326;
   --color-inverted-contrast: #ffffff;
@@ -116,9 +122,9 @@
   --popover: oklch(1 0 0);
   --popover-foreground: oklch(0.145 0 0);
   --primary: oklch(0.205 0 0);
-  --primary-foreground: oklch(0.985 0 0);
+  --primary-foreground: oklch(1 0 0);
   --secondary: oklch(0.97 0 0);
-  --secondary-foreground: oklch(0.205 0 0);
+  --secondary-foreground: oklch(1 0 0);
   --muted: oklch(0.97 0 0);
   --muted-foreground: oklch(0.556 0 0);
   --accent: oklch(0.97 0 0);
@@ -153,7 +159,7 @@
   --color-inverted-contrast: #191326;
   --color-text-primary: #ffffff;
   --color-dropdown: #1e1d20;
-  --color-input: #ffffff;
+  --color-surface-input: #ffffff;
   --color-tertiary: #353547;
   --background: oklch(0.145 0 0);
   --foreground: oklch(0.985 0 0);
@@ -162,9 +168,9 @@
   --popover: oklch(0.205 0 0);
   --popover-foreground: oklch(0.985 0 0);
   --primary: oklch(0.922 0 0);
-  --primary-foreground: oklch(0.205 0 0);
+  --primary-foreground: oklch(1 0 0);
   --secondary: oklch(0.269 0 0);
-  --secondary-foreground: oklch(0.985 0 0);
+  --secondary-foreground: oklch(1 0 0);
   --muted: oklch(0.269 0 0);
   --muted-foreground: oklch(0.708 0 0);
   --accent: oklch(0.269 0 0);
@@ -191,6 +197,20 @@
 @font-face {
   font-family: 'nanummyeongjo';
   src: url('/fonts/NanumMyeongjo-Regular.ttf');
+  font-weight: normal;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: 'Nanum Myeongjo';
+  src: url('/fonts/NanumMyeongjo-Regular.ttf');
+  font-weight: normal;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: 'SUIT';
+  src: url('https://cdn.jsdelivr.net/gh/projectnoonnu/noonfonts_suit@1.0/SUIT-Medium.woff2') format('woff2');
   font-weight: normal;
   font-style: normal;
 }
@@ -239,19 +259,87 @@
 }
 
 /* ===== Reset CSS (migrated from ResetCSS.tsx) ===== */
-html, body, div, span, applet, object, iframe,
-h1, h2, h3, h4, h5, h6, p, blockquote, pre,
-a, abbr, acronym, address, big, cite, code,
-del, dfn, em, img, ins, kbd, q, s, samp,
-small, strike, strong, sub, sup, tt, var,
-b, u, i, center,
-dl, dt, dd, ol, ul, li,
-fieldset, form, label, legend,
-table, caption, tbody, tfoot, thead, tr, th, td,
-article, aside, canvas, details, embed,
-figure, figcaption, footer, header, hgroup,
-menu, nav, output, ruby, section, summary,
-time, mark, audio, video {
+html,
+body,
+div,
+span,
+applet,
+object,
+iframe,
+h1,
+h2,
+h3,
+h4,
+h5,
+h6,
+p,
+blockquote,
+pre,
+a,
+abbr,
+acronym,
+address,
+big,
+cite,
+code,
+del,
+dfn,
+em,
+img,
+ins,
+kbd,
+q,
+s,
+samp,
+small,
+strike,
+strong,
+sub,
+sup,
+tt,
+var,
+b,
+u,
+i,
+center,
+dl,
+dt,
+dd,
+ol,
+ul,
+li,
+fieldset,
+form,
+label,
+legend,
+table,
+caption,
+tbody,
+tfoot,
+thead,
+tr,
+th,
+td,
+article,
+aside,
+canvas,
+details,
+embed,
+figure,
+figcaption,
+footer,
+header,
+hgroup,
+menu,
+nav,
+output,
+ruby,
+section,
+summary,
+time,
+mark,
+audio,
+video {
   margin: 0;
   padding: 0;
   border: 0;
@@ -259,8 +347,17 @@ time, mark, audio, video {
   vertical-align: baseline;
 }
 
-article, aside, details, figcaption, figure,
-footer, header, hgroup, menu, nav, section {
+article,
+aside,
+details,
+figcaption,
+figure,
+footer,
+header,
+hgroup,
+menu,
+nav,
+section {
   display: block;
 }
 
@@ -271,18 +368,22 @@ body {
   padding: 0;
 }
 
-ol, ul {
+ol,
+ul {
   list-style: disc;
   list-style-position: inside;
 }
 
-blockquote, q {
+blockquote,
+q {
   quotes: none;
 }
 
-blockquote:before, blockquote:after,
-q:before, q:after {
-  content: "";
+blockquote:before,
+blockquote:after,
+q:before,
+q:after {
+  content: '';
   content: none;
 }
 
@@ -296,11 +397,13 @@ a {
   text-decoration: none;
 }
 
-[role="button"] {
+[role='button'] {
   cursor: pointer;
 }
 
-*, *::before, *::after {
+*,
+*::before,
+*::after {
   box-sizing: border-box;
 }
 
@@ -316,7 +419,7 @@ input::-webkit-inner-spin-button {
   margin: 0;
 }
 
-input[type=number] {
+input[type='number'] {
   -moz-appearance: textfield;
 }
 
@@ -330,25 +433,25 @@ input[type=number] {
 }
 
 ::-webkit-scrollbar-track {
-  box-shadow: inset 0 0 5px var(--color-input);
+  box-shadow: inset 0 0 5px var(--color-surface-input);
   border-radius: 10px;
 }
 
-input[type=range] {
+input[type='range'] {
   -webkit-appearance: none;
   width: 100%;
   background: transparent;
 }
 
-input[type=range]::-webkit-slider-thumb {
+input[type='range']::-webkit-slider-thumb {
   -webkit-appearance: none;
 }
 
-input[type=range]:focus {
+input[type='range']:focus {
   outline: none;
 }
 
-input[type=range]::-ms-track {
+input[type='range']::-ms-track {
   width: 100%;
   cursor: pointer;
   background: transparent;
@@ -369,65 +472,145 @@ body img {
 
 /* ===== Keyframes ===== */
 @keyframes skeletonWaves {
-  from { left: -150px; }
-  to { left: 100%; }
+  from {
+    left: -150px;
+  }
+  to {
+    left: 100%;
+  }
 }
 
 @keyframes skeletonPulse {
-  0% { opacity: 1; }
-  50% { opacity: 0.4; }
-  100% { opacity: 1; }
+  0% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0.4;
+  }
+  100% {
+    opacity: 1;
+  }
+}
+
+@keyframes promotedGradient {
+  0% {
+    background-position: 50% 0%;
+  }
+  50% {
+    background-position: 50% 100%;
+  }
+  100% {
+    background-position: 50% 0%;
+  }
 }
 
 @keyframes fadeIn {
-  0% { opacity: 0; }
-  100% { opacity: 1; }
+  0% {
+    opacity: 0;
+  }
+  100% {
+    opacity: 1;
+  }
 }
 
 @keyframes fadeOut {
-  0% { opacity: 1; }
-  100% { opacity: 0; }
+  0% {
+    opacity: 1;
+  }
+  100% {
+    opacity: 0;
+  }
 }
 
 @keyframes appearAnimation {
-  from { opacity: 0; }
-  to { opacity: 1; }
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
 }
 
 @keyframes disappearAnimation {
-  from { opacity: 1; }
-  to { opacity: 0; }
+  from {
+    opacity: 1;
+  }
+  to {
+    opacity: 0;
+  }
+}
+
+@keyframes promotedGradient {
+  0% {
+    background-position: 50% 0%;
+  }
+  50% {
+    background-position: 50% 100%;
+  }
+  100% {
+    background-position: 50% 0%;
+  }
 }
 
 @keyframes rotate {
-  from { transform: rotate(0deg); }
-  to { transform: rotate(360deg); }
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
 }
 
 @keyframes float1 {
-  0%, 100% { transform: translate(0, 0); }
-  50% { transform: translate(3px, 15px); }
+  0%,
+  100% {
+    transform: translate(0, 0);
+  }
+  50% {
+    transform: translate(3px, 15px);
+  }
 }
 
 @keyframes float2 {
-  0%, 100% { transform: translate(0, 0); }
-  50% { transform: translate(5px, 10px); }
+  0%,
+  100% {
+    transform: translate(0, 0);
+  }
+  50% {
+    transform: translate(5px, 10px);
+  }
 }
 
 @keyframes float3 {
-  0%, 100% { transform: translate(0, 0); }
-  50% { transform: translate(6px, 5px); }
+  0%,
+  100% {
+    transform: translate(0, 0);
+  }
+  50% {
+    transform: translate(6px, 5px);
+  }
 }
 
 @keyframes float4 {
-  0%, 100% { transform: translate(0, 0); }
-  50% { transform: translate(4px, 12px); }
+  0%,
+  100% {
+    transform: translate(0, 0);
+  }
+  50% {
+    transform: translate(4px, 12px);
+  }
 }
 
 @keyframes flyingAnim {
-  from { transform: translate(0, 0px); }
-  50% { transform: translate(-5px, -5px); }
-  to { transform: translate(0, 0px); }
+  from {
+    transform: translate(0, 0px);
+  }
+  50% {
+    transform: translate(-5px, -5px);
+  }
+  to {
+    transform: translate(0, 0px);
+  }
 }
 
 .box {
@@ -485,9 +668,7 @@ body img {
   --color-card-foreground: var(--card-foreground);
   --color-popover: var(--popover);
   --color-popover-foreground: var(--popover-foreground);
-  --color-primary: var(--primary);
   --color-primary-foreground: var(--primary-foreground);
-  --color-secondary: var(--secondary);
   --color-secondary-foreground: var(--secondary-foreground);
   --color-muted: var(--muted);
   --color-muted-foreground: var(--muted-foreground);
@@ -517,25 +698,25 @@ body img {
   z-index: 0;
 }
 
-.animated-icon-component[data-has-fill-icon="true"] div,
-.animated-icon-component[data-has-fill-icon="true"] svg {
+.animated-icon-component[data-has-fill-icon='true'] div,
+.animated-icon-component[data-has-fill-icon='true'] svg {
   position: absolute;
   left: 0;
   bottom: 0;
   overflow: hidden;
 }
 
-.animated-icon-component[data-has-fill-icon="true"] > div:last-child {
+.animated-icon-component[data-has-fill-icon='true'] > div:last-child {
   height: 0;
   z-index: 5;
   transition: height 0.25s ease;
 }
 
-.animated-icon-component[data-active="true"] > div:last-child {
+.animated-icon-component[data-active='true'] > div:last-child {
   width: 100%;
 }
 
-.animated-icon-component[data-active="true"][data-has-fill-icon="true"] > div:last-child {
+.animated-icon-component[data-active='true'][data-has-fill-icon='true'] > div:last-child {
   height: 100%;
 }
 

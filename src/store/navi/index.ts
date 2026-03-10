@@ -1,23 +1,17 @@
-import { createSlice } from '@reduxjs/toolkit'
+import { create } from 'zustand'
 
-export const naviSlice = createSlice({
-  name: 'navi',
-  initialState: {
-    isMenuOpen: false,
-    isScrollDown: false,
-  },
-  reducers: {
-    menuOnOff: (state) => {
-      state.isMenuOpen = !state.isMenuOpen
-    },
-    menuOff: (state) => {
-      state.isMenuOpen = false
-    },
-    scrollDown: (state, action) => {
-      state.isScrollDown = action.payload
-    },
-  },
-})
+export interface NaviStoreState {
+  isMenuOpen: boolean
+  isScrollDown: boolean
+  menuOnOff: () => void
+  menuOff: () => void
+  scrollDown(payload: boolean): void
+}
 
-export const naviActions = { ...naviSlice.actions }
-export default naviSlice
+export const useNaviStore = create<NaviStoreState>((set) => ({
+  isMenuOpen: false,
+  isScrollDown: false,
+  menuOnOff: () => set((state) => ({ isMenuOpen: !state.isMenuOpen })),
+  menuOff: () => set({ isMenuOpen: false }),
+  scrollDown: (payload) => set({ isScrollDown: payload }),
+}))

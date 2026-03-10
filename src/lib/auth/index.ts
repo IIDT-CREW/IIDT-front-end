@@ -4,6 +4,7 @@ import { createSupabaseServerClient } from '@/lib/supabase/server'
 
 export const { handlers, auth, signIn, signOut } = NextAuth({
   session: { strategy: 'jwt' },
+  secret: process.env.AUTH_SECRET ?? 'iidt-local-dev-secret',
   providers: [
     Google({
       clientId: process.env.AUTH_GOOGLE_ID,

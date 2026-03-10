@@ -1,11 +1,11 @@
 import { MENU_HEIGHT } from 'config/constants/default'
 import { useRouter } from 'next/router'
-import { useDispatch } from 'react-redux'
-import { naviActions } from 'store/navi'
+import { useMenuOff, useMenuOnOff } from 'store/navi/hooks'
 import { signOut } from 'next-auth/react'
 
 const MenuWrapper = () => {
-  const dispatch = useDispatch()
+  const menuOff = useMenuOff()
+  const menuOnOff = useMenuOnOff()
   const router = useRouter()
 
   const returnMarginTop = () => {
@@ -16,7 +16,7 @@ const MenuWrapper = () => {
 
   const handleLogout = async () => {
     try {
-      dispatch(naviActions.menuOnOff())
+      menuOnOff()
       await signOut({ callbackUrl: '/' })
     } catch {
       // sign out failed silently
@@ -25,7 +25,7 @@ const MenuWrapper = () => {
 
   const handleRoute = (path: string) => {
     router.push(path)
-    dispatch(naviActions.menuOff())
+    menuOff()
   }
   return (
     <div className="absolute p-2.5" style={{ marginTop: `${returnMarginTop()}px` }}>
