@@ -1,6 +1,7 @@
 import React from 'react'
 import { cn } from '@lib/utils'
 import { XIcon, ArrowLeftIcon } from 'lucide-react'
+import { Button } from 'components/ui/button'
 import { ModalProps } from './types'
 
 interface ModalHeaderProps {
@@ -46,21 +47,24 @@ ModalBody.displayName = 'ModalBody'
 
 export const ModalCloseButton: React.FC<{ onDismiss: ModalProps['onDismiss'] }> = ({ onDismiss }) => {
   return (
-    <button
+    <Button
+      type="button"
+      variant="ghost"
+      size="icon"
       onClick={onDismiss}
-      className="absolute right-4 top-6 p-2 rounded-md hover:bg-accent transition-colors"
+      className="absolute right-4 top-6"
       aria-label="Close the dialog"
     >
       <XIcon className="w-5 h-5 text-foreground" />
-    </button>
+    </Button>
   )
 }
 
 export const ModalBackButton: React.FC<{ onBack: ModalProps['onBack'] }> = ({ onBack }) => {
   return (
-    <button onClick={onBack} className="p-2 mr-2 rounded-md hover:bg-accent transition-colors" aria-label="Go back">
+    <Button type="button" variant="ghost" size="icon" onClick={onBack} className="mr-2" aria-label="Go back">
       <ArrowLeftIcon className="w-5 h-5 text-primary" />
-    </button>
+    </Button>
   )
 }
 

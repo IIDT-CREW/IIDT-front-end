@@ -1,6 +1,5 @@
 import moment from 'moment'
 import { useState, useEffect } from 'react'
-import { Box, Text, Flex } from 'components/Common'
 
 const CountDown = ({ height = '550px', isCountDown = true, text = '' }) => {
   let timer: any = null
@@ -18,29 +17,27 @@ const CountDown = ({ height = '550px', isCountDown = true, text = '' }) => {
   const leftTime = nextDay.unix() - time.unix()
   //const formatted = moment.utc(leftTime * 1000).format('HH:mm:ss')
   return (
-    <Box paddingTop="">
-      <Box width="100%" height={height} position="relative">
+    <div>
+      <div className="relative w-full" style={{ height }}>
         <img
           src="/images/home/matthew-mendez.jpg"
           alt="road"
           className="absolute w-full h-full -z-[1] object-cover blur-[2px]"
         />
-        <Box width="100%" height={height} position="relative">
-          <Flex justifyContent="center" alignItems="center" height="100%" position="relative">
+        <div className="relative h-full w-full">
+          <div className="relative flex h-full items-center justify-center">
             {text === '' && (
-              <Text bold fontSize="72px" color="#fff">
+              <p className="text-[72px] leading-none font-bold text-white">
                 {isCountDown ? moment.utc(leftTime * 1000).format('HH:mm:ss') : moment().format('HH:mm:ss')}
-              </Text>
+              </p>
             )}
             {text !== '' && (
-              <Text bold fontSize="72px" color="#fff">
-                {text}
-              </Text>
+              <p className="text-[72px] leading-none font-bold text-white">{text}</p>
             )}
-          </Flex>
-        </Box>
-      </Box>
-    </Box>
+          </div>
+        </div>
+      </div>
+    </div>
   )
 }
 

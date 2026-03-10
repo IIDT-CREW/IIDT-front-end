@@ -1,8 +1,6 @@
 import React, { useEffect, useState } from 'react'
 import { usePopper } from 'react-popper'
 import useOnClickOutside from 'hooks/useOnClickOutside'
-import { Box } from '../Common/Box'
-import Text from '../Common/Text/Text'
 import { DropdownMenuItemType, DropdownMenuProps } from './types'
 import Link from 'next/link'
 import cn from 'utils/cn'
@@ -17,7 +15,7 @@ export const StyledDropdownMenu = ({
   <div
     className={cn(
       'bg-[var(--color-bg)] border border-[var(--color-card-border)] rounded-2xl py-1 pointer-events-auto z-[1001]',
-      isBottomNav ? 'w-[calc(100%-32px)]' : 'w-[280px]',
+      isBottomNav ? 'w-[calc(100%_-_32px)]' : 'w-[280px]',
       !isOpen && 'pointer-events-none invisible',
       className,
     )}
@@ -133,14 +131,14 @@ const DropdownMenu: React.FC<DropdownMenuProps> = ({
   )
 
   return (
-    <Box ref={setTargetRef} {...props}>
-      <Box
+    <div ref={setTargetRef} {...props}>
+      <div
         onPointerDown={() => {
           setIsOpen((s) => !s)
         }}
       >
         {children}
-      </Box>
+      </div>
       {hasItems && (
         <StyledDropdownMenu
           style={styles.popper}
@@ -173,7 +171,7 @@ const DropdownMenu: React.FC<DropdownMenuProps> = ({
             })}
         </StyledDropdownMenu>
       )}
-    </Box>
+    </div>
   )
 }
 

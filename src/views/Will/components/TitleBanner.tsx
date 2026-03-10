@@ -1,5 +1,4 @@
 import { useCallback, useState } from 'react'
-import { Box, Text, Flex } from 'components/Common'
 import moment from 'moment'
 import StyledImage from 'components/Common/Image/StyledImage'
 import Typing from 'views/Home/components/Typing'
@@ -19,8 +18,8 @@ const TitleBanner = ({ height, title, date, imagePath }: TitleBannerProps) => {
   }, [])
 
   return (
-    <Box paddingTop="">
-      <Box width="100%" height={height} position="relative">
+    <div>
+      <div className="relative w-full" style={{ height }}>
         <StyledImage
           isFill
           src={imagePath}
@@ -28,8 +27,8 @@ const TitleBanner = ({ height, title, date, imagePath }: TitleBannerProps) => {
           position="fixed"
           className="absolute w-full h-full -z-[1] object-cover bg-[linear-gradient(0deg,rgba(255,255,255,0.2),rgba(255,255,255,0.2))] [clip-path:inset(0)]"
         />
-        <Box width="100%" height={height} position="relative">
-          <Flex flexDirection="column" justifyContent="center" alignItems="center" height="100%" position="relative">
+        <div className="relative h-full w-full">
+          <div className="relative flex h-full flex-col items-center justify-center">
             <div
               className="dark:px-2.5 text-[18px] lg:text-[32px] font-semibold bg-black text-white w-4/5 text-center leading-normal"
             >
@@ -47,10 +46,10 @@ const TitleBanner = ({ height, title, date, imagePath }: TitleBannerProps) => {
             >
               {moment(date).format('YYYY년 MM월 DD일 hh시 mm분')}
             </div>
-          </Flex>
-        </Box>
-      </Box>
-    </Box>
+          </div>
+        </div>
+      </div>
+    </div>
   )
 }
 

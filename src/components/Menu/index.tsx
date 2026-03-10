@@ -2,13 +2,12 @@ import { useRouter } from 'next/router'
 import { useMemo, useState, useEffect, useRef, useCallback } from 'react'
 import { useDispatch } from 'react-redux'
 import useScrollDown from 'hooks/useScrollDown'
-import Flex from '../Common/Box/Flex'
-import { Box, Text, useModal } from 'components/Common'
+import { useModal } from 'components/Common'
 import { Heading } from '../Common'
 import Link from 'next/link'
 import cn from 'utils/cn'
 
-import { Button } from 'components/Common/Button'
+import { Button } from 'components/ui/button'
 import MenuItem from 'components/Menu/MenuItem'
 import DropdownMenu from './DropdownMenu'
 import MenuConfig from './config'
@@ -35,8 +34,8 @@ const MenuBoxBase = ({ className, ...props }: React.HTMLAttributes<HTMLDivElemen
   />
 )
 
-const TextLink = ({ className, ...props }: React.HTMLAttributes<HTMLDivElement>) => (
-  <Text className={cn('cursor-pointer', className)} {...props} />
+const TextLink = ({ className, ...props }: React.ButtonHTMLAttributes<HTMLButtonElement>) => (
+  <button type="button" className={cn('cursor-pointer bg-transparent p-0 text-left', className)} {...props} />
 )
 
 const MobileMenuBox = () => {
@@ -48,20 +47,20 @@ const MobileMenuBox = () => {
   }
   return (
     <MenuBoxBase>
-      <Flex flexDirection={'column'}>
-        <TextLink mb="24px" onClick={() => handleRoute('/')}>
+      <div className="flex flex-col">
+        <TextLink className="mb-6" onClick={() => handleRoute('/')}>
           HOME
         </TextLink>
-        <TextLink mb="24px" onClick={() => handleRoute('/main')}>
+        <TextLink className="mb-6" onClick={() => handleRoute('/main')}>
           MAIN
         </TextLink>
-        <TextLink mb="24px" onClick={() => handleRoute('/about')}>
+        <TextLink className="mb-6" onClick={() => handleRoute('/about')}>
           소개
         </TextLink>
-        <TextLink mb="24px" onClick={() => handleRoute('/memorials')}>
+        <TextLink className="mb-6" onClick={() => handleRoute('/memorials')}>
           어느날의 기록
         </TextLink>
-      </Flex>
+      </div>
     </MenuBoxBase>
   )
 }
@@ -84,23 +83,23 @@ const MenuBox = () => {
   }
   return (
     <MenuBoxBase>
-      <Flex flexDirection={'column'}>
-        <TextLink mb="24px" onClick={() => handleRoute('/')}>
+      <div className="flex flex-col">
+        <TextLink className="mb-6" onClick={() => handleRoute('/')}>
           HOME
         </TextLink>
-        <TextLink mb="24px" onClick={() => handleRoute('/main')}>
+        <TextLink className="mb-6" onClick={() => handleRoute('/main')}>
           MAIN
         </TextLink>
-        <TextLink mb="24px" onClick={() => handleRoute('/about')}>
+        <TextLink className="mb-6" onClick={() => handleRoute('/about')}>
           소개
         </TextLink>
-        <TextLink mb="24px" onClick={() => handleRoute('/memorials')}>
+        <TextLink className="mb-6" onClick={() => handleRoute('/memorials')}>
           어느날의 기록
         </TextLink>
-        <TextLink mb="24px" onClick={handleLogout}>
+        <TextLink className="mb-6" onClick={handleLogout}>
           로그아웃
         </TextLink>
-      </Flex>
+      </div>
     </MenuBoxBase>
   )
 }
@@ -157,20 +156,20 @@ const MenuWrapper = ({ themeMode, toggleTheme }) => {
             isSharePage && 'bg-[rgba(19,23,64,0.5)] backdrop-blur-[8px] border-none [&_div]:!text-white [&_svg]:fill-white',
           )}
         >
-          <Flex justifyContent="center" alignItems="center">
-            <Flex className="cursor-pointer pr-5">
+          <div className="flex items-center justify-center">
+            <div className="cursor-pointer pr-5">
               <Link href={isLogin ? '/main' : '/'}>
                 <Heading className="font-[Cormorant]">IIDT</Heading>
               </Link>
-            </Flex>
-            <Flex>
+            </div>
+            <div className="flex">
               <DropdownMenu items={[]}>
                 <MenuItem isActive={router?.asPath?.includes('/about')} href={'/about'}>
                   소개
                 </MenuItem>
               </DropdownMenu>
-            </Flex>
-            <Flex className="hidden sm:flex">
+            </div>
+            <div className="hidden sm:flex">
               {MenuConfig?.map((menuItem, i) => {
                 return (
                   <DropdownMenu key={`${menuItem}-${i}`} items={menuItem?.items}>
@@ -180,10 +179,10 @@ const MenuWrapper = ({ themeMode, toggleTheme }) => {
                   </DropdownMenu>
                 )
               })}
-            </Flex>
-          </Flex>
-          <Flex justifyContent="center" alignItems="center">
-            <Box width="40px" height="40px" borderRadius="50%"></Box>
+            </div>
+          </div>
+          <div className="flex items-center justify-center">
+            <div className="h-10 w-10 rounded-full" />
             <ThemeToggleButton selected={themeMode === 'dark'} onClick={handleDark} />
             {isLogin ? (
               <button
@@ -198,11 +197,11 @@ const MenuWrapper = ({ themeMode, toggleTheme }) => {
               <Button onClick={handleLogin}>시작하기</Button>
             )}
             {isMenuOpen && (
-              <Box position={'relative'} ref={targetRef}>
+              <div className="relative" ref={targetRef}>
                 <MenuBox />
-              </Box>
+              </div>
             )}
-          </Flex>
+          </div>
         </nav>
       </div>
     </div>

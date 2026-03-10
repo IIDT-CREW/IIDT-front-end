@@ -1,5 +1,6 @@
 import React from 'react'
-import { Modal, ModalProps, Flex, Box, Text } from 'components/Common'
+import { Modal, ModalProps } from 'components/Common'
+import { Button } from 'components/ui/button'
 import { signIn } from 'next-auth/react'
 import { useRouter } from 'next/router'
 import cn from 'utils/cn'
@@ -28,10 +29,11 @@ interface LoginButtonProps extends React.ButtonHTMLAttributes<HTMLButtonElement>
 }
 
 const LoginButton = ({ loginType, className, ...props }: LoginButtonProps) => (
-  <button
+  <Button
+    size="md"
     className={cn(
-      'h-10 w-[310px] mt-2.5 border-none cursor-pointer pl-0 align-middle flex items-center justify-center',
-      'focus:shadow-[0px_0px_8px_rgba(0,0,0,0.2)]',
+      'mt-2.5 h-10 w-[310px] justify-center pl-0',
+      'focus-visible:ring-[0px] focus-visible:ring-offset-0 focus:shadow-[0px_0px_8px_rgba(0,0,0,0.2)]',
       '[&_span]:w-[264px]',
       loginStyles[loginType],
       className,
@@ -57,7 +59,7 @@ const LoginModal: React.FC<ModalProps> = ({ onDismiss, ...props }) => {
 
   return (
     <Modal title="로그인이 필요해요" onDismiss={onDismiss} {...props} minWidth="272px">
-      <Flex justifyContent="center" alignItems="center" flexDirection="column">
+      <div className="flex flex-col items-center justify-center">
         <LoginButton
           loginType={EType.KAKAO}
           onClick={() => signIn('kakao', { callbackUrl })}
@@ -73,15 +75,11 @@ const LoginModal: React.FC<ModalProps> = ({ onDismiss, ...props }) => {
           <span>Google 계정으로 시작하기</span>
         </LoginButton>
 
-        <Box mt="64px" mb="32px">
-          <Text fontSize="10px" color="#A4A2A3" className="underline">
-            개인정보 처리방침
-          </Text>
-          <Text fontSize="10px" color="#A4A2A3" className="underline">
-            서비스 이용약관
-          </Text>
-        </Box>
-      </Flex>
+        <div className="mb-8 mt-16">
+          <p className="text-[10px] text-[#A4A2A3] underline">개인정보 처리방침</p>
+          <p className="text-[10px] text-[#A4A2A3] underline">서비스 이용약관</p>
+        </div>
+      </div>
     </Modal>
   )
 }

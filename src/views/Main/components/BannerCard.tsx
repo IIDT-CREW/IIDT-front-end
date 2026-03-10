@@ -1,6 +1,5 @@
 import { useState, useEffect } from 'react'
 import useClock from 'hooks/useClock'
-import { Box, Text, Flex } from 'components/Common'
 import useProgressiveImage from 'hooks/useProgressiveImage'
 import { Skeleton } from 'components/Common/Skeleton'
 
@@ -60,36 +59,29 @@ const BannerCard = ({ height = '231px' }) => {
   const { firstLine, secondLine, author, imagePath } = bannerJson[bannerIndex]
   const loaded = useProgressiveImage(imagePath)
   return (
-    <Box paddingTop="">
-      <Box width="100%" height={height} position="relative">
-        <Box width="100%" height={height} position="relative" background={`url(${loaded}) 50%/ cover`}>
+    <div>
+      <div className="relative w-full" style={{ height }}>
+        <div className="relative h-full w-full bg-center bg-cover" style={{ backgroundImage: loaded ? `url(${loaded})` : undefined }}>
           {!loaded && <Skeleton animation={'pulse'} width="100%" height="100%" />}
-          <Flex
-            flexDirection="column"
-            justifyContent="center"
-            alignItems="center"
-            height="100%"
-            position="relative"
-            background="inherit"
-            className="text-transparent bg-clip-text text-center [filter:invert(1)_grayscale(1)_contrast(7)_drop-shadow(2px_2px_2px_black)]"
+          <div
+            className="relative flex h-full flex-col items-center justify-center bg-clip-text text-center text-transparent [filter:invert(1)_grayscale(1)_contrast(7)_drop-shadow(2px_2px_2px_black)]"
+            style={{ background: 'inherit' }}
           >
-            <Text className="dark:px-2.5 text-[14px] lg:text-[18px]" color="inherit" bold>
+            <p className="dark:px-2.5 text-[14px] leading-relaxed font-semibold lg:text-[18px]">
               {firstLine}
-            </Text>
-            <Text className="dark:px-2.5 text-[14px] lg:text-[18px]" color="inherit" bold>
+            </p>
+            <p className="dark:px-2.5 text-[14px] leading-relaxed font-semibold lg:text-[18px]">
               {secondLine}
-            </Text>
-            <Text className="dark:px-2.5 text-[14px] lg:text-[18px]" color="inherit" bold>
+            </p>
+            <p className="dark:px-2.5 text-[14px] leading-relaxed font-semibold lg:text-[18px]">
               {author}
-            </Text>
+            </p>
 
-            <Text bold fontSize="48px" color="inherit">
-              {time}
-            </Text>
-          </Flex>
-        </Box>
-      </Box>
-    </Box>
+            <div className="text-[48px] leading-none font-semibold">{time}</div>
+          </div>
+        </div>
+      </div>
+    </div>
   )
 }
 

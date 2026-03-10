@@ -37,7 +37,7 @@ const TwText = forwardRef<HTMLElement, TwTextProps>(
           // Font weight
           bold ? 'font-semibold' : 'font-normal',
           // Font size
-          small ? 'text-sm' : 'text-lg',
+          small ? 'text-sm' : 'text-base',
           // Ellipsis
           ellipsis && 'whitespace-nowrap overflow-hidden text-ellipsis',
           // Color

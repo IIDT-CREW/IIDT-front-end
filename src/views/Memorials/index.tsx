@@ -1,11 +1,10 @@
-import { useEffect, useContext, useMemo, useState } from 'react'
-import { Box, Flex, Heading } from 'components/Common'
+import { useContext, useMemo } from 'react'
+import { Heading } from 'components/Common'
 import WillCard from 'components/WillCard'
-import { useQueryClient } from '@tanstack/react-query'
 import { toastContext } from 'contexts/Toast'
-import { DEFAULT_PAGE_NO, DEFAULT_PAGE_SIZE } from 'config/constants/default'
+import { DEFAULT_PAGE_SIZE } from 'config/constants/default'
 import useIntersect from './hooks/useIntersect'
-import { useInfiniteWillList, useDeleteWill, queryKeys } from '@/queries'
+import { useInfiniteWillList, useDeleteWill } from '@/queries'
 import { Skeleton } from 'components/Common/Skeleton'
 import moment from 'moment'
 import isEmpty from 'lodash/isEmpty'
@@ -73,13 +72,12 @@ const getWillTitle = (will: any) => {
 
 const WillContainerHeader = ({ dateTitle }: { dateTitle: string }) => {
   return (
-    <Box mt="20px" mb="20px">
+    <div className="my-5">
       <Heading textAlign={'center'}>어느 {dateTitle}에 남겨진 기억.</Heading>
-    </Box>
+    </div>
   )
 }
 const WillContainer = () => {
-  const queryClient = useQueryClient()
   const { onToast } = useContext(toastContext)
 
   const handleToast = ({ message = '' }) => {
@@ -122,15 +120,14 @@ const WillContainer = () => {
     [myWillData]
   )
 
-  const [dateGroupingWillList, setDateGroupingWillList] = useState<Record<string, any[]>>({})
-  useEffect(() => {
-    if (willList.length === 0) return
+  const dateGroupingWillList = useMemo(() => {
+    if (willList.length === 0) return {}
     const grouped: Record<string, any[]> = {}
-    willList.map((will) => {
+    willList.forEach((will) => {
       const title = getWillTitle(will)
-      grouped[title] = grouped[title] ? grouped[title].concat(will) : (grouped[title] = [will])
+      grouped[title] = grouped[title] ? grouped[title].concat(will) : [will]
     })
-    setDateGroupingWillList(grouped)
+    return grouped
   }, [willList])
 
   return (
@@ -139,7 +136,7 @@ const WillContainer = () => {
         !isEmpty(dateGroupingWillList) &&
         Object.keys(dateGroupingWillList)?.map((dateTitle, key) => {
           return (
-            <Box key={`${dateTitle}_${key}`}>
+            <div key={`${dateTitle}_${key}`}>
               <WillContainerHeader dateTitle={dateTitle} />
               {dateGroupingWillList[dateTitle]?.map((will, i) => {
                 return (
@@ -151,7 +148,7 @@ const WillContainer = () => {
                   />
                 )
               })}
-            </Box>
+            </div>
           )
         })}
 
@@ -170,13 +167,13 @@ const WillContainer = () => {
 
 const Memorials = () => {
   return (
-    <Box mt="78px" className="min-h-[calc(100%-231px)]">
-      <Flex flexDirection="column" justifyContent="center" alignItems="center">
-        <Flex flexDirection="column" justifyContent="center" alignItems="center">
+    <div className="mt-[78px] min-h-[calc(100%_-_231px)]">
+      <div className="flex flex-col items-center justify-center">
+        <div className="flex flex-col items-center justify-center">
           <WillContainer />
-        </Flex>
-      </Flex>
-    </Box>
+        </div>
+      </div>
+    </div>
   )
 }
 

@@ -1,7 +1,7 @@
 import React, { useCallback, useEffect, useRef, useState } from 'react'
-import { Box } from 'components/Common'
 import { Will } from '@api/will/types'
 import { MoreOutlined, CaretUpOutlined } from '@ant-design/icons'
+import { Card } from 'components/ui/card'
 import Header from './WillCardHeader'
 import Body from './WillCardBody'
 import Footer from './WillCardFooter'
@@ -17,12 +17,13 @@ type WillCardProps = {
 }
 
 const WillCard = ({ will, handleDelete, handleShare, isPrivate = true }: WillCardProps) => {
-  const ref = useRef(null)
+  const ref = useRef<HTMLDivElement | null>(null)
   const [isOverflow, setIsOverflow] = useState(false)
   const isOverflowContent = useRef(false)
+  const expandedHeight = ref.current ? `${ref.current.clientHeight + MARGIN_BOTTOM}px` : `${MAX_CARD_HEIGHT}px`
 
   useEffect(() => {
-    if (ref.current.clientHeight + MARGIN_BOTTOM > MAX_CARD_HEIGHT) {
+    if (ref.current && ref.current.clientHeight + MARGIN_BOTTOM > MAX_CARD_HEIGHT) {
       setIsOverflow(true)
       isOverflowContent.current = true
     }
@@ -33,49 +34,40 @@ const WillCard = ({ will, handleDelete, handleShare, isPrivate = true }: WillCar
   }, [])
 
   return (
-    <Box position="relative">
-      <Box
-        className="shadow-[0px_0px_1px_rgba(0,0,0,0.15),0px_2px_6px_rgba(0,0,0,0.13)] transition-all duration-1000"
-        mr="24px"
-        ml="24px"
-        mb={`${MARGIN_BOTTOM}px`}
-        padding="20px"
-        minWidth="362px"
-        maxWidth="582px"
-        borderRadius="4px"
-        maxHeight={isOverflow ? `${MAX_CARD_HEIGHT}px` : `${ref?.current?.clientHeight + MARGIN_BOTTOM}px`}
-        overflow={isOverflow ? 'hidden' : 'auto'}
+    <div className="relative">
+      <Card
+        style={{
+          maxHeight: isOverflow ? `${MAX_CARD_HEIGHT}px` : expandedHeight,
+          overflow: isOverflow ? 'hidden' : 'auto',
+        }}
+        className="mx-6 mb-10 min-w-[362px] max-w-[582px] gap-0 rounded-[4px] px-5 py-5 shadow-[0px_0px_1px_rgba(0,0,0,0.15),0px_2px_6px_rgba(0,0,0,0.13)] transition-all duration-1000"
       >
-        <Box ref={ref}>
+        <div ref={ref}>
           <Header will={will} handleDelete={handleDelete} handleShare={handleShare} isPrivate={isPrivate} />
           <Body will={will} />
           <Footer will={will} />
-        </Box>
-      </Box>
+        </div>
+      </Card>
 
       {isOverflowContent?.current && isOverflow && (
-        <Box
-          className="bg-[var(--color-bg)] shadow-[0px_0px_1px_rgba(0,0,0,0.15),0px_2px_6px_rgba(0,0,0,0.13)] rounded-full"
-          position="absolute"
-          bottom="-15px"
-          left="45%"
+        <button
+          type="button"
+          className="absolute bottom-[-15px] left-[45%] rounded-full bg-[var(--color-bg)] shadow-[0px_0px_1px_rgba(0,0,0,0.15),0px_2px_6px_rgba(0,0,0,0.13)]"
           onClick={handleIsOpen}
         >
           <MoreOutlined className="text-[40px] cursor-pointer" />
-        </Box>
+        </button>
       )}
       {isOverflowContent?.current && !isOverflow && (
-        <Box
-          className="bg-[var(--color-bg)] shadow-[0px_0px_1px_rgba(0,0,0,0.15),0px_2px_6px_rgba(0,0,0,0.13)] rounded-full w-10 h-10 flex justify-center items-center"
-          position="absolute"
-          bottom="-15px"
-          left="45%"
+        <button
+          type="button"
+          className="absolute bottom-[-15px] left-[45%] flex h-10 w-10 items-center justify-center rounded-full bg-[var(--color-bg)] shadow-[0px_0px_1px_rgba(0,0,0,0.15),0px_2px_6px_rgba(0,0,0,0.13)]"
           onClick={handleIsOpen}
         >
           <CaretUpOutlined className="text-[30px] cursor-pointer" />
-        </Box>
+        </button>
       )}
-    </Box>
+    </div>
   )
 }
 

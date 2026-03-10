@@ -1,5 +1,4 @@
 import React from 'react'
-import { Box, Text } from 'components/Common'
 import moment from 'moment'
 import { IS_DEFAULT_MODE } from 'config/constants/default'
 import { Will } from '@api/will/types'
@@ -18,31 +17,31 @@ const Body = ({ will }: BodyProps) => {
   const isDefaultType = contentType === IS_DEFAULT_MODE
 
   return (
-    <Box>
-      <Text fontWeight="600" mb="16px" fontSize="23px">
+    <div>
+      <p className="mb-4 text-[23px] font-semibold leading-relaxed">
         {title ? title : `${moment(regDate).format('YYYY년 M월 D일')}에 쓰는 오늘 유서`}
-      </Text>
+      </p>
 
       {isDefaultType ? (
         <pre className="whitespace-break-spaces font-normal leading-[1.5] text-lg text-[var(--color-text)]">
           {content}
         </pre>
       ) : (
-        <pre className="whitespace-break-spaces font-normal leading-[1.5] text-lg text-[var(--color-text)]">
+        <div className="whitespace-break-spaces text-lg leading-[1.5] text-[var(--color-text)]">
           {answerList?.map((answer, index) => {
             return (
-              <Box key={`answer_${index}`}>
-                <Text bold>
+              <div key={`answer_${index}`}>
+                <p className="font-semibold">
                   {QUESTION_LIST.find((item) => item.qusIdx === parseInt(answer?.question_index))?.question}
-                </Text>
-                <Text>{answer?.question_answer}</Text>
+                </p>
+                <p>{answer?.question_answer}</p>
                 <br />
-              </Box>
+              </div>
             )
           })}
-        </pre>
+        </div>
       )}
-    </Box>
+    </div>
   )
 }
 

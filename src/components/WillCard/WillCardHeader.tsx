@@ -1,7 +1,12 @@
-import React, { useState, useCallback } from 'react'
+import React, { useCallback } from 'react'
 import { useRouter } from 'next/router'
-import { Box, Text, Flex, useModal } from 'components/Common'
-import { usePopper } from 'react-popper'
+import { useModal } from 'components/Common'
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuTrigger,
+} from 'components/ui/dropdown-menu'
 import Ellipsis from 'components/Common/Svg/Icons/Ellipsis'
 import Export from 'components/Common/Svg/Icons/Export'
 import Trash from 'components/Common/Svg/Icons/Trash'
@@ -14,43 +19,27 @@ import GuestPasswordModal from 'views/Write/components/modal/GuestPasswordModal'
 import { useIsLogin } from '@/hooks/useAuth'
 import { useDeleteWill } from '@/queries'
 import { Will } from '@api/will/types'
-import cn from 'utils/cn'
-
-const MenuWrapper = ({
-  isOpen,
-  className,
-  ...props
-}: React.HTMLAttributes<HTMLDivElement> & { isOpen: boolean }) => (
-  <div
-    className={cn(
-      'w-[200px] bg-[var(--color-bg)] shadow-[0px_0px_1px_rgba(0,0,0,0.08),0px_16px_30px_4px_rgba(0,0,0,0.1)] rounded p-[18px]',
-      !isOpen && 'pointer-events-none invisible',
-      className,
-    )}
-    {...props}
-  />
-)
 
 const MenuItem = ({ presentDeleteModal, presentShareModal, handleEdit, handlePreview }) => {
   return (
-    <Box>
-      <Flex padding="8px" className="gap-2" onClick={handleEdit}>
+    <div>
+      <DropdownMenuItem className="gap-2 px-2 py-2" onClick={handleEdit}>
         <Edit />
-        <Text>수정하기</Text>
-      </Flex>
-      <Flex padding="8px" className="gap-2" onClick={presentShareModal}>
+        <span>수정하기</span>
+      </DropdownMenuItem>
+      <DropdownMenuItem className="gap-2 px-2 py-2" onClick={presentShareModal}>
         <Export />
-        <Text>공유하기</Text>
-      </Flex>
-      <Flex padding="8px" className="gap-2" onClick={handlePreview}>
+        <span>공유하기</span>
+      </DropdownMenuItem>
+      <DropdownMenuItem className="gap-2 px-2 py-2" onClick={handlePreview}>
         <Panorama />
-        <Text>미리보기</Text>
-      </Flex>
-      <Flex padding="8px" className="gap-2" onClick={presentDeleteModal}>
+        <span>미리보기</span>
+      </DropdownMenuItem>
+      <DropdownMenuItem className="gap-2 px-2 py-2 text-[#F3213B] focus:text-[#F3213B]" onClick={presentDeleteModal}>
         <Trash />
-        <Text color="#F3213B">삭제하기</Text>
-      </Flex>
-    </Box>
+        <span>삭제하기</span>
+      </DropdownMenuItem>
+    </div>
   )
 }
 
@@ -89,19 +78,6 @@ const Header = ({ will, handleDelete, handleShare, isPrivate = true }: HeaderPro
     <GuestPasswordModal willId={WILL_ID} onVerified={handleGuestDelete} />,
   )
 
-  const [targetRef, setTargetRef] = useState<HTMLDivElement | null>(null)
-  const [tooltipRef, setTooltipRef] = useState<HTMLDivElement | null>(null)
-  const [isOpen, setIsOpen] = useState(false)
-  const { styles, attributes } = usePopper(targetRef, tooltipRef, {
-    strategy: 'fixed',
-    placement: 'bottom-start',
-    modifiers: [{ name: 'offset', options: { offset: [0, 0] } }],
-  })
-
-  const handleIsOpen = useCallback(() => {
-    setIsOpen((prev) => !prev)
-  }, [])
-
   const handleEdit = useCallback(() => {
     if (isGuest) {
       presentGuestEditPasswordModal()
@@ -121,30 +97,26 @@ const Header = ({ will, handleDelete, handleShare, isPrivate = true }: HeaderPro
   const showMenu = isLogin || isGuest
 
   return (
-    <Box mb="20px">
-      <Flex justifyContent="space-between" alignItems="center">
-        <Text>{moment(regDate).format('YYYY.MM.DD')}</Text>
-        {showMenu && (
-          <Text className="cursor-pointer" onClick={handleIsOpen} ref={setTargetRef}>
-            {isPrivate && (
-              <>
-                <Ellipsis />
-                {isOpen && (
-                  <MenuWrapper ref={setTooltipRef} style={styles.popper} {...attributes.popper} isOpen={isOpen}>
-                    <MenuItem
-                      presentDeleteModal={isGuest ? handleGuestDeleteClick : presentDeleteModal}
-                      presentShareModal={presentShareModal}
-                      handleEdit={handleEdit}
-                      handlePreview={handlePreview}
-                    />
-                  </MenuWrapper>
-                )}
-              </>
-            )}
-          </Text>
-        )}
-      </Flex>
-    </Box>
+    <div className="mb-5 flex items-center justify-between">
+      <p>{moment(regDate).format('YYYY.MM.DD')}</p>
+      {showMenu && isPrivate && (
+        <DropdownMenu>
+          <DropdownMenuTrigger asChild>
+            <button type="button" className="cursor-pointer">
+              <Ellipsis />
+            </button>
+          </DropdownMenuTrigger>
+          <DropdownMenuContent align="end" className="w-[200px] p-[18px]">
+            <MenuItem
+              presentDeleteModal={isGuest ? handleGuestDeleteClick : presentDeleteModal}
+              presentShareModal={presentShareModal}
+              handleEdit={handleEdit}
+              handlePreview={handlePreview}
+            />
+          </DropdownMenuContent>
+        </DropdownMenu>
+      )}
+    </div>
   )
 }
 export default Header

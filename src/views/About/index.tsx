@@ -1,5 +1,4 @@
 import Page from '@components/Layout/Page'
-import { Flex, Box } from '@components/Common'
 import WillCard from '@views/Will/components/WillShareCard'
 import TitleBanner from '@views/Will/components/TitleBanner'
 import { ABOUT_INFO } from '@views/About/data'
@@ -9,24 +8,24 @@ import { useIsScrollDown, useMenuOff } from '@store/navi/hooks'
 
 const WillTitle = () => {
   return (
-    <Box mb="36px">
+    <div className="mb-9">
       <TitleBanner
         height="100vh"
         title={ABOUT_INFO.TITLE}
         date={ABOUT_INFO.REG_DATE}
         imagePath={ABOUT_INFO.THUMBNAIL}
       />
-    </Box>
+    </div>
   )
 }
 
 const WillContent = () => {
   return (
-    <Flex flexDirection="column" justifyContent="center" alignItems="center">
-      <Flex flexDirection="column" justifyContent="center" alignItems="center">
+    <div className="flex flex-col items-center justify-center">
+      <div className="flex flex-col items-center justify-center">
         <WillCard will={ABOUT_INFO} isDisplayHeader={false} />
-      </Flex>
-    </Flex>
+      </div>
+    </div>
   )
 }
 
@@ -45,7 +44,7 @@ const AboutPage = () => {
 
   return (
     <Page title={ABOUT_INFO.TITLE} content={ABOUT_INFO.CONTENT} isFullPage>
-      <div className="min-h-[calc(100%-231px)]">
+      <div className="min-h-[calc(100%_-_231px)]">
         <WillTitle />
         <WillContent />
       </div>

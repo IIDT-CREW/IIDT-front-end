@@ -1,7 +1,6 @@
 import { useState, useRef, useCallback } from 'react'
 import cn from 'utils/cn'
 import iconMap from './iconMap'
-import { Text } from 'components/Common/Text'
 
 const Collapse = ({ title, children, noIcon }: any) => {
   const [isSubMenuOpen, setIsSubMenuOpen] = useState(true)
@@ -18,9 +17,9 @@ const Collapse = ({ title, children, noIcon }: any) => {
       } else {
         parentRef.current.style.height = `${childRef.current.clientHeight}px`
       }
-      setIsSubMenuOpen(!isSubMenuOpen)
+      setIsSubMenuOpen((prev) => !prev)
     },
-    [isSubMenuOpen],
+    [],
   )
 
   return (
@@ -28,9 +27,7 @@ const Collapse = ({ title, children, noIcon }: any) => {
       <div className="flex justify-between items-center">
         <div className="flex py-[5px]">
           {!noIcon && <div className="flex justify-center items-center px-[5px]">{iconMap?.AlignLeftOutlined}</div>}
-          <Text fontSize="16px" bold>
-            {title}
-          </Text>
+          <p className="text-base font-semibold leading-relaxed">{title}</p>
         </div>
 
         <i
