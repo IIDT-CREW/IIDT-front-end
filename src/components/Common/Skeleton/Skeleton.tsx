@@ -2,14 +2,13 @@ import { AnimatePresence, domAnimation, LazyMotion, m as Motion } from 'framer-m
 import React, { forwardRef, useRef } from 'react'
 import cn from 'utils/cn'
 import { animation as ANIMATION, SkeletonProps, SkeletonV2Props, variant as VARIANT } from './types'
-import {
-  animationVariants,
-  animationMap,
-  animationHandler,
-} from '../../../utils/animationToolkit'
+import { animationVariants, animationMap, animationHandler } from '../../../utils/animationToolkit'
 
 const Root = forwardRef<HTMLDivElement, SkeletonProps & { className?: string; style?: React.CSSProperties }>(
-  ({ variant = VARIANT.RECT, width, height, className, style, ...props }, ref) => (
+  (
+    { variant = VARIANT.RECT, width, height, minWidth, maxWidth, minHeight, maxHeight, className, style, ...props },
+    ref,
+  ) => (
     <div
       ref={ref}
       className={cn(
@@ -17,33 +16,25 @@ const Root = forwardRef<HTMLDivElement, SkeletonProps & { className?: string; st
         variant === VARIANT.CIRCLE ? 'rounded-full' : 'rounded-small',
         className,
       )}
-      style={{ width, height, ...style }}
+      style={{ width, height, minWidth, maxWidth, minHeight, maxHeight, ...style }}
       {...props}
     />
   ),
 )
 Root.displayName = 'Root'
 
-const PulseComponent = forwardRef<HTMLDivElement, SkeletonProps & { style?: React.CSSProperties }>(
-  (props, ref) => (
-    <Root
-      ref={ref}
-      className="animate-[skeletonPulse_2s_infinite_ease-out] [transform:translate3d(0,0,0)]"
-      {...props}
-    />
-  ),
-)
+const PulseComponent = forwardRef<HTMLDivElement, SkeletonProps & { style?: React.CSSProperties }>((props, ref) => (
+  <Root ref={ref} className="animate-[skeletonPulse_2s_infinite_ease-out] [transform:translate3d(0,0,0)]" {...props} />
+))
 PulseComponent.displayName = 'PulseComponent'
 
-const WavesComponent = forwardRef<HTMLDivElement, SkeletonProps & { style?: React.CSSProperties }>(
-  (props, ref) => (
-    <Root
-      ref={ref}
-      className="overflow-hidden [transform:translate3d(0,0,0)] before:content-[''] before:absolute before:bg-gradient-to-r before:from-transparent before:via-[rgba(243,243,243,0.5)] before:to-transparent before:top-0 before:-left-[150px] before:h-full before:w-[150px] before:animate-[skeletonWaves_2s_cubic-bezier(0.4,0,0.2,1)_infinite]"
-      {...props}
-    />
-  ),
-)
+const WavesComponent = forwardRef<HTMLDivElement, SkeletonProps & { style?: React.CSSProperties }>((props, ref) => (
+  <Root
+    ref={ref}
+    className="overflow-hidden [transform:translate3d(0,0,0)] before:content-[''] before:absolute before:bg-gradient-to-r before:from-transparent before:via-[rgba(243,243,243,0.5)] before:to-transparent before:top-0 before:-left-[150px] before:h-full before:w-[150px] before:animate-[skeletonWaves_2s_cubic-bezier(0.4,0,0.2,1)_infinite]"
+    {...props}
+  />
+))
 WavesComponent.displayName = 'WavesComponent'
 
 const Skeleton: React.FC<SkeletonProps> = ({ variant = VARIANT.RECT, animation = ANIMATION.PULSE, ...props }) => {
@@ -96,7 +87,13 @@ export const SkeletonV2: React.FC<SkeletonV2Props> = ({
           {!isDataReady && (
             <Motion.div
               key="skeleton"
-              style={{ position: 'absolute', top: skeletonTop, left: skeletonLeft, width: width || '100%', height: height || '100%' }}
+              style={{
+                position: 'absolute',
+                top: skeletonTop,
+                left: skeletonLeft,
+                width: width || '100%',
+                height: height || '100%',
+              }}
               ref={skeletonRef}
               onAnimationStart={() => animationHandler(skeletonRef.current)}
               {...animationMap}

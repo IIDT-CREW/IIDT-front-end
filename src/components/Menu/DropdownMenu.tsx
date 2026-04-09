@@ -1,5 +1,4 @@
-import React, { useEffect, useState } from 'react'
-import { usePopper } from 'react-popper'
+import React, { useEffect, useRef, useState } from 'react'
 import useOnClickOutside from 'hooks/useOnClickOutside'
 import { DropdownMenuItemType, DropdownMenuProps } from './types'
 import Link from 'next/link'
@@ -14,8 +13,9 @@ export const StyledDropdownMenu = ({
 }: React.HTMLAttributes<HTMLDivElement> & { isOpen: boolean; isBottomNav: boolean }) => (
   <div
     className={cn(
-      'bg-[var(--color-bg)] border border-[var(--color-card-border)] rounded-2xl py-1 pointer-events-auto z-[1001]',
+      'bg-[var(--color-bg)] border border-[var(--color-card-border)] rounded-2xl py-1 pointer-events-auto z-[1001] absolute',
       isBottomNav ? 'w-[calc(100%_-_32px)]' : 'w-[280px]',
+      isBottomNav ? 'bottom-full left-4 mb-1.5' : 'left-0 top-full mt-2',
       !isOpen && 'pointer-events-none invisible',
       className,
     )}
@@ -65,13 +65,7 @@ export const DropdownMenuItem = ({
 )
 
 export const StyledDropdownMenuItemContainer = ({ className, ...props }: React.HTMLAttributes<HTMLDivElement>) => (
-  <div
-    className={cn(
-      'first:[&>button]:rounded-t-lg last:[&>button]:rounded-b-lg',
-      className,
-    )}
-    {...props}
-  />
+  <div className={cn('first:[&>button]:rounded-t-lg last:[&>button]:rounded-b-lg', className)} {...props} />
 )
 
 const DropdownMenu: React.FC<DropdownMenuProps> = ({
@@ -85,35 +79,33 @@ const DropdownMenu: React.FC<DropdownMenuProps> = ({
   ...props
 }) => {
   const [isOpen, setIsOpen] = useState(false)
-  const [targetRef, setTargetRef] = useState<HTMLDivElement | null>(null)
-  const [tooltipRef, setTooltipRef] = useState<HTMLDivElement | null>(null)
+  const containerRef = useRef<HTMLDivElement | null>(null)
   const hasItems = items.length > 0
-  const { styles, attributes } = usePopper(targetRef, tooltipRef, {
-    strategy: isBottomNav ? 'absolute' : 'fixed',
-    placement: isBottomNav ? 'top' : 'bottom-start',
-    modifiers: [{ name: 'offset', options: { offset: [0, isBottomNav ? 6 : 0] } }],
-  })
 
   const isMenuShow = isOpen && ((isBottomNav && showItemsOnMobile) || !isBottomNav)
 
   useEffect(() => {
-    const showDropdownMenu = () => {
-      setIsOpen(true)
+    if (isBottomNav) {
+      return
     }
 
-    const hideDropdownMenu = (evt: MouseEvent | TouchEvent) => {
-      const target = evt.target as Node
-      return target && !tooltipRef?.contains(target) && setIsOpen(false)
+    const container = containerRef.current
+
+    if (!container) {
+      return
     }
 
-    targetRef?.addEventListener('mouseenter', showDropdownMenu)
-    targetRef?.addEventListener('mouseleave', hideDropdownMenu)
+    const showDropdownMenu = () => setIsOpen(true)
+    const hideDropdownMenu = () => setIsOpen(false)
+
+    container.addEventListener('mouseenter', showDropdownMenu)
+    container.addEventListener('mouseleave', hideDropdownMenu)
 
     return () => {
-      targetRef?.removeEventListener('mouseenter', showDropdownMenu)
-      targetRef?.removeEventListener('mouseleave', hideDropdownMenu)
+      container.removeEventListener('mouseenter', showDropdownMenu)
+      container.removeEventListener('mouseleave', hideDropdownMenu)
     }
-  }, [targetRef, tooltipRef, setIsOpen, isBottomNav])
+  }, [isBottomNav])
 
   useEffect(() => {
     if (setMenuOpenByIndex && index !== undefined) {
@@ -121,32 +113,23 @@ const DropdownMenu: React.FC<DropdownMenuProps> = ({
     }
   }, [isMenuShow, setMenuOpenByIndex, index])
 
-  useOnClickOutside(
-    {
-      current: targetRef,
-    },
-    () => {
-      setIsOpen(false)
-    },
-  )
+  useOnClickOutside(containerRef, () => {
+    setIsOpen(false)
+  })
 
   return (
-    <div ref={setTargetRef} {...props}>
+    <div ref={containerRef} className="relative" {...props}>
       <div
         onPointerDown={() => {
-          setIsOpen((s) => !s)
+          if (hasItems) {
+            setIsOpen((s) => !s)
+          }
         }}
       >
         {children}
       </div>
       {hasItems && (
-        <StyledDropdownMenu
-          style={styles.popper}
-          ref={setTooltipRef}
-          {...attributes.popper}
-          isBottomNav={isBottomNav}
-          isOpen={isMenuShow}
-        >
+        <StyledDropdownMenu isBottomNav={isBottomNav} isOpen={isMenuShow}>
           {items
             .filter((item) => !item.isMobileOnly)
             .map(({ type = DropdownMenuItemType.INTERNAL_LINK, label, href = '/', status, ...itemProps }) => {

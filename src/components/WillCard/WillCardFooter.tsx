@@ -6,6 +6,8 @@ type WillCardProps = {
 }
 
 const Footer = ({ will }: WillCardProps) => {
+  if (!will) return null
+
   const { MEM_NICKNAME: memNickname } = will
 
   return (

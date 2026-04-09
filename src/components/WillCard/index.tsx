@@ -1,6 +1,6 @@
 import React, { useCallback, useEffect, useRef, useState } from 'react'
 import { Will } from '@api/will/types'
-import { MoreOutlined, CaretUpOutlined } from '@ant-design/icons'
+import { ChevronUp, Ellipsis } from 'lucide-react'
 import { Card } from 'components/ui/card'
 import Header from './WillCardHeader'
 import Body from './WillCardBody'
@@ -55,7 +55,7 @@ const WillCard = ({ will, handleDelete, handleShare, isPrivate = true }: WillCar
           className="absolute bottom-[-15px] left-[45%] rounded-full bg-[var(--color-bg)] shadow-[0px_0px_1px_rgba(0,0,0,0.15),0px_2px_6px_rgba(0,0,0,0.13)]"
           onClick={handleIsOpen}
         >
-          <MoreOutlined className="text-[40px] cursor-pointer" />
+          <Ellipsis className="h-10 w-10 cursor-pointer p-1.5" />
         </button>
       )}
       {isOverflowContent?.current && !isOverflow && (
@@ -64,7 +64,7 @@ const WillCard = ({ will, handleDelete, handleShare, isPrivate = true }: WillCar
           className="absolute bottom-[-15px] left-[45%] flex h-10 w-10 items-center justify-center rounded-full bg-[var(--color-bg)] shadow-[0px_0px_1px_rgba(0,0,0,0.15),0px_2px_6px_rgba(0,0,0,0.13)]"
           onClick={handleIsOpen}
         >
-          <CaretUpOutlined className="text-[30px] cursor-pointer" />
+          <ChevronUp className="h-8 w-8 cursor-pointer" />
         </button>
       )}
     </div>

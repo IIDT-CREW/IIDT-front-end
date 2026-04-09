@@ -51,10 +51,7 @@ const CompositeImage: React.FC<ComponentProps> = ({ path, attributes, maxHeight 
         />
       </picture>
       {attributes.map((image) => (
-        <div
-          key={image.src}
-          className="h-full absolute top-0 left-0 [&_img]:max-h-full [&_img]:w-auto"
-        >
+        <div key={image.src} className="h-full absolute top-0 left-0 [&_img]:max-h-full [&_img]:w-auto">
           <picture>
             <source type="image/webp" srcSet={getSrcSet(path, image.src, '.webp')} />
             <source type="image/png" srcSet={getSrcSet(path, image.src)} />

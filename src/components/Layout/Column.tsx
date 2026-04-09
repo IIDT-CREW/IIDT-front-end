@@ -1,11 +1,9 @@
 import React, { forwardRef } from 'react'
 import cn from 'utils/cn'
 
-const Column = forwardRef<HTMLDivElement, React.HTMLAttributes<HTMLDivElement>>(
-  ({ className, ...props }, ref) => (
-    <div ref={ref} className={cn('flex flex-col justify-start', className)} {...props} />
-  ),
-)
+const Column = forwardRef<HTMLDivElement, React.HTMLAttributes<HTMLDivElement>>(({ className, ...props }, ref) => (
+  <div ref={ref} className={cn('flex flex-col justify-start', className)} {...props} />
+))
 
 Column.displayName = 'Column'
 

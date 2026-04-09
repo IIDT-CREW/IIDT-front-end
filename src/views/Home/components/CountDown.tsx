@@ -31,9 +31,7 @@ const CountDown = ({ height = '550px', isCountDown = true, text = '' }) => {
                 {isCountDown ? moment.utc(leftTime * 1000).format('HH:mm:ss') : moment().format('HH:mm:ss')}
               </p>
             )}
-            {text !== '' && (
-              <p className="text-[72px] leading-none font-bold text-white">{text}</p>
-            )}
+            {text !== '' && <p className="text-[72px] leading-none font-bold text-white">{text}</p>}
           </div>
         </div>
       </div>

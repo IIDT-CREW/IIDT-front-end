@@ -1,5 +1,5 @@
 import { useState } from 'react'
-import { Modal, Flex, Box, Text } from 'components/Common'
+import { Modal } from 'components/Common'
 import cn from 'utils/cn'
 import { willService } from '@/services/will.service'
 import useToast from 'hooks/useToast'
@@ -40,10 +40,10 @@ const GuestPasswordModal = ({ willId, onVerified, onDismiss }: GuestPasswordModa
 
   return (
     <Modal title="비밀번호 확인" onDismiss={onDismiss}>
-      <Flex flexDirection="column" justifyContent="center" alignItems="center">
-        <Box mb="20px">
-          <Text fontSize="14px">작성 시 입력한 비밀번호를 입력해주세요.</Text>
-        </Box>
+      <div className="flex flex-col items-center justify-center">
+        <div className="mb-5">
+          <p className="text-sm">작성 시 입력한 비밀번호를 입력해주세요.</p>
+        </div>
 
         <input
           type="password"
@@ -58,7 +58,7 @@ const GuestPasswordModal = ({ willId, onVerified, onDismiss }: GuestPasswordModa
           )}
         />
 
-        <Flex className="gap-2.5 mt-5 w-full">
+        <div className="mt-5 flex w-full gap-2.5">
           <button
             onClick={onDismiss}
             className={cn(
@@ -79,8 +79,8 @@ const GuestPasswordModal = ({ willId, onVerified, onDismiss }: GuestPasswordModa
           >
             {isLoading ? '확인 중...' : '확인'}
           </button>
-        </Flex>
-      </Flex>
+        </div>
+      </div>
     </Modal>
   )
 }

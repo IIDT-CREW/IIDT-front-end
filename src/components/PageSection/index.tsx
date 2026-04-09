@@ -30,12 +30,7 @@ const PageSection: React.FC<PageSectionProps> = ({
         }}
         {...props}
       >
-        <div
-          className={cn(
-            'min-h-[auto] py-4 sm:py-8 lg:py-12',
-          )}
-          {...innerProps}
-        >
+        <div className={cn('min-h-[auto] py-4 sm:py-8 lg:py-12')} {...innerProps}>
           {children}
         </div>
       </div>

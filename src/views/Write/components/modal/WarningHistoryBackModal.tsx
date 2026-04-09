@@ -13,7 +13,9 @@ const ConfirmButton = ({
     className={cn(
       'h-[50px] px-3 text-sm font-semibold sm:w-[195px] sm:px-4 sm:text-base',
       'font-[SUIT] dark:border dark:border-[rgb(203,212,255,0.5)]',
-      variant === 'primary' ? 'bg-grayscale-7 text-grayscale-0 hover:bg-grayscale-7/90' : 'bg-grayscale-2 text-grayscale-7 hover:bg-grayscale-2/90',
+      variant === 'primary'
+        ? 'bg-grayscale-7 text-grayscale-0 hover:bg-grayscale-7/90'
+        : 'bg-grayscale-2 text-grayscale-7 hover:bg-grayscale-2/90',
       className,
     )}
     {...props}

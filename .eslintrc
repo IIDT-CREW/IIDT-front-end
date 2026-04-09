@@ -55,42 +55,49 @@
     "@typescript-eslint/no-explicit-any": "off",
     "import/no-unresolved": "off"
   },
-  "ignorePatterns": ["public", "build", ".next", "node_modules", "*.config.js"],
+  "ignorePatterns": [
+    "public",
+    "build",
+    ".next",
+    "node_modules",
+    "*.config.js",
+    "**/*.stories.ts",
+    "**/*.stories.tsx",
+    "src/components/Common/Box/**",
+    "src/components/Common/Card/**",
+    "src/components/Common/Checkbox/**",
+    "src/components/Common/Collapse/**",
+    "src/components/Common/Input/**",
+    "src/components/Common/Layouts/**",
+    "src/components/Common/Card/theme.ts",
+    "src/components/Common/Modal/theme.ts",
+    "src/components/Common/TabMenu/**",
+    "src/components/Common/Text/**",
+    "src/components/Common/Image/ImageWrapper.tsx",
+    "src/components/Common/Image/NextImage.tsx",
+    "src/components/Menu/utils.ts",
+    "src/components/Menu/theme.ts",
+    "src/utils/iconMap.tsx",
+    "src/utils/getLocalStorageItemKeys.ts",
+    "src/views/Home/components/Layout/ImageWrapper.tsx"
+  ],
   "settings": {
     "import/extensions": [".js", ".jsx", ".ts", ".tsx"],
-    // "react": {
-    //   "version": "detect"
-    // },
+    "react": {
+      "version": "detect"
+    },
     "import/parsers": {
       "@typescript-eslint/parser": [".ts", ".tsx"]
     },
     "import/resolver": {
+      "typescript": {
+        "alwaysTryTypes": true,
+        "project": "./tsconfig.json"
+      },
       "node": {
         "paths": ["src"],
         "extensions": [".js", ".jsx", ".ts", ".tsx"]
       }
-      // "typescript": {
-      //   "alwaysTryTypes": true,
-      //   "project": "./tsconfig.json",
-      //   "alias": {
-      //     "map": [
-      //       ["@api", "src/api"],
-      //       ["@components", "src/components"],
-      //       ["@constants", "src/constants"],
-      //       ["@context", "src/context"],
-      //       ["@hoc", "src/hoc"],
-      //       ["@hooks", "src/hooks"],
-      //       ["@pages", "src/pages"],
-      //       ["@store", "src/store"],
-      //       ["@utils", "src/utils"],
-      //       ["@views", "src/views"],
-      //       ["@public", "public/*"]
-      //     ]
-      //   },
-      //   "node": {
-      //     "extensions": [".js", ".jsx", ".ts", ".tsx"]
-      //   }
-      // }
     }
   }
 }

@@ -66,20 +66,14 @@ const ModalProvider = ({ children }: ModalProviderProps) => {
         <AnimatePresence>
           {isOpen && (
             <m.div
-              className={cn(
-                'fixed inset-0 z-[99] flex flex-col items-center justify-center',
-                'will-change-[opacity]',
-              )}
+              className={cn('fixed inset-0 z-[99] flex flex-col items-center justify-center', 'will-change-[opacity]')}
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
               exit={{ opacity: 0 }}
               transition={{ duration: 0.3 }}
             >
               {/* Overlay */}
-              <div
-                className="absolute inset-0 bg-white/60 dark:bg-black/60"
-                onClick={handleOverlayDismiss}
-              />
+              <div className="absolute inset-0 bg-white/60 dark:bg-black/60" onClick={handleOverlayDismiss} />
               {/* Modal Content */}
               <m.div
                 className="relative z-10"

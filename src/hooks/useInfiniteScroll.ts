@@ -15,12 +15,12 @@ const useInfiniteScroll = ({ fetch, params, queryKey = ['queryKey'] }: UseInfini
       pageSize: DEFAULT_PAGE_SIZE,
     })
 
-    const { nextPageNo, isLast } = result?.meta
+    const meta = result?.meta
 
     return {
       result,
-      nextPage: nextPageNo,
-      isLast,
+      nextPage: meta?.nextPageNo,
+      isLast: meta?.isLast ?? true,
     }
   }
 

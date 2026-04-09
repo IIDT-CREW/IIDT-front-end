@@ -107,7 +107,13 @@ export async function POST(req: NextRequest) {
     }
 
     const nickname = isGuest ? body.guest_nickname.trim() : session!.user!.nickname
-    return apiSuccess(mapWillRow({ ...will, member: isGuest ? null : { mem_nickname: nickname }, guest_nickname: isGuest ? nickname : null }))
+    return apiSuccess(
+      mapWillRow({
+        ...will,
+        member: isGuest ? null : { mem_nickname: nickname },
+        guest_nickname: isGuest ? nickname : null,
+      }),
+    )
   } catch {
     return apiError('9000', 'Internal server error', 500)
   }

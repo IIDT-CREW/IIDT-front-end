@@ -50,10 +50,6 @@ const TypingTest = ({ str = '타이핑 컴포넌트 입니다', handleStatus, st
     dis()
   }, [disassembled, handleStatus])
 
-  return (
-    <span className={classNames('h-full', { 'typing_with-blinking-cursor': status !== 'is_done' })}>
-      {result}
-    </span>
-  )
+  return <span className={classNames('h-full', { 'typing_with-blinking-cursor': status !== 'is_done' })}>{result}</span>
 }
 export default TypingTest

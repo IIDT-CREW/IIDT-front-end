@@ -14,15 +14,8 @@ export const StyledIconContainer = forwardRef<
   HTMLDivElement,
   React.HTMLAttributes<HTMLDivElement> & { activeBackgroundColor?: string }
 >(({ activeBackgroundColor, className, style, ...props }, ref) => {
-  const bg = activeBackgroundColor ? (colorMap[activeBackgroundColor] || activeBackgroundColor) : 'transparent'
-  return (
-    <div
-      ref={ref}
-      className={cn(className)}
-      style={{ background: bg, ...style }}
-      {...props}
-    />
-  )
+  const bg = activeBackgroundColor ? colorMap[activeBackgroundColor] || activeBackgroundColor : 'transparent'
+  return <div ref={ref} className={cn(className)} style={{ background: bg, ...style }} {...props} />
 })
 
 StyledIconContainer.displayName = 'StyledIconContainer'

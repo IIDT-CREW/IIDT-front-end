@@ -1,10 +1,12 @@
+'use client'
+
 import { useEffect, useContext, useMemo } from 'react'
-import { useRouter } from 'next/router'
 import { useModal } from 'components/Common'
 import BannerCard from './components/BannerCard'
 import MainInfo from './components/MainInfo'
 import { MainButton } from '../Home'
 import WriteWarningInfoModal from './components/modal/WriteWarningInfoModal'
+import LoginModal from 'components/LoginModal'
 import WillCard from 'components/WillCard'
 import { toastContext } from 'contexts/Toast'
 import { useIsLogin, useUserInfo } from '@/hooks/useAuth'
@@ -12,6 +14,8 @@ import { DEFAULT_PAGE_SIZE } from 'config/constants/default'
 import useIntersect from './hooks/useIntersect'
 import { useInfiniteMyWill, useDeleteWill } from '@/queries'
 import { Skeleton } from 'components/Common/Skeleton'
+import { useNavigate } from '@/hooks/useCurrentPath'
+import styles from './components/main-shared.module.css'
 
 const WillContainer = () => {
   const { memIdx } = useUserInfo()
@@ -53,20 +57,14 @@ const WillContainer = () => {
     },
   })
 
-  const willList = useMemo(
-    () => (myWillData ? myWillData.pages.flatMap(({ list }) => list) : []),
-    [myWillData]
-  )
+  const willList = useMemo(() => (myWillData ? myWillData.pages.flatMap(({ list }) => list) : []), [myWillData])
 
   return (
     <>
       {!error &&
         willList?.map((myWill, i) => (
           <div key={`${i}-${myWill.WILL_ID}`}>
-            <WillCard
-              will={myWill}
-              handleDelete={() => deleteMutation.mutate({ willId: myWill.WILL_ID as string })}
-            />
+            <WillCard will={myWill} handleDelete={() => deleteMutation.mutate({ willId: myWill.WILL_ID as string })} />
           </div>
         ))}
 
@@ -85,6 +83,8 @@ const WillContainer = () => {
 const Main = () => {
   const isLogin = useIsLogin()
   const [presentWarningModal] = useModal(<WriteWarningInfoModal />)
+  const [presentLoginModal] = useModal(<LoginModal />)
+  const navigate = useNavigate()
   useEffect(() => {
     const isPrecented = localStorage.getItem('isPrecented')
     if (!isPrecented) {
@@ -94,21 +94,24 @@ const Main = () => {
     if (isPrecented) return
   }, [presentWarningModal])
 
-  const router = useRouter()
-
   const handleWrite = () => {
-    router.push('write')
+    if (!isLogin) {
+      presentLoginModal()
+      return
+    }
+
+    navigate('/write')
   }
 
   return (
-    <div className="mt-[78px] min-h-[calc(100%_-_231px)]">
-      <div className="mb-9">
+    <div className={styles.pageContainer}>
+      <div className={styles.pageSectionGap}>
         <BannerCard />
       </div>
-      <div className="flex flex-col items-center justify-center">
-        <div className="flex flex-col items-center justify-center">
+      <div className={styles.centerColumn}>
+        <div className={styles.centerColumn}>
           <MainInfo />
-          <div className="mb-[55px]">
+          <div className={styles.writeButtonWrap}>
             <MainButton onClick={handleWrite}>작성하러가기</MainButton>
           </div>
           {isLogin && <WillContainer />}

@@ -4,7 +4,7 @@ import { cn } from '@lib/utils'
 import { Scale, Variant, ButtonProps } from './types'
 
 const variantStyles: Record<Variant, string> = {
-  primary: 'bg-[var(--color-primary)] text-white hover:bg-[color-mix(in_srgb,var(--color-primary)_90%,black)]',
+  primary: 'bg-[var(--color-contrast)] text-[var(--color-inverted-contrast)] hover:opacity-90',
   secondary:
     'border-2 border-[var(--color-primary)] bg-transparent text-[var(--color-primary)] hover:bg-[color-mix(in_srgb,var(--color-primary)_10%,transparent)]',
   tertiary:

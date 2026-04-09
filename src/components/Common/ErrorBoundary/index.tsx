@@ -33,9 +33,7 @@ class ErrorBoundary extends React.Component<ErrorBoundaryProps, ErrorBoundarySta
       return (
         <div className="flex flex-col items-center justify-center min-h-screen p-5 text-center">
           <h2 className="text-2xl font-[Nanum_Myeongjo] mb-4">문제가 발생했습니다</h2>
-          <p className="text-[var(--color-text-subtle)] mb-6">
-            일시적인 오류가 발생했습니다. 다시 시도해주세요.
-          </p>
+          <p className="text-[var(--color-text-subtle)] mb-6">일시적인 오류가 발생했습니다. 다시 시도해주세요.</p>
           <button
             onClick={this.handleReset}
             className="px-6 py-2 border border-current rounded cursor-pointer bg-inherit text-inherit"

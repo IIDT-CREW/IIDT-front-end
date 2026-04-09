@@ -5,8 +5,8 @@ import cn from 'utils/cn'
 import useToast from 'hooks/useToast'
 import { PREV, NEXT, DONE } from 'views/Write/data'
 import PrivateToggle from '@components/PrivateToggle'
-import { useRouter } from 'next/router'
 import MenuButton from '@views/Write/components/MenuBar/MenuButton'
+import { useNavigate } from '@/hooks/useCurrentPath'
 type Variant = 'primary' | 'secondary'
 
 const variantStyles: Record<string, string> = {
@@ -103,10 +103,10 @@ const MenuBar = ({
   isPrivate,
   handleSetIsPrivate,
 }) => {
-  const router = useRouter()
+  const navigate = useNavigate()
   const goToMain = useCallback(() => {
-    router.push('/main')
-  }, [router])
+    navigate('/main')
+  }, [navigate])
   const onToast = useToast()
 
   const handleMenuButton = useCallback(

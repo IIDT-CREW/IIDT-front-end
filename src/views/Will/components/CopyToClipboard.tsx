@@ -1,5 +1,5 @@
 import React, { useState } from 'react'
-import { LinkOutlined } from '@ant-design/icons'
+import { Link2 } from 'lucide-react'
 import cn from 'utils/cn'
 
 interface Props {
@@ -39,7 +39,7 @@ const CopyToClipboard: React.FC<Props> = ({ toCopy, ...props }) => {
       }}
       {...props}
     >
-      <LinkOutlined className="w-10 h-10 text-[32px] text-black" />
+      <Link2 className="h-10 w-10 text-black" />
       <div
         className={cn(
           'absolute bottom-[-22px] right-0 left-0 text-center w-20 rounded transition-all duration-600',

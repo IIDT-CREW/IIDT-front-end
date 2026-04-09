@@ -9,7 +9,7 @@ interface CheckNicknameResult {
 
 export function useCheckNickname(
   nickname: string,
-  options?: Omit<UseQueryOptions<CheckNicknameResult, FetchError>, 'queryKey' | 'queryFn'>
+  options?: Omit<UseQueryOptions<CheckNicknameResult, FetchError>, 'queryKey' | 'queryFn'>,
 ) {
   return useQuery({
     queryKey: queryKeys.auth.checkNickname(nickname),

@@ -1,3 +1,5 @@
+'use client'
+
 import { useContext, useMemo } from 'react'
 import { Heading } from 'components/Common'
 import WillCard from 'components/WillCard'
@@ -8,6 +10,7 @@ import { useInfiniteWillList, useDeleteWill } from '@/queries'
 import { Skeleton } from 'components/Common/Skeleton'
 import moment from 'moment'
 import isEmpty from 'lodash/isEmpty'
+import styles from '../Main/components/main-shared.module.css'
 
 const makeDateList = (year: string, nextYear: string) => {
   const dateList = [
@@ -115,10 +118,7 @@ const WillContainer = () => {
     },
   })
 
-  const willList = useMemo(
-    () => (myWillData ? myWillData.pages.flatMap(({ list }) => list) : []),
-    [myWillData]
-  )
+  const willList = useMemo(() => (myWillData ? myWillData.pages.flatMap(({ list }) => list) : []), [myWillData])
 
   const dateGroupingWillList = useMemo(() => {
     if (willList.length === 0) return {}
@@ -167,9 +167,9 @@ const WillContainer = () => {
 
 const Memorials = () => {
   return (
-    <div className="mt-[78px] min-h-[calc(100%_-_231px)]">
-      <div className="flex flex-col items-center justify-center">
-        <div className="flex flex-col items-center justify-center">
+    <div className={styles.pageContainer}>
+      <div className={styles.centerColumn}>
+        <div className={styles.centerColumn}>
           <WillContainer />
         </div>
       </div>

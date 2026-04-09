@@ -1,5 +1,6 @@
+'use client'
+
 import { useEffect, useCallback } from 'react'
-import { useRouter } from 'next/router'
 import AOS from 'aos'
 import Page from '@components/Layout/Page'
 import { useWill } from '@/queries/will'
@@ -7,6 +8,7 @@ import WillCard from '@views/Will/components/WillShareCard'
 import TitleBanner from '@views/Will/components/TitleBanner'
 import { MainButton } from '@views/Home'
 import type { Will } from '@api/will/types'
+import { useNavigate, useRouteParam } from '@/hooks/useCurrentPath'
 
 type WillTitleProps = {
   data?: Will
@@ -32,9 +34,7 @@ type WillContentProps = {
 const WillContent = ({ isLoading, data }: WillContentProps) => {
   return (
     <div className="flex flex-col items-center justify-center">
-      <div className="flex flex-col items-center justify-center">
-        {!isLoading && data && <WillCard will={data} />}
-      </div>
+      <div className="flex flex-col items-center justify-center">{!isLoading && data && <WillCard will={data} />}</div>
     </div>
   )
 }
@@ -61,13 +61,13 @@ const WillFooter = ({ handleWrite }: WillFooterProps) => {
   )
 }
 const WillPage = () => {
-  const router = useRouter()
-  const willId = router.query.id as string
+  const navigate = useNavigate()
+  const willId = useRouteParam('id')
   const { data, isLoading, isError } = useWill(willId, { enabled: !!willId })
 
   const handleWrite = useCallback(() => {
-    router.push('/write')
-  }, [router])
+    navigate('/write')
+  }, [navigate])
 
   useEffect(() => {
     AOS.init()

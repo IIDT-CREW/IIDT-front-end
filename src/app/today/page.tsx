@@ -1,4 +1,5 @@
 const TodayPage = () => {
-  return <div></div>
+  return <div />
 }
+
 export default TodayPage

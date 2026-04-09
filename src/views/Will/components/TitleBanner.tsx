@@ -6,8 +6,8 @@ import cn from 'utils/cn'
 
 type TitleBannerProps = {
   height: string
-  title: string
-  date: string
+  title?: string
+  date?: string
   imagePath: string
 }
 const TitleBanner = ({ height, title, date, imagePath }: TitleBannerProps) => {
@@ -29,22 +29,18 @@ const TitleBanner = ({ height, title, date, imagePath }: TitleBannerProps) => {
         />
         <div className="relative h-full w-full">
           <div className="relative flex h-full flex-col items-center justify-center">
-            <div
-              className="dark:px-2.5 text-[18px] lg:text-[32px] font-semibold bg-black text-white w-4/5 text-center leading-normal"
-            >
+            <div className="dark:px-2.5 text-[18px] lg:text-[32px] font-semibold bg-black text-white w-4/5 text-center leading-normal">
               <span className="text-white">
-                <Typing str={title} handleStatus={handleStatus} status={status} />
+                <Typing str={title ?? ''} handleStatus={handleStatus} status={status} />
               </span>
             </div>
             <div
               className={cn(
                 'dark:px-2.5 text-[14px] lg:text-[18px] font-semibold text-white transition-all duration-1000 leading-normal',
-                status === 'is_done'
-                  ? 'opacity-100 translate-y-0'
-                  : 'opacity-0 translate-y-[15px]',
+                status === 'is_done' ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-[15px]',
               )}
             >
-              {moment(date).format('YYYY년 MM월 DD일 hh시 mm분')}
+              {date ? moment(date).format('YYYY년 MM월 DD일 hh시 mm분') : ''}
             </div>
           </div>
         </div>

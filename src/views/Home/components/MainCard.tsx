@@ -1,4 +1,4 @@
-import StyledImage from 'components/Common/Image/StyledImage'
+import styles from './home-card.module.css'
 
 const Card = ({
   height,
@@ -9,25 +9,25 @@ const Card = ({
 }) => {
   return (
     <div
-      className="relative mb-5 w-full"
+      className={styles.card}
       style={{
         height: `${height}px`,
-        background: 'linear-gradient(0deg, rgba(255, 255, 255, 0.4), rgba(255, 255, 255, 0.4))',
       }}
     >
-      <StyledImage
-        isFill
-        src={imagePath}
-        alt={alt}
-        className="absolute w-full h-full -z-[1] object-cover blur-[2px]"
+      <div
+        aria-hidden="true"
+        className={styles.cardBackground}
+        style={{
+          backgroundImage: `url(${imagePath})`,
+        }}
       />
 
-      <div className="relative h-full w-full">
-        <div className="relative flex h-full flex-col items-center justify-center">
-          <p className="text-base leading-relaxed font-semibold text-black md:text-[36px]" data-aos="fade-down" data-aos-duration="1000">
+      <div className={styles.cardInner} style={{ height: `${height}px` }}>
+        <div className={styles.cardContent}>
+          <p className={styles.cardText} data-aos="fade-down" data-aos-duration="1000">
             {title}
           </p>
-          <p className="text-base leading-relaxed font-semibold text-black md:text-[36px]" data-aos="fade-up" data-aos-duration="3000">
+          <p className={styles.cardText} data-aos="fade-up" data-aos-duration="3000">
             {secondTitle}
           </p>
         </div>

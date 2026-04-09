@@ -1,6 +1,8 @@
+'use client'
+
 import Head from 'next/head'
-import { useRouter } from 'next/router'
 import { DEFAULT_META, getCustomMeta, SITE_NAME, SITE_URL } from 'config/constants/meta'
+import { useCurrentHref, useCurrentPath } from '@/hooks/useCurrentPath'
 
 interface SEOHeadProps {
   title?: string
@@ -10,7 +12,8 @@ interface SEOHeadProps {
 }
 
 const SEOHead = ({ title, description, image, noindex }: SEOHeadProps) => {
-  const { pathname, asPath } = useRouter()
+  const pathname = useCurrentPath()
+  const asPath = useCurrentHref()
 
   const pageMeta = getCustomMeta(pathname)
   const resolvedTitle = title || pageMeta.title || DEFAULT_META.title

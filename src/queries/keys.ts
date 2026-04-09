@@ -13,8 +13,7 @@ export const queryKeys = {
   will: {
     all: ['will'] as const,
     lists: () => [...queryKeys.will.all, 'list'] as const,
-    list: (filters: { pageNo: number; pageSize: number }) =>
-      [...queryKeys.will.lists(), filters] as const,
+    list: (filters: { pageNo: number; pageSize: number }) => [...queryKeys.will.lists(), filters] as const,
     details: () => [...queryKeys.will.all, 'detail'] as const,
     detail: (id: string) => [...queryKeys.will.details(), id] as const,
     count: () => [...queryKeys.will.all, 'count'] as const,

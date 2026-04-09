@@ -14,7 +14,7 @@ const StyledImg = ({
   ...props
 }: React.ImgHTMLAttributes<HTMLImageElement> & {
   isImageLoaded: boolean
-  objectFit: string
+  objectFit?: React.CSSProperties['objectFit']
   position: 'absolute' | 'fixed'
 }) => (
   <img

@@ -2,11 +2,8 @@ import { useEffect } from 'react'
 import { Modal } from 'components/Common'
 import CopyToClipboard from 'views/Will/components/CopyToClipboard'
 import { API_URL } from 'config/constants/api'
-import { useRouter } from 'next/router'
 
 const ShareModal = ({ onDismiss, content, willId, title, ...props }: any) => {
-  const router = useRouter()
-
   function kakaoShareFix() {
     // Kakao.Link.cleanup()
     Kakao.cleanup()
@@ -20,7 +17,7 @@ const ShareModal = ({ onDismiss, content, willId, title, ...props }: any) => {
     if (!Kakao.isInitialized()) {
       kakaoShareFix()
     }
-  }, [router.query.id, content, willId])
+  }, [content, willId])
 
   const handleKakao = () => {
     const kakaoShareFunc = () => {
@@ -63,7 +60,10 @@ const ShareModal = ({ onDismiss, content, willId, title, ...props }: any) => {
           <div className="flex flex-wrap items-center justify-center gap-2.5">
             <CopyToClipboard toCopy={`${API_URL}/will/${willId}`} />
             <div onClick={handleKakao}>
-              <img alt="카카오톡으로 공유하기" src="//developers.kakao.com/assets/img/about/logos/kakaolink/kakaolink_btn_small.png" />
+              <img
+                alt="카카오톡으로 공유하기"
+                src="//developers.kakao.com/assets/img/about/logos/kakaolink/kakaolink_btn_small.png"
+              />
             </div>
           </div>
         </div>

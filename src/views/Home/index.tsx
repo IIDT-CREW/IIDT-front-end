@@ -1,23 +1,17 @@
-import Heading from 'components/Common/Heading/Heading'
+'use client'
+
 import React, { useEffect } from 'react'
 import AOS from 'aos'
-import Link from 'next/link'
+import Link, { type LinkProps } from 'next/link'
 import { useIsLogin } from '@/hooks/useAuth'
-import { Button } from 'components/ui/button'
 import MainCard from './components/MainCard'
 import Clock from './components/Clock'
-import cn from 'utils/cn'
+import styles from './home.module.css'
 
-export const MainButton = ({ className, ...props }: React.ComponentProps<typeof Button>) => (
-  <Button
-    size="md"
-    className={cn(
-      'h-[50px] w-[335px] gap-2.5 rounded-[4px] px-4 py-[14px] font-[SUIT] text-xs sm:h-[44px] xl:text-sm',
-      'bg-[var(--color-contrast)] text-[var(--color-bg)] hover:bg-[var(--color-contrast)]/90',
-      className,
-    )}
-    {...props}
-  />
+type MainButtonProps = LinkProps & React.AnchorHTMLAttributes<HTMLAnchorElement>
+
+export const MainButton = ({ className, ...props }: MainButtonProps) => (
+  <Link className={[styles.ctaButton, className].filter(Boolean).join(' ')} {...props} />
 )
 
 const Home: React.FC = () => {
@@ -29,13 +23,11 @@ const Home: React.FC = () => {
 
   return (
     <>
-      <div className="pt-[50px]">
-        <Heading scale="lg" mt="56px" textAlign="center">
-          IIDT
-        </Heading>
-        <p className="mt-4 text-center font-[Cormorant] text-[48px] font-bold leading-none md:text-[96px]">IF I DIE</p>
+      <div className={styles.container}>
+        <p className={styles.brand}>IIDT</p>
+        <p className={styles.heroTitle}>IF I DIE</p>
 
-        <p className="mb-6 text-center font-[Cormorant] text-[48px] font-bold leading-none md:text-[96px]">Tomorrow</p>
+        <p className={styles.heroSubtitle}>Tomorrow</p>
         <Clock />
 
         <MainCard
@@ -45,7 +37,7 @@ const Home: React.FC = () => {
           imagePath="/images/home/patrick-ryan-3kUIaB2EPp8-unsplash.jpg"
           alt="내일이 마지막이라면 - 석양 풍경"
         />
-        <div className="mb-[100px]" />
+        <div className={styles.spacerLarge} />
         <MainCard
           height={469}
           title=" 만약 내일 생을 마감한다면,"
@@ -54,34 +46,26 @@ const Home: React.FC = () => {
           alt="소중한 이들에게 전하는 마지막 메시지"
         />
 
-        <section className="mb-[50px] h-screen text-center">
-          <div className="relative flex h-full flex-col items-center justify-center">
-            <p className="text-[16px] leading-relaxed md:text-[36px]" data-aos="fade-up" data-aos-duration="1000">
+        <section className={styles.questionSection}>
+          <div className={styles.questionSectionInner}>
+            <p className={styles.questionText} data-aos="fade-up" data-aos-duration="1000">
               만약 내일 생을 마감한다면,
             </p>
-            <p
-              className="mb-6 text-[16px] leading-relaxed font-semibold md:text-[36px]"
-              data-aos="fade-up"
-              data-aos-duration="3000"
-            >
+            <p className={styles.questionTextStrong} data-aos="fade-up" data-aos-duration="3000">
               마지막으로 하고 싶은 말이 있나요?
             </p>
           </div>
         </section>
 
-        <section className="mb-[50px] text-center">
-          <div className="flex flex-col items-center justify-center">
-            <p className="mb-6 text-[16px] leading-relaxed md:text-[36px] lg:text-[48px]">
-              다시 한 번 삶을 되돌아보는 시간
-            </p>
-            <MainButton asChild>
-              <Link href={isLogin ? '/write' : '/main'}>일기 작성하러가기</Link>
-            </MainButton>
+        <section className={styles.ctaSection}>
+          <div className={styles.ctaInner}>
+            <p className={styles.ctaText}>다시 한 번 삶을 되돌아보는 시간</p>
+            <MainButton href={isLogin ? '/write' : '/main'}>일기 작성하러가기</MainButton>
           </div>
         </section>
       </div>
 
-      <div className="mb-[50px]"></div>
+      <div className={styles.bottomSpacer} />
     </>
   )
 }
