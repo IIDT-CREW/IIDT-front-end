@@ -12,6 +12,8 @@ type BodyProps = {
 }
 
 const Body = ({ will }: BodyProps) => {
+  if (!will) return null
+
   const { CONTENT: content, REG_DATE: regDate, TITLE: title, CONTENT_TYPE: contentType, ANSWER_LIST: answerList } = will
 
   const isDefaultType = contentType === IS_DEFAULT_MODE

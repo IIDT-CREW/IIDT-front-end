@@ -1,6 +1,7 @@
+'use client'
+
 /* eslint-disable no-sparse-arrays */
 import { useCallback, useEffect, useState } from 'react'
-import { useRouter } from 'next/router'
 import { useModal } from 'components/Common'
 import SelectPostTypeModal from 'views/Write/components/modal/SelectPostTypeModal'
 import GuestPasswordModal from 'views/Write/components/modal/GuestPasswordModal'
@@ -15,6 +16,7 @@ import { useWill, useCreateWill, useUpdateWill } from '@/queries'
 import useWarningHistoryBack from './hooks/useWarningHistoryBack'
 import useToast from 'hooks/useToast'
 import cn from 'utils/cn'
+import { useNavigate, useRouteQueryParam } from '@/hooks/useCurrentPath'
 
 const getDefaultTitle = (date = new Date()) => {
   const formattedDate = new Intl.DateTimeFormat('ko-KR', {
@@ -27,24 +29,31 @@ const getDefaultTitle = (date = new Date()) => {
   return `${formattedDate}에 쓰는 오늘 유서`
 }
 
+type QuestionAnswerDraft = {
+  questionEssayIndex: string
+  questionIndex: number
+  answer: string
+}
+
 const Write = () => {
-  const router = useRouter()
+  const navigate = useNavigate()
+  const { value: routeWillId, isReady: isRouteReady } = useRouteQueryParam('will_id')
   const { memIdx } = useUserInfo()
   const isLogin = useIsLogin()
   const { isMobile } = useMatchBreakpoints()
   const onToast = useToast()
   const [defaultTitle, setDefaultTitle] = useState('')
   const goToBack = useCallback(() => {
-    router.push('/main')
-  }, [router])
+    navigate('/main')
+  }, [navigate])
   const { mutate: addPostMutate } = useCreateWill({ onSuccessCallback: goToBack })
   const { mutate: updatePostMutate } = useUpdateWill({ onSuccessCallback: goToBack })
-  const isEditMode = !!router?.query?.will_id
-  const willId = router?.query?.will_id as string
+  const isEditMode = !!routeWillId
+  const willId = routeWillId
   const [isDefaultPostType, setIsDefaultPostType] = useState(true)
   const [page, setPage] = useState(0)
   const [title, setTitle] = useState('')
-  const [contents, setContents] = useState(
+  const [contents, setContents] = useState<QuestionAnswerDraft[]>(
     QUESTION_LIST.map((question) => ({
       questionEssayIndex: '',
       questionIndex: question.qusIdx,
@@ -60,7 +69,7 @@ const Write = () => {
   const [editGuestPassword, setEditGuestPassword] = useState('')
 
   const { data, isSuccess: isPostLoaded } = useWill(willId, {
-    enabled: router.isReady && isEditMode,
+    enabled: isRouteReady && isEditMode,
   })
 
   useWarningHistoryBack({ title, contents, goToBack, page })
@@ -92,7 +101,7 @@ const Write = () => {
     setTitle(title)
     setPrivate(!!isPrivate)
     if (contentType === IS_DEFAULT_MODE) {
-      const answer = [{ questionIndex: 1, answer: content }, ...contents.slice(1)]
+      const answer = [{ questionEssayIndex: '', questionIndex: 1, answer: content }, ...contents.slice(1)]
       return setContents(answer)
     }
     /* 질문 타입  */
@@ -100,7 +109,7 @@ const Write = () => {
     const answer = answerList?.map((answer) => {
       return {
         questionEssayIndex: answer.question_essay_index,
-        questionIndex: answer.question_index,
+        questionIndex: Number(answer.question_index),
         answer: answer.question_answer,
       }
     })
@@ -121,7 +130,7 @@ const Write = () => {
   /* 모달 onOpen */
   useEffect(
     function initialScreenByEditMode() {
-      if (router.isReady) {
+      if (isRouteReady) {
         if (isEditMode && isPostLoaded) {
           // 비회원 글 수정 시 비밀번호 확인 필요
           if (data?.IS_GUEST && !isGuestVerified) {
@@ -133,7 +142,7 @@ const Write = () => {
       }
     },
     // eslint-disable-next-line react-hooks/exhaustive-deps
-    [router.isReady, isPostLoaded, isEditMode],
+    [isRouteReady, isPostLoaded, isEditMode],
   )
 
   const handlePostType = useCallback(() => {

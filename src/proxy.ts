@@ -4,6 +4,10 @@ import { NextResponse } from 'next/server'
 const protectedRoutes = ['/memorials']
 
 export default auth((req) => {
+  if (!req?.nextUrl) {
+    return NextResponse.next()
+  }
+
   const { pathname } = req.nextUrl
   const isProtected = protectedRoutes.some((route) => pathname.startsWith(route))
 
@@ -15,5 +19,5 @@ export default auth((req) => {
 })
 
 export const config = {
-  matcher: ['/((?!_next/static|_next/image|favicon.ico|api|public).*)'],
+  matcher: ['/((?!_next/static|_next/image|favicon.ico|api|public|_not-found).*)'],
 }

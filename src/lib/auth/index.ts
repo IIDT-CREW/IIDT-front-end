@@ -1,16 +1,33 @@
-import NextAuth from 'next-auth'
+import NextAuth, { type NextAuthConfig } from 'next-auth'
 import Google from 'next-auth/providers/google'
+import Kakao from 'next-auth/providers/kakao'
 import { createSupabaseServerClient } from '@/lib/supabase/server'
 
-export const { handlers, auth, signIn, signOut } = NextAuth({
-  session: { strategy: 'jwt' },
-  secret: process.env.AUTH_SECRET ?? 'iidt-local-dev-secret',
-  providers: [
+const providers: NonNullable<NextAuthConfig['providers']> = []
+
+if (process.env.AUTH_GOOGLE_ID && process.env.AUTH_GOOGLE_SECRET) {
+  providers.push(
     Google({
       clientId: process.env.AUTH_GOOGLE_ID,
       clientSecret: process.env.AUTH_GOOGLE_SECRET,
     }),
-  ],
+  )
+}
+
+if (process.env.AUTH_KAKAO_ID && process.env.AUTH_KAKAO_SECRET) {
+  providers.push(
+    Kakao({
+      clientId: process.env.AUTH_KAKAO_ID,
+      clientSecret: process.env.AUTH_KAKAO_SECRET,
+    }),
+  )
+}
+
+export const { handlers, auth, signIn, signOut } = NextAuth({
+  session: { strategy: 'jwt' },
+  secret: process.env.AUTH_SECRET ?? process.env.NEXTAUTH_SECRET ?? 'iidt-local-dev-secret',
+  trustHost: true,
+  providers,
   callbacks: {
     async signIn({ user, account }) {
       if (!account) return false

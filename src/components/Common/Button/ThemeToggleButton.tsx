@@ -6,8 +6,10 @@ interface ToggleButtonProps {
   selected: boolean
 }
 
-const ThemeToggleButton = (props: ToggleButtonProps) => {
-  const { selected } = props
+const ThemeToggleButton = ({
+  selected,
+  ...props
+}: ToggleButtonProps & React.ButtonHTMLAttributes<HTMLButtonElement>) => {
   return (
     <button
       className="relative flex h-8 w-8 items-center justify-center rounded-[2rem] border-none bg-transparent"

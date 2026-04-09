@@ -1,12 +1,6 @@
 import React, { useCallback } from 'react'
-import { useRouter } from 'next/router'
 import { useModal } from 'components/Common'
-import {
-  DropdownMenu,
-  DropdownMenuContent,
-  DropdownMenuItem,
-  DropdownMenuTrigger,
-} from 'components/ui/dropdown-menu'
+import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from 'components/ui/dropdown-menu'
 import Ellipsis from 'components/Common/Svg/Icons/Ellipsis'
 import Export from 'components/Common/Svg/Icons/Export'
 import Trash from 'components/Common/Svg/Icons/Trash'
@@ -19,6 +13,7 @@ import GuestPasswordModal from 'views/Write/components/modal/GuestPasswordModal'
 import { useIsLogin } from '@/hooks/useAuth'
 import { useDeleteWill } from '@/queries'
 import { Will } from '@api/will/types'
+import { useNavigate } from '@/hooks/useCurrentPath'
 
 const MenuItem = ({ presentDeleteModal, presentShareModal, handleEdit, handlePreview }) => {
   return (
@@ -51,50 +46,60 @@ type HeaderProps = {
 }
 
 const Header = ({ will, handleDelete, handleShare, isPrivate = true }: HeaderProps) => {
-  const { CONTENT: content, REG_DATE: regDate, TITLE: title, WILL_ID, IS_GUEST: isGuest } = will
-  const router = useRouter()
+  const navigate = useNavigate()
   const isLogin = useIsLogin()
+  const content = will?.CONTENT ?? ''
+  const regDate = will?.REG_DATE ?? ''
+  const title = will?.TITLE ?? ''
+  const willId = will?.WILL_ID ?? ''
+  const isGuest = will?.IS_GUEST ?? false
 
   const deleteMutation = useDeleteWill()
 
   // 비회원 글 비밀번호 확인 후 수정
-  const handleGuestEdit = useCallback((password: string) => {
-    router.push(`/write?will_id=${WILL_ID}`)
-  }, [WILL_ID, router])
+  const handleGuestEdit = useCallback(
+    (password: string) => {
+      navigate(`/write?will_id=${willId}`)
+    },
+    [navigate, willId],
+  )
 
   // 비회원 글 비밀번호 확인 후 삭제
-  const handleGuestDelete = useCallback((password: string) => {
-    deleteMutation.mutate({ willId: WILL_ID as string, guestPassword: password })
-  }, [WILL_ID, deleteMutation])
+  const handleGuestDelete = useCallback(
+    (password: string) => {
+      deleteMutation.mutate({ willId, guestPassword: password })
+    },
+    [deleteMutation, willId],
+  )
 
   const [presentDeleteModal] = useModal(<WriteDeleteModal handleDelete={handleDelete} />)
   const [presentShareModal] = useModal(
-    <ShareModal handleShare={handleShare} content={content} willId={WILL_ID} title={title} />,
+    <ShareModal handleShare={handleShare} content={content} willId={willId} title={title} />,
   )
-  const [presentGuestEditPasswordModal] = useModal(
-    <GuestPasswordModal willId={WILL_ID} onVerified={handleGuestEdit} />,
-  )
+  const [presentGuestEditPasswordModal] = useModal(<GuestPasswordModal willId={willId} onVerified={handleGuestEdit} />)
   const [presentGuestDeletePasswordModal] = useModal(
-    <GuestPasswordModal willId={WILL_ID} onVerified={handleGuestDelete} />,
+    <GuestPasswordModal willId={willId} onVerified={handleGuestDelete} />,
   )
 
   const handleEdit = useCallback(() => {
     if (isGuest) {
       presentGuestEditPasswordModal()
     } else {
-      router.push(`/write?will_id=${WILL_ID}`)
+      navigate(`/write?will_id=${willId}`)
     }
-  }, [WILL_ID, isGuest, presentGuestEditPasswordModal, router])
+  }, [isGuest, navigate, presentGuestEditPasswordModal, willId])
 
   const handleGuestDeleteClick = useCallback(() => {
     presentGuestDeletePasswordModal()
   }, [presentGuestDeletePasswordModal])
 
   const handlePreview = useCallback(() => {
-    router.push(`/will/${WILL_ID}`)
-  }, [WILL_ID, router])
+    navigate(`/will/${willId}`)
+  }, [navigate, willId])
 
   const showMenu = isLogin || isGuest
+
+  if (!will) return null
 
   return (
     <div className="mb-5 flex items-center justify-between">

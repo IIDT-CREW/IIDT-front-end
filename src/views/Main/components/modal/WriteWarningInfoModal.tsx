@@ -15,7 +15,9 @@ const WriteWarningInfoModal = ({ onDismiss, ...props }: any) => {
         <p className="leading-relaxed font-semibold">진정으로 좋아하는 일,</p>
         <p className="mb-[14px] leading-relaxed font-semibold">꿈꾸고 있는 일을 생각해보세요.</p>
 
-        <p className="mb-5 leading-relaxed">마음이 힘들다면 1577-0199로 전화해주세요. 당신은 그 누구보다 소중하니까요.</p>
+        <p className="mb-5 leading-relaxed">
+          마음이 힘들다면 1577-0199로 전화해주세요. 당신은 그 누구보다 소중하니까요.
+        </p>
         <Button className="h-[50px] w-[335px] bg-black text-white hover:bg-black/90" onClick={onDismiss}>
           확인했어요
         </Button>

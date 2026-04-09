@@ -75,9 +75,9 @@ src/
 | Framework | Next.js 16, React 19 |
 | Language | TypeScript |
 | Styling | Tailwind CSS 4 |
-| State Management | Redux Toolkit, React Query, Zustand |
+| State Management | TanStack Query, Zustand |
 | UI Components | shadcn/ui, Radix UI |
-| Authentication | NextAuth (Auth.js v5) — Google, Kakao, Naver |
+| Authentication | NextAuth (Auth.js v5) — Google, Kakao |
 | Database | Supabase (PostgreSQL) |
 | Deployment | AWS CodeDeploy |
 
@@ -85,10 +85,9 @@ src/
 
 `.env.local.example` 참고. 필수 환경변수:
 
-- `NEXTAUTH_URL` / `NEXTAUTH_SECRET` — NextAuth 설정
+- `NEXTAUTH_URL` / `AUTH_SECRET` — NextAuth 설정
 - `AUTH_GOOGLE_ID` / `AUTH_GOOGLE_SECRET` — Google OAuth
 - `AUTH_KAKAO_ID` / `AUTH_KAKAO_SECRET` — Kakao OAuth
-- `AUTH_NAVER_ID` / `AUTH_NAVER_SECRET` — Naver OAuth
 - `NEXT_PUBLIC_SUPABASE_URL` / `SUPABASE_SERVICE_ROLE_KEY` — Supabase 연결
 - `NEXT_PUBLIC_SITE_URL` — 사이트 URL (OG 메타 태그용)
 

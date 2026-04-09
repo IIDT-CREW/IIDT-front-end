@@ -31,18 +31,14 @@ const Row = forwardRef<HTMLDivElement, RowProps>(
 
 Row.displayName = 'Row'
 
-export const RowBetween = forwardRef<HTMLDivElement, RowProps>(
-  ({ className, ...props }, ref) => (
-    <Row ref={ref} className={className} justify="space-between" {...props} />
-  ),
-)
+export const RowBetween = forwardRef<HTMLDivElement, RowProps>(({ className, ...props }, ref) => (
+  <Row ref={ref} className={className} justify="space-between" {...props} />
+))
 
 RowBetween.displayName = 'RowBetween'
 
 export const RowFlat = forwardRef<HTMLDivElement, React.HTMLAttributes<HTMLDivElement>>(
-  ({ className, ...props }, ref) => (
-    <div ref={ref} className={cn('flex items-end', className)} {...props} />
-  ),
+  ({ className, ...props }, ref) => <div ref={ref} className={cn('flex items-end', className)} {...props} />,
 )
 
 RowFlat.displayName = 'RowFlat'
@@ -51,20 +47,18 @@ export interface AutoRowProps extends RowProps {
   gap?: string
 }
 
-export const AutoRow = forwardRef<HTMLDivElement, AutoRowProps>(
-  ({ gap, justify, className, style, ...props }, ref) => (
-    <Row
-      ref={ref}
-      className={cn('flex-wrap', className)}
-      justify={justify}
-      style={{
-        margin: gap ? `-${gap}` : undefined,
-        ...style,
-      }}
-      {...props}
-    />
-  ),
-)
+export const AutoRow = forwardRef<HTMLDivElement, AutoRowProps>(({ gap, justify, className, style, ...props }, ref) => (
+  <Row
+    ref={ref}
+    className={cn('flex-wrap', className)}
+    justify={justify}
+    style={{
+      margin: gap ? `-${gap}` : undefined,
+      ...style,
+    }}
+    {...props}
+  />
+))
 
 AutoRow.displayName = 'AutoRow'
 

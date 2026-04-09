@@ -20,11 +20,7 @@ const Svg = forwardRef<SVGSVGElement, SvgProps>(
     return (
       <svg
         ref={ref}
-        className={cn(
-          'self-center shrink-0',
-          spin && 'animate-[rotate_2s_linear_infinite]',
-          className,
-        )}
+        className={cn('self-center shrink-0', spin && 'animate-[rotate_2s_linear_infinite]', className)}
         style={{ fill: fillColor, ...style }}
         width={width}
         xmlns="http://www.w3.org/2000/svg"

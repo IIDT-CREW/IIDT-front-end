@@ -1,0 +1,133 @@
+.container {
+  padding-top: 146px;
+}
+
+.brand {
+  margin-top: 56px;
+  text-align: center;
+  font-family: 'Nanum Myeongjo', 'Spoqa Han Sans Neo', sans-serif;
+  font-size: 26px;
+  font-weight: 600;
+  line-height: 1.1;
+}
+
+.heroTitle {
+  margin-top: 16px;
+  text-align: center;
+  font-family: 'Cormorant', serif;
+  font-size: 48px;
+  font-weight: 700;
+  line-height: 1;
+}
+
+.heroSubtitle {
+  margin-bottom: 24px;
+  text-align: center;
+  font-family: 'Cormorant', serif;
+  font-size: 48px;
+  font-weight: 700;
+  line-height: 1;
+}
+
+.spacerLarge {
+  margin-bottom: 100px;
+}
+
+.questionSection {
+  margin-bottom: 50px;
+  height: 100vh;
+  text-align: center;
+}
+
+.questionSectionInner {
+  position: relative;
+  display: flex;
+  height: 100%;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+
+.questionText {
+  font-size: 16px;
+  line-height: 1.5;
+}
+
+.questionTextStrong {
+  margin-bottom: 24px;
+  font-size: 16px;
+  font-weight: 600;
+  line-height: 1.5;
+}
+
+.ctaSection {
+  margin-bottom: 50px;
+  text-align: center;
+}
+
+.ctaInner {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+}
+
+.ctaText {
+  margin-bottom: 24px;
+  font-size: 16px;
+  line-height: 1.5;
+}
+
+.ctaButton {
+  display: flex;
+  height: 50px;
+  width: 335px;
+  flex-direction: row;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  border: none;
+  border-radius: 4px;
+  background: var(--color-contrast);
+  color: var(--color-bg);
+  cursor: pointer;
+  font-family: 'SUIT', sans-serif;
+  font-size: 13.3333px;
+  font-weight: 400;
+  line-height: normal;
+  padding: 14px 16px;
+  text-decoration: none;
+}
+
+.bottomSpacer {
+  margin-bottom: 50px;
+}
+
+@media (min-width: 576px) {
+  .ctaButton {
+    height: 44px;
+  }
+}
+
+@media (min-width: 852px) {
+  .heroTitle,
+  .heroSubtitle {
+    font-size: 96px;
+  }
+
+  .questionText,
+  .questionTextStrong {
+    font-size: 36px;
+  }
+
+  .ctaText {
+    font-size: 36px;
+  }
+}
+
+@media (min-width: 968px) {
+  .ctaText {
+    font-size: 48px;
+  }
+}

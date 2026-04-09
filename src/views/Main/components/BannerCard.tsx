@@ -2,6 +2,7 @@ import { useState, useEffect } from 'react'
 import useClock from 'hooks/useClock'
 import useProgressiveImage from 'hooks/useProgressiveImage'
 import { Skeleton } from 'components/Common/Skeleton'
+import styles from './main-shared.module.css'
 
 const bannerJson = [
   {
@@ -59,25 +60,16 @@ const BannerCard = ({ height = '231px' }) => {
   const { firstLine, secondLine, author, imagePath } = bannerJson[bannerIndex]
   const loaded = useProgressiveImage(imagePath)
   return (
-    <div>
-      <div className="relative w-full" style={{ height }}>
-        <div className="relative h-full w-full bg-center bg-cover" style={{ backgroundImage: loaded ? `url(${loaded})` : undefined }}>
+    <div className={styles.bannerOuter}>
+      <div className={styles.bannerFrame} style={{ height }}>
+        <div className={styles.bannerBackground} style={{ height, backgroundImage: loaded ? `url(${loaded})` : undefined }}>
           {!loaded && <Skeleton animation={'pulse'} width="100%" height="100%" />}
-          <div
-            className="relative flex h-full flex-col items-center justify-center bg-clip-text text-center text-transparent [filter:invert(1)_grayscale(1)_contrast(7)_drop-shadow(2px_2px_2px_black)]"
-            style={{ background: 'inherit' }}
-          >
-            <p className="dark:px-2.5 text-[14px] leading-relaxed font-semibold lg:text-[18px]">
-              {firstLine}
-            </p>
-            <p className="dark:px-2.5 text-[14px] leading-relaxed font-semibold lg:text-[18px]">
-              {secondLine}
-            </p>
-            <p className="dark:px-2.5 text-[14px] leading-relaxed font-semibold lg:text-[18px]">
-              {author}
-            </p>
+          <div className={styles.bannerContent}>
+            <p className={styles.bannerText}>{firstLine}</p>
+            <p className={styles.bannerText}>{secondLine}</p>
+            <p className={styles.bannerText}>{author}</p>
 
-            <div className="text-[48px] leading-none font-semibold">{time}</div>
+            <div className={styles.bannerTime}>{time}</div>
           </div>
         </div>
       </div>

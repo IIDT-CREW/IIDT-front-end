@@ -1,8 +1,8 @@
-import React from 'react'
+import React, { useEffect, useMemo, useState } from 'react'
 import { Modal, ModalProps } from 'components/Common'
 import { Button } from 'components/ui/button'
 import { signIn } from 'next-auth/react'
-import { useRouter } from 'next/router'
+import { useCurrentHref } from '@/hooks/useCurrentPath'
 import cn from 'utils/cn'
 
 enum EType {
@@ -15,7 +15,8 @@ enum EType {
 const loginStyles: Record<number, string> = {
   [EType.NAVER]: 'bg-[#03c75a] text-white text-[14.5px]',
   [EType.KAKAO]: 'bg-[#fee500] text-[#000000d8] text-[14.5px] rounded',
-  [EType.GOOGLE]: 'bg-white border border-[#e2e4e6] rounded text-black text-[14.5px] [&_span]:font-[Roboto,Spoqa_Han_Sans_Neo,sans-serif]',
+  [EType.GOOGLE]:
+    'bg-white border border-[#e2e4e6] rounded text-black text-[14.5px] [&_span]:font-[Roboto,Spoqa_Han_Sans_Neo,sans-serif]',
 }
 
 const loginIconStyles: Record<number, string> = {
@@ -26,6 +27,11 @@ const loginIconStyles: Record<number, string> = {
 
 interface LoginButtonProps extends React.ButtonHTMLAttributes<HTMLButtonElement> {
   loginType: EType
+}
+
+interface AuthProvider {
+  id: string
+  name: string
 }
 
 const LoginButton = ({ loginType, className, ...props }: LoginButtonProps) => (
@@ -44,36 +50,70 @@ const LoginButton = ({ loginType, className, ...props }: LoginButtonProps) => (
 
 const LoginIcon = ({ loginType, className, ...props }: { loginType: EType } & React.HTMLAttributes<HTMLElement>) => (
   <i
-    className={cn(
-      'w-10 h-10 inline-block bg-no-repeat bg-center',
-      loginIconStyles[loginType],
-      className,
-    )}
+    className={cn('w-10 h-10 inline-block bg-no-repeat bg-center', loginIconStyles[loginType], className)}
     {...props}
   />
 )
 
 const LoginModal: React.FC<ModalProps> = ({ onDismiss, ...props }) => {
-  const router = useRouter()
-  const callbackUrl = router.asPath === '/' ? '/main' : router.asPath
+  const currentHref = useCurrentHref()
+  const callbackUrl = currentHref === '/' ? '/main' : currentHref
+  const [providers, setProviders] = useState<AuthProvider[]>([])
+
+  useEffect(() => {
+    let isMounted = true
+
+    const loadProviders = async () => {
+      try {
+        const response = await fetch('/api/auth/providers')
+
+        if (!response.ok) {
+          return
+        }
+
+        const data = (await response.json()) as Record<string, AuthProvider>
+
+        if (isMounted) {
+          setProviders(Object.values(data ?? {}))
+        }
+      } catch {
+        if (isMounted) {
+          setProviders([])
+        }
+      }
+    }
+
+    void loadProviders()
+
+    return () => {
+      isMounted = false
+    }
+  }, [])
+
+  const visibleProviders = useMemo(
+    () =>
+      providers.filter((provider) =>
+        [EType.KAKAO, EType.GOOGLE].includes(
+          provider.id === 'kakao' ? EType.KAKAO : provider.id === 'google' ? EType.GOOGLE : EType.TEST,
+        ),
+      ),
+    [providers],
+  )
 
   return (
     <Modal title="로그인이 필요해요" onDismiss={onDismiss} {...props} minWidth="272px">
       <div className="flex flex-col items-center justify-center">
-        <LoginButton
-          loginType={EType.KAKAO}
-          onClick={() => signIn('kakao', { callbackUrl })}
-        >
-          <LoginIcon loginType={EType.KAKAO} />
-          <span>카카오 계정으로 시작하기</span>
-        </LoginButton>
-        <LoginButton
-          loginType={EType.GOOGLE}
-          onClick={() => signIn('google', { callbackUrl })}
-        >
-          <LoginIcon loginType={EType.GOOGLE} />
-          <span>Google 계정으로 시작하기</span>
-        </LoginButton>
+        {visibleProviders.map((provider) => {
+          const loginType = provider.id === 'kakao' ? EType.KAKAO : EType.GOOGLE
+          const label = provider.id === 'kakao' ? '카카오 계정으로 시작하기' : 'Google 계정으로 시작하기'
+
+          return (
+            <LoginButton key={provider.id} loginType={loginType} onClick={() => signIn(provider.id, { callbackUrl })}>
+              <LoginIcon loginType={loginType} />
+              <span>{label}</span>
+            </LoginButton>
+          )
+        })}
 
         <div className="mb-8 mt-16">
           <p className="text-[10px] text-[#A4A2A3] underline">개인정보 처리방침</p>

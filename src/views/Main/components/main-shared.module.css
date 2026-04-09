@@ -1,0 +1,85 @@
+.bannerOuter {
+  width: 100%;
+}
+
+.bannerFrame {
+  position: relative;
+  width: 100%;
+}
+
+.bannerBackground {
+  position: relative;
+  width: 100%;
+  background-position: 50%;
+  background-size: cover;
+  background-repeat: no-repeat;
+}
+
+.bannerContent {
+  position: relative;
+  display: flex;
+  height: 100%;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  background: inherit;
+  color: transparent;
+  background-clip: text;
+  -webkit-background-clip: text;
+  text-align: center;
+  filter: invert(1) grayscale(1) contrast(7) drop-shadow(2px 2px 2px black);
+}
+
+.bannerText {
+  color: inherit;
+  font-size: 14px;
+  font-weight: 600;
+  line-height: 1.5;
+}
+
+.bannerTime {
+  color: inherit;
+  font-size: 48px;
+  font-weight: 700;
+  line-height: 1;
+}
+
+.mainInfoText {
+  margin-bottom: 24px;
+  font-size: 18px;
+  font-weight: 600;
+  line-height: 1.5;
+}
+
+.mainInfoCount {
+  margin-bottom: 24px;
+  font-size: 26px;
+  font-weight: 600;
+  line-height: 1.5;
+}
+
+.pageContainer {
+  min-height: calc(100% - 231px);
+  margin-top: 78px;
+}
+
+.pageSectionGap {
+  margin-bottom: 36px;
+}
+
+.centerColumn {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+
+.writeButtonWrap {
+  margin-bottom: 55px;
+}
+
+@media (min-width: 968px) {
+  .bannerText {
+    font-size: 18px;
+  }
+}

@@ -7,11 +7,14 @@ interface ProgressProps extends HTMLAttributes<HTMLDivElement> {
   wrapperClassName?: string
 }
 const ProgressBar = ({ max, value, wrapperClassName, className, ...props }: ProgressProps) => {
+  const safeMax = max ?? 100
+  const safeValue = value ?? 0
+
   return (
     <div className={cn('w-full h-0.5 bg-grayscale-2', wrapperClassName)}>
       <div
         className={cn('transition-all duration-300 h-0.5 bg-grayscale-6', className)}
-        style={{ width: `${(value / max) * 100}%` }}
+        style={{ width: `${(safeValue / safeMax) * 100}%` }}
         {...props}
       />
     </div>

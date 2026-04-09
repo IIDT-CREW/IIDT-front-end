@@ -16,6 +16,10 @@ export interface SkeletonProps {
   variant?: Variant
   width?: string | number
   height?: string | number
+  minWidth?: string | number
+  maxWidth?: string | number
+  minHeight?: string | number
+  maxHeight?: string | number
   className?: string
 }
 

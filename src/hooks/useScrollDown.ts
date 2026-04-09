@@ -5,7 +5,7 @@ const isServer = typeof window === 'undefined'
 
 const useScrollDown = () => {
   const lastScrollTop = useRef(0)
-  const fixBox = useRef(null)
+  const fixBox = useRef<HTMLElement | null>(null)
   const fixBoxHeight = useRef(0)
   const didScroll = useRef(false)
   const { isScrollDown, handleSetIsScrollDown } = useIsScrollDown()
@@ -29,7 +29,7 @@ const useScrollDown = () => {
   }, [])
 
   useEffect(() => {
-    fixBox.current = document.querySelector('app-bar') as HTMLElement
+    fixBox.current = document.querySelector('#app-bar')
     if (fixBox.current) {
       fixBoxHeight.current = fixBox.current.offsetHeight
     }

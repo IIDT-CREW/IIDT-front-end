@@ -99,11 +99,13 @@ export async function PUT(req: NextRequest, { params }: { params: Promise<{ id: 
     }
 
     const nickname = existing.mem_idx ? session!.user!.nickname : will.guest_nickname
-    return apiSuccess(mapWillRow({
-      ...will,
-      member: existing.mem_idx ? { mem_nickname: nickname } : null,
-      guest_nickname: existing.mem_idx ? null : nickname,
-    }))
+    return apiSuccess(
+      mapWillRow({
+        ...will,
+        member: existing.mem_idx ? { mem_nickname: nickname } : null,
+        guest_nickname: existing.mem_idx ? null : nickname,
+      }),
+    )
   } catch {
     return apiError('9000', 'Internal server error', 500)
   }

@@ -10,8 +10,8 @@ const MenuItem = ({ isActive, children, href }: MenuItemProps) => {
   return (
     <div
       className={cn(
-        'flex items-center rounded px-3 py-2 text-xs leading-none cursor-pointer z-[9999] hover:bg-[var(--color-tertiary)]',
-        'sm:text-sm lg:text-lg',
+        'z-[9999] mx-[10px] cursor-pointer items-center text-[12px] leading-none hover:bg-[var(--color-tertiary)]',
+        'sm:text-[14px] lg:text-[18px]',
         isActive ? 'font-semibold' : 'font-normal',
       )}
     >

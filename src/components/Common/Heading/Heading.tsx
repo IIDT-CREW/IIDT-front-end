@@ -1,12 +1,12 @@
-import { CSSProperties, forwardRef } from 'react'
+import { CSSProperties, ElementType, HTMLAttributes } from 'react'
 import cn from 'utils/cn'
 import { scales, HeadingProps } from './types'
 
 const scaleStyles = {
-  [scales.MD]: { fontSize: '18px', fontSizeLg: '18px' },
-  [scales.LG]: { fontSize: '26px', fontSizeLg: '26px' },
-  [scales.XL]: { fontSize: '36px', fontSizeLg: '36px' },
-  [scales.XXL]: { fontSize: '45px', fontSizeLg: '45px' },
+  [scales.MD]: 'text-[18px] xl:text-[18px]',
+  [scales.LG]: 'text-[26px] xl:text-[26px]',
+  [scales.XL]: 'text-[36px] xl:text-[36px]',
+  [scales.XXL]: 'text-[45px] xl:text-[45px]',
 }
 
 type CSSValue = string | number
@@ -31,50 +31,41 @@ interface HeadingStyleProps {
   fontFamily?: CSSProperties['fontFamily']
 }
 
-const Heading = forwardRef<HTMLDivElement, HeadingProps & HeadingStyleProps & React.HTMLAttributes<HTMLDivElement>>(
-  (
-    {
-      scale = scales.MD,
-      as: Component = 'div',
-      color,
-      className,
-      style,
-      m,
-      mt,
-      mb,
-      ml,
-      mr,
-      textAlign,
-      fontFamily,
-      ...props
-    },
-    ref,
-  ) => {
-    const s = scaleStyles[scale] || scaleStyles[scales.MD]
+const Heading = ({
+  scale = scales.MD,
+  as,
+  color,
+  className,
+  style,
+  m,
+  mt,
+  mb,
+  ml,
+  mr,
+  textAlign,
+  fontFamily,
+  ...props
+}: HeadingProps & HeadingStyleProps & HTMLAttributes<HTMLElement>) => {
+  const scaleClassName = scaleStyles[scale] || scaleStyles[scales.MD]
+  const Component = (as ?? 'div') as ElementType
 
-    return (
-      <Component
-        ref={ref}
-        className={cn('leading-[1.1]', className)}
-        style={{
-          fontSize: s.fontSize,
-          fontWeight: 600,
-          color,
-          margin: toSpaceValue(m),
-          marginTop: toSpaceValue(mt),
-          marginBottom: toSpaceValue(mb),
-          marginLeft: toSpaceValue(ml),
-          marginRight: toSpaceValue(mr),
-          textAlign,
-          fontFamily,
-          ...style,
-        }}
-        {...props}
-      />
-    )
-  },
-)
-
-Heading.displayName = 'Heading'
+  return (
+    <Component
+      className={cn('leading-[1.1] font-semibold', scaleClassName, className)}
+      style={{
+        color,
+        margin: toSpaceValue(m),
+        marginTop: toSpaceValue(mt),
+        marginBottom: toSpaceValue(mb),
+        marginLeft: toSpaceValue(ml),
+        marginRight: toSpaceValue(mr),
+        textAlign,
+        fontFamily,
+        ...style,
+      }}
+      {...props}
+    />
+  )
+}
 
 export default Heading

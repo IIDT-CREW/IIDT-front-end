@@ -88,6 +88,25 @@
     ".next/dev/types/**/*.ts"
   ],
   "exclude": [
-    "node_modules"
+    "node_modules",
+    "**/*.stories.ts",
+    "**/*.stories.tsx",
+    "src/components/Common/Box/**",
+    "src/components/Common/Card/**",
+    "src/components/Common/Checkbox/**",
+    "src/components/Common/Collapse/**",
+    "src/components/Common/Input/**",
+    "src/components/Common/Layouts/**",
+    "src/components/Common/Card/theme.ts",
+    "src/components/Common/Modal/theme.ts",
+    "src/components/Common/TabMenu/**",
+    "src/components/Common/Text/**",
+    "src/components/Common/Image/ImageWrapper.tsx",
+    "src/components/Common/Image/NextImage.tsx",
+    "src/components/Menu/utils.ts",
+    "src/components/Menu/theme.ts",
+    "src/utils/iconMap.tsx",
+    "src/utils/getLocalStorageItemKeys.ts",
+    "src/views/Home/components/Layout/ImageWrapper.tsx"
   ]
 }
