@@ -5,6 +5,7 @@ import { useSession } from 'next-auth/react'
 import { useCheckNickname } from '@/queries/auth'
 import { Button } from 'components/ui/button'
 import { useReplaceNavigate } from '@/hooks/useCurrentPath'
+import styles from './onboarding.module.css'
 
 export default function OnboardingPage() {
   const { data: session, update } = useSession()
@@ -77,15 +78,15 @@ export default function OnboardingPage() {
   const showRegisterButton = isValid && !isDuplicate && isFetched && checkResult
 
   return (
-    <div className="flex min-h-screen flex-col items-center justify-center p-5">
-      <p className="mb-2 text-[24px] leading-relaxed">마지막으로...</p>
+    <div className={styles.container}>
+      <p className={styles.title}>마지막으로...</p>
       <label htmlFor="nickname-input" className="sr-only">
         닉네임
       </label>
-      <p className="text-center leading-relaxed">닉네임을 결정해주세요</p>
+      <p className={styles.subtitle}>닉네임을 결정해주세요</p>
       <input
         id="nickname-input"
-        className="outline-none border border-current my-8 resize-none w-full max-w-[320px] text-lg font-normal font-[Nanum_Myeongjo] p-2 text-[var(--color-text-secondary)] leading-7 bg-inherit placeholder:text-center placeholder:text-grayscale-5"
+        className={styles.input}
         value={nickname}
         onChange={handleChange}
         placeholder="닉네임"
@@ -93,8 +94,8 @@ export default function OnboardingPage() {
       />
 
       {isDuplicate && isFetched && (
-        <div className="mb-4">
-          <p className="text-red-500" role="alert">
+        <div className={styles.errorWrap}>
+          <p className={styles.errorText} role="alert">
             아쉽지만 다른 닉네임을 사용해주세요.
           </p>
         </div>

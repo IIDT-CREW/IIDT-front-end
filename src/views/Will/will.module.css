@@ -1,0 +1,152 @@
+.container {
+  min-height: calc(100% - 231px);
+}
+
+.titleWrap {
+  margin-bottom: 36px;
+}
+
+.contentOuter {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+
+.contentInner {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+
+.footer {
+  margin-top: 50px;
+  margin-bottom: 50px;
+}
+
+.footerInner {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+
+.footerTextWrap {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+
+.footerText {
+  font-weight: 600;
+  line-height: 1.5;
+}
+
+.footerButtonWrap {
+  margin-top: 30px;
+}
+
+.card {
+  min-width: 362px;
+  max-width: 582px;
+  margin-bottom: 40px;
+  padding: 20px;
+  border-radius: 4px;
+  background: var(--color-bg);
+}
+
+.cardHeader {
+  height: 25px;
+  background: var(--color-contrast);
+  box-shadow: 0 -1px 4px rgb(0 0 0 / 70%);
+}
+
+.cardHeaderText {
+  color: #fff;
+  font-size: 18px;
+  text-align: center;
+}
+
+.cardBody {
+  margin-top: 40px;
+}
+
+.cardContents {
+  white-space: break-spaces;
+  font-weight: 400;
+  line-height: 1.5;
+  font-size: 18px;
+  padding: 20px;
+  color: var(--color-text);
+}
+
+.cardAuthorRow {
+  display: flex;
+  justify-content: flex-end;
+  margin-top: 18px;
+}
+
+.cardAuthor {
+  color: var(--color-grayscale-5);
+}
+
+.titleBannerWrap {
+  position: relative;
+  width: 100%;
+}
+
+.titleBannerInner {
+  position: relative;
+  width: 100%;
+  height: 100%;
+}
+
+.titleBannerContent {
+  position: relative;
+  display: flex;
+  height: 100%;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+
+.titleText {
+  width: 80%;
+  text-align: center;
+  background: #000;
+  color: #fff;
+  font-size: 18px;
+  font-weight: 600;
+  line-height: normal;
+}
+
+.titleText span {
+  color: #fff;
+}
+
+.dateText {
+  color: #fff;
+  opacity: 0;
+  transition: all 1s;
+  transform: translate3d(0, 15px, 0);
+  font-size: 14px;
+  font-weight: 600;
+  line-height: normal;
+}
+
+.dateTextVisible {
+  opacity: 1;
+  transform: translate3d(0, 0, 0);
+}
+
+@media (min-width: 968px) {
+  .titleText {
+    font-size: 32px;
+  }
+
+  .dateText {
+    font-size: 18px;
+  }
+}
