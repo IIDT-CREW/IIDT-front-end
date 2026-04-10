@@ -53,6 +53,9 @@ const Button = forwardRef<HTMLButtonElement, ButtonProps<'button'>>(
     },
     ref,
   ) => {
+    void _as
+    void _external
+
     return (
       <ShadcnButton
         ref={ref}

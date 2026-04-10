@@ -1,5 +1,5 @@
 import { CSSProperties, ElementType, HTMLAttributes } from 'react'
-import cn from 'utils/cn'
+import { cn } from 'utils/cn'
 import { scales, HeadingProps } from './types'
 
 const scaleStyles = {

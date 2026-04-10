@@ -12,8 +12,8 @@ export async function GET(req: NextRequest, { params }: { params: Promise<{ id: 
     const supabase = createSupabaseServerClient()
 
     const { data, error } = await supabase
-      .from('will')
-      .select('*, member(mem_nickname), will_answer(*)')
+      .from('iidt_will')
+      .select('*, member:iidt_member(mem_nickname), will_answer:iidt_will_answer(*)')
       .eq('will_id', id)
       .eq('is_delete', 0)
       .single()
@@ -32,6 +32,7 @@ export async function GET(req: NextRequest, { params }: { params: Promise<{ id: 
 export async function PUT(req: NextRequest, { params }: { params: Promise<{ id: string }> }) {
   const { id } = await params
   const session = await auth()
+  const sessionUser = session?.user
 
   try {
     const body = await req.json()
@@ -39,7 +40,7 @@ export async function PUT(req: NextRequest, { params }: { params: Promise<{ id: 
 
     // 기존 유언장 조회
     const { data: existing } = await supabase
-      .from('will')
+      .from('iidt_will')
       .select('mem_idx, guest_password')
       .eq('will_id', id)
       .eq('is_delete', 0)
@@ -66,7 +67,7 @@ export async function PUT(req: NextRequest, { params }: { params: Promise<{ id: 
 
     // 유언장 업데이트
     const { data: will, error } = await supabase
-      .from('will')
+      .from('iidt_will')
       .update({
         title: body.title,
         content: body.content || '',
@@ -84,7 +85,7 @@ export async function PUT(req: NextRequest, { params }: { params: Promise<{ id: 
 
     // 질문 답변 갱신: 기존 삭제 후 재삽입
     if (body.answer_list !== undefined) {
-      await supabase.from('will_answer').delete().eq('will_id', id)
+      await supabase.from('iidt_will_answer').delete().eq('will_id', id)
 
       if (body.answer_list && body.answer_list.length > 0) {
         const answers = body.answer_list.map((a: any) => ({
@@ -94,11 +95,11 @@ export async function PUT(req: NextRequest, { params }: { params: Promise<{ id: 
           qs_essay_answer: a.qs_essay_answer,
         }))
 
-        await supabase.from('will_answer').insert(answers)
+        await supabase.from('iidt_will_answer').insert(answers)
       }
     }
 
-    const nickname = existing.mem_idx ? session!.user!.nickname : will.guest_nickname
+    const nickname = existing.mem_idx ? sessionUser?.nickname ?? '' : will.guest_nickname
     return apiSuccess(
       mapWillRow({
         ...will,
@@ -121,7 +122,7 @@ export async function DELETE(req: NextRequest, { params }: { params: Promise<{ i
 
     // 기존 유언장 조회
     const { data: existing } = await supabase
-      .from('will')
+      .from('iidt_will')
       .select('mem_idx, guest_password')
       .eq('will_id', id)
       .eq('is_delete', 0)
@@ -147,7 +148,7 @@ export async function DELETE(req: NextRequest, { params }: { params: Promise<{ i
       }
     }
 
-    const { error } = await supabase.from('will').update({ is_delete: 1 }).eq('will_id', id)
+    const { error } = await supabase.from('iidt_will').update({ is_delete: 1 }).eq('will_id', id)
 
     if (error) {
       return apiError('3000', error.message, 500)

@@ -89,6 +89,7 @@ src/
 - `AUTH_GOOGLE_ID` / `AUTH_GOOGLE_SECRET` — Google OAuth
 - `AUTH_KAKAO_ID` / `AUTH_KAKAO_SECRET` — Kakao OAuth
 - `NEXT_PUBLIC_SUPABASE_URL` / `SUPABASE_SERVICE_ROLE_KEY` — Supabase 연결
+- `SUPABASE_SCHEMA` — Supabase 스키마 (`public`)
 - `NEXT_PUBLIC_SITE_URL` — 사이트 URL (OG 메타 태그용)
 
 ## Path Aliases

@@ -1,7 +1,7 @@
 import { Modal } from 'components/Common'
 import { Button } from 'components/ui/button'
 import { ButtonHTMLAttributes } from 'react'
-import cn from 'utils/cn'
+import { cn } from 'utils/cn'
 
 interface customModalProps extends ButtonHTMLAttributes<HTMLButtonElement> {
   handlePostType: () => void

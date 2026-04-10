@@ -1,6 +1,6 @@
 import React, { useState } from 'react'
 import { Link2 } from 'lucide-react'
-import cn from 'utils/cn'
+import { cn } from 'utils/cn'
 
 interface Props {
   toCopy: string

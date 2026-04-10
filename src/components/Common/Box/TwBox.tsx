@@ -1,5 +1,5 @@
 import { CSSProperties, forwardRef, HTMLAttributes } from 'react'
-import cn from 'utils/cn'
+import { cn } from 'utils/cn'
 
 type CSSValue = string | number
 

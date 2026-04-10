@@ -1,4 +1,4 @@
-import { DropdownMenuItems, DropdownMenuItemType } from './types'
+import { DropdownMenuItems } from './types'
 import { ElementType } from 'react'
 
 export type MenuItemsType = {

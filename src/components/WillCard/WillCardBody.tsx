@@ -1,4 +1,4 @@
-import React from 'react'
+import { memo } from 'react'
 import moment from 'moment'
 import { IS_DEFAULT_MODE } from 'config/constants/default'
 import { Will } from '@api/will/types'
@@ -47,4 +47,4 @@ const Body = ({ will }: BodyProps) => {
   )
 }
 
-export default React.memo(Body)
+export default memo(Body)

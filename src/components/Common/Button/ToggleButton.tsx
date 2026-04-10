@@ -1,4 +1,4 @@
-import cn from 'utils/cn'
+import { cn } from 'utils/cn'
 import { ButtonProps } from './types'
 
 interface ToggleButtonProps {

@@ -16,7 +16,7 @@ export async function GET(req: NextRequest) {
 
     // 전체 개수
     const { count } = await supabase
-      .from('will')
+      .from('iidt_will')
       .select('*', { count: 'exact', head: true })
       .eq('is_delete', 0)
       .eq('is_private', 0)
@@ -26,8 +26,8 @@ export async function GET(req: NextRequest) {
 
     // 페이징 조회 (member 닉네임 LEFT JOIN)
     const { data, error } = await supabase
-      .from('will')
-      .select('*, member(mem_nickname)')
+      .from('iidt_will')
+      .select('*, member:iidt_member(mem_nickname)')
       .eq('is_delete', 0)
       .eq('is_private', 0)
       .order('reg_date', { ascending: false })
@@ -57,6 +57,7 @@ export async function GET(req: NextRequest) {
 export async function POST(req: NextRequest) {
   const session = await auth()
   const isGuest = !session?.user?.memIdx || session.user.memIdx === -1
+  const memberUser = isGuest ? null : session?.user
 
   try {
     const body = await req.json()
@@ -73,12 +74,16 @@ export async function POST(req: NextRequest) {
     const supabase = createSupabaseServerClient()
     const hashedPassword = isGuest ? await bcrypt.hash(body.guest_password, 10) : null
 
+    if (!isGuest && !memberUser?.memIdx) {
+      return apiError('4002', '유효한 사용자 세션이 없습니다', 401)
+    }
+
     // 유언장 삽입
     const { data: will, error } = await supabase
-      .from('will')
+      .from('iidt_will')
       .insert({
         will_id: body.will_id,
-        mem_idx: isGuest ? null : session!.user!.memIdx,
+        mem_idx: memberUser?.memIdx ?? null,
         title: body.title,
         content: body.content || '',
         thumbnail: body.thumbnail || '',
@@ -103,10 +108,10 @@ export async function POST(req: NextRequest) {
         qs_essay_answer: a.qs_essay_answer,
       }))
 
-      await supabase.from('will_answer').insert(answers)
+      await supabase.from('iidt_will_answer').insert(answers)
     }
 
-    const nickname = isGuest ? body.guest_nickname.trim() : session!.user!.nickname
+    const nickname = isGuest ? body.guest_nickname.trim() : memberUser?.nickname ?? ''
     return apiSuccess(
       mapWillRow({
         ...will,

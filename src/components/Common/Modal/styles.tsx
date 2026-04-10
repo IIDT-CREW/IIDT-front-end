@@ -1,4 +1,4 @@
-import React from 'react'
+import { forwardRef, type FC, type HTMLAttributes, type ReactNode } from 'react'
 import { cn } from '@lib/utils'
 import { XIcon, ArrowLeftIcon } from 'lucide-react'
 import { Button } from 'components/ui/button'
@@ -19,10 +19,10 @@ const resolveBackground = (background?: string) => {
 interface ModalHeaderProps {
   background?: string
   className?: string
-  children?: React.ReactNode
+  children?: ReactNode
 }
 
-export const ModalHeader = React.forwardRef<HTMLDivElement, ModalHeaderProps>(
+export const ModalHeader = forwardRef<HTMLDivElement, ModalHeaderProps>(
   ({ background, className, children, ...props }, ref) => (
     <div
       ref={ref}
@@ -36,18 +36,16 @@ export const ModalHeader = React.forwardRef<HTMLDivElement, ModalHeaderProps>(
 )
 ModalHeader.displayName = 'ModalHeader'
 
-export const ModalTitle = React.forwardRef<HTMLDivElement, React.HTMLAttributes<HTMLDivElement>>(
-  ({ className, ...props }, ref) => (
-    <div ref={ref} className={cn('flex flex-1 items-center justify-center', className)} {...props} />
-  ),
-)
+export const ModalTitle = forwardRef<HTMLDivElement, HTMLAttributes<HTMLDivElement>>(({ className, ...props }, ref) => (
+  <div ref={ref} className={cn('flex flex-1 items-center justify-center', className)} {...props} />
+))
 ModalTitle.displayName = 'ModalTitle'
 
-interface ModalBodyProps extends React.HTMLAttributes<HTMLDivElement> {
+interface ModalBodyProps extends HTMLAttributes<HTMLDivElement> {
   p?: string
 }
 
-export const ModalBody = React.forwardRef<HTMLDivElement, ModalBodyProps>(({ className, p, style, ...props }, ref) => (
+export const ModalBody = forwardRef<HTMLDivElement, ModalBodyProps>(({ className, p, style, ...props }, ref) => (
   <div
     ref={ref}
     className={cn('flex flex-col max-h-[90vh] overflow-y-auto', className)}
@@ -57,7 +55,7 @@ export const ModalBody = React.forwardRef<HTMLDivElement, ModalBodyProps>(({ cla
 ))
 ModalBody.displayName = 'ModalBody'
 
-export const ModalCloseButton: React.FC<{ onDismiss: ModalProps['onDismiss'] }> = ({ onDismiss }) => {
+export const ModalCloseButton: FC<{ onDismiss: ModalProps['onDismiss'] }> = ({ onDismiss }) => {
   return (
     <Button
       type="button"
@@ -72,7 +70,7 @@ export const ModalCloseButton: React.FC<{ onDismiss: ModalProps['onDismiss'] }> 
   )
 }
 
-export const ModalBackButton: React.FC<{ onBack: ModalProps['onBack'] }> = ({ onBack }) => {
+export const ModalBackButton: FC<{ onBack: ModalProps['onBack'] }> = ({ onBack }) => {
   return (
     <Button type="button" variant="ghost" size="icon" onClick={onBack} className="mr-2" aria-label="Go back">
       <ArrowLeftIcon className="w-5 h-5 text-[var(--color-primary)]" />
@@ -80,11 +78,11 @@ export const ModalBackButton: React.FC<{ onBack: ModalProps['onBack'] }> = ({ on
   )
 }
 
-interface ModalContainerProps extends React.HTMLAttributes<HTMLDivElement> {
+interface ModalContainerProps extends HTMLAttributes<HTMLDivElement> {
   minWidth?: string
 }
 
-export const ModalContainer = React.forwardRef<HTMLDivElement, ModalContainerProps>(
+export const ModalContainer = forwardRef<HTMLDivElement, ModalContainerProps>(
   ({ className, minWidth = '272px', style, ...props }, ref) => (
     <div
       ref={ref}

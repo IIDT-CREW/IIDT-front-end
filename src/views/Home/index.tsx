@@ -3,7 +3,6 @@
 import React, { useEffect } from 'react'
 import AOS from 'aos'
 import Link, { type LinkProps } from 'next/link'
-import { useIsLogin } from '@/hooks/useAuth'
 import MainCard from './components/MainCard'
 import Clock from './components/Clock'
 import styles from './home.module.css'
@@ -19,7 +18,6 @@ const Home: React.FC = () => {
     AOS.init()
     AOS.refresh()
   }, [])
-  const isLogin = useIsLogin()
 
   return (
     <>
@@ -35,7 +33,6 @@ const Home: React.FC = () => {
           title="내일이 내생에"
           secondTitle="마지막이라고 생각해보신적 있나요?"
           imagePath="/images/home/patrick-ryan-3kUIaB2EPp8-unsplash.jpg"
-          alt="내일이 마지막이라면 - 석양 풍경"
         />
         <div className={styles.spacerLarge} />
         <MainCard
@@ -43,7 +40,6 @@ const Home: React.FC = () => {
           title=" 만약 내일 생을 마감한다면,"
           secondTitle="소중한 이들에게 하고싶은 말이 있나요?"
           imagePath="/images/home/huyen-pham--PTlx55R-KU-unsplash.jpg"
-          alt="소중한 이들에게 전하는 마지막 메시지"
         />
 
         <section className={styles.questionSection}>
@@ -60,7 +56,7 @@ const Home: React.FC = () => {
         <section className={styles.ctaSection}>
           <div className={styles.ctaInner}>
             <p className={styles.ctaText}>다시 한 번 삶을 되돌아보는 시간</p>
-            <MainButton href={isLogin ? '/write' : '/main'}>일기 작성하러가기</MainButton>
+            <MainButton href="/write">일기 작성하러가기</MainButton>
           </div>
         </section>
       </div>

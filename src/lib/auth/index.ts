@@ -34,7 +34,7 @@ export const { handlers, auth, signIn, signOut } = NextAuth({
 
       const supabase = createSupabaseServerClient()
       const { data: member } = await supabase
-        .from('member')
+        .from('iidt_member')
         .select('mem_idx, mem_nickname, mem_userid, mem_cooperation')
         .eq('mem_userid', account.providerAccountId)
         .eq('mem_cooperation', account.provider)

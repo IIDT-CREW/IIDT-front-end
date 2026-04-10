@@ -1,5 +1,5 @@
 import noop from 'lodash/noop'
-import { DropdownMenuItems, DropdownMenuItemType } from './types'
+import { DROPDOWN_MENU_ITEM_TYPE, type DropdownMenuItems } from './types'
 
 const ItemsMock: DropdownMenuItems[] = [
   {
@@ -13,15 +13,15 @@ const ItemsMock: DropdownMenuItems[] = [
   {
     label: 'LP Migration',
     href: '',
-    type: DropdownMenuItemType.EXTERNAL_LINK,
+    type: DROPDOWN_MENU_ITEM_TYPE.EXTERNAL_LINK,
   },
   {
-    type: DropdownMenuItemType.DIVIDER,
+    type: DROPDOWN_MENU_ITEM_TYPE.DIVIDER,
   },
   {
     label: 'Disconnect',
     onClick: noop,
-    type: DropdownMenuItemType.BUTTON,
+    type: DROPDOWN_MENU_ITEM_TYPE.BUTTON,
   },
 ]
 

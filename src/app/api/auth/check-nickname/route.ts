@@ -12,7 +12,7 @@ export async function GET(req: NextRequest) {
 
   try {
     const supabase = createSupabaseServerClient()
-    const { data } = await supabase.from('member').select('mem_idx').eq('mem_nickname', mem_nickname).limit(1)
+    const { data } = await supabase.from('iidt_member').select('mem_idx').eq('mem_nickname', mem_nickname).limit(1)
 
     return apiSuccess({ IS_EXIST: (data?.length ?? 0) > 0 })
   } catch {

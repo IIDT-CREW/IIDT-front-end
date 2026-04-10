@@ -62,7 +62,10 @@ const BannerCard = ({ height = '231px' }) => {
   return (
     <div className={styles.bannerOuter}>
       <div className={styles.bannerFrame} style={{ height }}>
-        <div className={styles.bannerBackground} style={{ height, backgroundImage: loaded ? `url(${loaded})` : undefined }}>
+        <div
+          className={styles.bannerBackground}
+          style={{ height, backgroundImage: loaded ? `url(${loaded})` : undefined }}
+        >
           {!loaded && <Skeleton animation={'pulse'} width="100%" height="100%" />}
           <div className={styles.bannerContent}>
             <p className={styles.bannerText}>{firstLine}</p>

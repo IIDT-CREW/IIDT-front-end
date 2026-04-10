@@ -1,12 +1,12 @@
 import { useState } from 'react'
 import { Modal } from 'components/Common'
-import cn from 'utils/cn'
+import { cn } from 'utils/cn'
 import { willService } from '@/services/will.service'
 import useToast from 'hooks/useToast'
 
 interface GuestPasswordModalProps {
   willId: string
-  onVerified: (password: string) => void
+  onVerified: (...args: [string]) => void
   onDismiss?: () => void
 }
 

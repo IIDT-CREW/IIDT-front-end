@@ -1,5 +1,5 @@
 import React, { forwardRef } from 'react'
-import cn from 'utils/cn'
+import { cn } from 'utils/cn'
 
 const colorMap: Record<string, string> = {
   primary: 'var(--color-primary)',

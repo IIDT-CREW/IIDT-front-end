@@ -1,6 +1,6 @@
 export { useWill } from './use-will'
-export { useWillList, useInfiniteWillList } from './use-will-list'
-export { useMyWill, useInfiniteMyWill } from './use-my-will'
+export { useInfiniteWillList } from './use-will-list'
+export { useInfiniteMyWill } from './use-my-will'
 export { useWillCount } from './use-will-count'
 export { useCreateWill } from './mutations/use-create-will'
 export { useUpdateWill } from './mutations/use-update-will'

@@ -1,9 +1,11 @@
-import cn from 'utils/cn'
+import { cn } from 'utils/cn'
 
-enum Resolution {
-  MD = '1.5x',
-  LG = '2x',
-}
+const RESOLUTION = {
+  MD: '1.5x',
+  LG: '2x',
+} as const
+
+type Resolution = typeof RESOLUTION[keyof typeof RESOLUTION]
 interface ImageAttributes {
   src: string
   alt: string
@@ -24,8 +26,8 @@ export const getImageUrl = (base: string, imageSrc: string, resolution?: Resolut
 
 export const getSrcSet = (base: string, imageSrc: string, extension = '.png') => {
   return `${getImageUrl(base, imageSrc, undefined, extension)} 512w,
-  ${getImageUrl(base, imageSrc, Resolution.MD, extension)} 768w,
-  ${getImageUrl(base, imageSrc, Resolution.LG, extension)} 1024w,`
+  ${getImageUrl(base, imageSrc, RESOLUTION.MD, extension)} 768w,
+  ${getImageUrl(base, imageSrc, RESOLUTION.LG, extension)} 1024w,`
 }
 
 const CompositeImage: React.FC<ComponentProps> = ({ path, attributes, maxHeight = '512px' }) => {

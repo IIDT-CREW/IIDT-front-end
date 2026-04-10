@@ -20,7 +20,7 @@ export async function GET(req: NextRequest) {
 
     // 전체 개수
     const { count } = await supabase
-      .from('will')
+      .from('iidt_will')
       .select('*', { count: 'exact', head: true })
       .eq('mem_idx', memIdx)
       .eq('is_delete', 0)
@@ -30,8 +30,8 @@ export async function GET(req: NextRequest) {
 
     // 페이징 조회
     const { data, error } = await supabase
-      .from('will')
-      .select('*, member!inner(mem_nickname)')
+      .from('iidt_will')
+      .select('*, member:iidt_member!inner(mem_nickname)')
       .eq('mem_idx', memIdx)
       .eq('is_delete', 0)
       .order('reg_date', { ascending: false })

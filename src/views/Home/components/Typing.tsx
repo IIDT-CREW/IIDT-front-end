@@ -1,22 +1,29 @@
 import { useEffect, useState, useMemo } from 'react'
 import classNames from 'classnames'
 import * as Hangul from 'hangul-js'
+
+type TypingStatus = 'is_done' | 'is_init'
+
 const assemble = (slice) => {
   return Hangul.assemble(slice)
 }
+
 const TIME_INTERVAL = 100
+
 function timeResist(timeInterval = TIME_INTERVAL) {
-  return new Promise(function (resolve, reject) {
+  return new Promise(function (resolve) {
     setTimeout(function () {
       resolve('time resist')
     }, timeInterval)
   })
 }
+
 type TypingProps = {
   str: string
-  handleStatus: (status: 'is_done' | 'is_init') => void
-  status: 'is_done' | 'is_init'
+  handleStatus: (nextStatus: TypingStatus) => void
+  status: TypingStatus
 }
+
 const TypingTest = ({ str = '타이핑 컴포넌트 입니다', handleStatus, status }: TypingProps) => {
   const [result, setResult] = useState('')
 

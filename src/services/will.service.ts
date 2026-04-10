@@ -1,5 +1,5 @@
 import { fetchClient } from '@/lib/fetch'
-import type { Will, Meta, InsertWillParams, DeleteWillParams } from '@/api/will/types'
+import type { Will, Meta, InsertWillParams } from '@/api/will/types'
 
 export interface WillListResult {
   list: Will[]
@@ -41,7 +41,7 @@ export const willService = {
   async createWill(data: InsertWillParams) {
     const response = await fetchClient<Will>('/api/will', {
       method: 'POST',
-      body: data as unknown as Record<string, unknown>,
+      body: data,
     })
     return response.result
   },
@@ -49,7 +49,7 @@ export const willService = {
   async updateWill(data: InsertWillParams) {
     const response = await fetchClient<Will>(`/api/will/${data.will_id}`, {
       method: 'PUT',
-      body: data as unknown as Record<string, unknown>,
+      body: data,
     })
     return response.result
   },
@@ -57,7 +57,7 @@ export const willService = {
   async deleteWill(willId: string, guestPassword?: string) {
     const response = await fetchClient<void>(`/api/will/${willId}`, {
       method: 'DELETE',
-      ...(guestPassword ? { body: { guest_password: guestPassword } as unknown as Record<string, unknown> } : {}),
+      ...(guestPassword ? { body: { guest_password: guestPassword } } : {}),
     })
     return response.result
   },
@@ -65,7 +65,7 @@ export const willService = {
   async verifyGuestPassword(willId: string, password: string) {
     const response = await fetchClient<{ verified: boolean }>(`/api/will/${willId}/verify-password`, {
       method: 'POST',
-      body: { password } as unknown as Record<string, unknown>,
+      body: { password },
     })
     return response.result
   },

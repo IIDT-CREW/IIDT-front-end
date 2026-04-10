@@ -15,7 +15,7 @@ import { QUESTION_LIST } from 'views/Write/data'
 import { useWill, useCreateWill, useUpdateWill } from '@/queries'
 import useWarningHistoryBack from './hooks/useWarningHistoryBack'
 import useToast from 'hooks/useToast'
-import cn from 'utils/cn'
+import { cn } from 'utils/cn'
 import { useNavigate, useRouteQueryParam } from '@/hooks/useCurrentPath'
 
 const getDefaultTitle = (date = new Date()) => {
