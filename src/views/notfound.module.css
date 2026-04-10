@@ -1,0 +1,38 @@
+.container {
+  position: relative;
+  display: flex;
+  min-height: calc(100vh - 64px);
+  align-items: center;
+  justify-content: center;
+}
+
+.background {
+  position: absolute;
+  z-index: -1;
+  width: 100%;
+  min-height: calc(100vh - 64px);
+  background: linear-gradient(0deg, rgba(255, 255, 255, 0.6), rgba(255, 255, 255, 0.6)),
+    url(/images/home/joshua-sortino-XMcoTHgNcQA-unsplash.jpg);
+}
+
+.inner {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+
+.title {
+  margin-bottom: 18px;
+  font-size: 36px;
+  line-height: 1.5;
+}
+
+.text {
+  font-family: 'SUIT', sans-serif;
+  line-height: 1.5;
+}
+
+.textGap {
+  margin-bottom: 18px;
+}
