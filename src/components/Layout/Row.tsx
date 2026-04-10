@@ -1,7 +1,7 @@
-import React, { forwardRef } from 'react'
-import cn from 'utils/cn'
+import { forwardRef, type HTMLAttributes } from 'react'
+import { cn } from 'utils/cn'
 
-export interface RowProps extends React.HTMLAttributes<HTMLDivElement> {
+export interface RowProps extends HTMLAttributes<HTMLDivElement> {
   width?: string
   align?: string
   justify?: string
@@ -37,9 +37,9 @@ export const RowBetween = forwardRef<HTMLDivElement, RowProps>(({ className, ...
 
 RowBetween.displayName = 'RowBetween'
 
-export const RowFlat = forwardRef<HTMLDivElement, React.HTMLAttributes<HTMLDivElement>>(
-  ({ className, ...props }, ref) => <div ref={ref} className={cn('flex items-end', className)} {...props} />,
-)
+export const RowFlat = forwardRef<HTMLDivElement, HTMLAttributes<HTMLDivElement>>(({ className, ...props }, ref) => (
+  <div ref={ref} className={cn('flex items-end', className)} {...props} />
+))
 
 RowFlat.displayName = 'RowFlat'
 

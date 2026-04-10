@@ -19,7 +19,11 @@ export async function POST(req: NextRequest) {
     const supabase = createSupabaseServerClient()
 
     // 닉네임 중복 체크
-    const { data: existing } = await supabase.from('member').select('mem_idx').eq('mem_nickname', nickname).limit(1)
+    const { data: existing } = await supabase
+      .from('iidt_member')
+      .select('mem_idx')
+      .eq('mem_nickname', nickname)
+      .limit(1)
 
     if (existing && existing.length > 0) {
       return apiError('2001', '이미 사용 중인 닉네임입니다')
@@ -27,7 +31,7 @@ export async function POST(req: NextRequest) {
 
     // member 생성
     const { data: member, error } = await supabase
-      .from('member')
+      .from('iidt_member')
       .insert({
         mem_userid: session.user.userid,
         mem_username: session.user.name || '',

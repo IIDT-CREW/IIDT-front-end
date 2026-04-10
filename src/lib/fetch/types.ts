@@ -5,10 +5,9 @@ export interface ApiResponse<T = unknown> {
 }
 
 export interface FetchOptions extends Omit<RequestInit, 'body'> {
-  body?: Record<string, unknown> | FormData
+  body?: unknown
   params?: Record<string, string | number | boolean | undefined>
   timeout?: number
-  retry?: boolean
 }
 
 export interface FetchError extends Error {

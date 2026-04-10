@@ -20,7 +20,9 @@ const CustomModal: React.FC<ModalProps> = ({ title, onDismiss, ...props }) => (
 export const Default: React.FC = () => {
   const [onPresent1] = useModal(<CustomModal title="Modal 1" />)
   const [onPresent2] = useModal(<CustomModal title="Modal 2" />)
-  const [onPresent3] = useModal(<CustomModal title="Modal 3" headerBackground="linear-gradient(111.68deg, #F2ECF2 0%, #E8F2F6 100%)" />)
+  const [onPresent3] = useModal(
+    <CustomModal title="Modal 3" headerBackground="linear-gradient(111.68deg, #F2ECF2 0%, #E8F2F6 100%)" />,
+  )
   return (
     <div>
       <Button onClick={onPresent1}>Open modal 1</Button>

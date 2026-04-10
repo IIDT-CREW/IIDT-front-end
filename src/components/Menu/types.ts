@@ -1,6 +1,6 @@
-import React from 'react'
+import type { ComponentPropsWithoutRef, Dispatch, HTMLAttributes, ReactNode, SetStateAction } from 'react'
 
-export interface DropdownMenuProps extends React.HTMLAttributes<HTMLDivElement> {
+export interface DropdownMenuProps extends HTMLAttributes<HTMLDivElement> {
   items?: DropdownMenuItems[]
   activeItem?: string
   /**
@@ -12,20 +12,22 @@ export interface DropdownMenuProps extends React.HTMLAttributes<HTMLDivElement> 
    */
   showItemsOnMobile?: boolean
   index?: number
-  setMenuOpenByIndex?: React.Dispatch<React.SetStateAction<Record<number, boolean>>>
+  setMenuOpenByIndex?: Dispatch<SetStateAction<Record<number, boolean>>>
 }
 
-export interface StyledDropdownMenuItemProps extends React.ComponentPropsWithoutRef<'button'> {
+export interface StyledDropdownMenuItemProps extends ComponentPropsWithoutRef<'button'> {
   disabled?: boolean
   isActive?: boolean
 }
 
-export enum DropdownMenuItemType {
-  INTERNAL_LINK,
-  EXTERNAL_LINK,
-  BUTTON,
-  DIVIDER,
-}
+export const DROPDOWN_MENU_ITEM_TYPE = {
+  INTERNAL_LINK: 'internal-link',
+  EXTERNAL_LINK: 'external-link',
+  BUTTON: 'button',
+  DIVIDER: 'divider',
+} as const
+
+export type DropdownMenuItemValue = typeof DROPDOWN_MENU_ITEM_TYPE[keyof typeof DROPDOWN_MENU_ITEM_TYPE]
 
 export interface LinkStatus {
   text: string
@@ -33,10 +35,10 @@ export interface LinkStatus {
 }
 
 export interface DropdownMenuItems {
-  label?: string | React.ReactNode
+  label?: string | ReactNode
   href?: string
   onClick?: () => void
-  type?: DropdownMenuItemType
+  type?: DropdownMenuItemValue
   status?: LinkStatus
   disabled?: boolean
   iconName?: string

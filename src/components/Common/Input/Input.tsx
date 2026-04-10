@@ -12,7 +12,29 @@ const scaleStyles: Record<Scales, string> = {
 const toStyleValue = (value?: string | number) => (typeof value === 'number' ? `${value}px` : value)
 
 const Input = forwardRef<HTMLInputElement, InputProps>(
-  ({ scale = scales.MD, isSuccess = false, isWarning = false, className, label, form, style, m, mt, mb, ml, mr, p, pt, pb, pl, pr, ...props }, ref) => {
+  (
+    {
+      scale = scales.MD,
+      isSuccess = false,
+      isWarning = false,
+      className,
+      label,
+      form,
+      style,
+      m,
+      mt,
+      mb,
+      ml,
+      mr,
+      p,
+      pt,
+      pb,
+      pl,
+      pr,
+      ...props
+    },
+    ref,
+  ) => {
     const inputElement = (
       <ShadcnInput
         ref={ref}

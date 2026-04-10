@@ -1,6 +1,6 @@
 import { forwardRef, type ComponentPropsWithoutRef, type ElementRef } from 'react'
 import { Checkbox as ShadcnCheckbox } from 'components/ui/checkbox'
-import cn from 'utils/cn'
+import { cn } from 'utils/cn'
 import { CheckboxProps, scales } from './types'
 
 const scaleMap = {

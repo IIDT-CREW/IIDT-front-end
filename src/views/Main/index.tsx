@@ -6,7 +6,6 @@ import BannerCard from './components/BannerCard'
 import MainInfo from './components/MainInfo'
 import { MainButton } from '../Home'
 import WriteWarningInfoModal from './components/modal/WriteWarningInfoModal'
-import LoginModal from 'components/LoginModal'
 import WillCard from 'components/WillCard'
 import { toastContext } from 'contexts/Toast'
 import { useIsLogin, useUserInfo } from '@/hooks/useAuth'
@@ -14,7 +13,6 @@ import { DEFAULT_PAGE_SIZE } from 'config/constants/default'
 import useIntersect from './hooks/useIntersect'
 import { useInfiniteMyWill, useDeleteWill } from '@/queries'
 import { Skeleton } from 'components/Common/Skeleton'
-import { useNavigate } from '@/hooks/useCurrentPath'
 import styles from './components/main-shared.module.css'
 
 const WillContainer = () => {
@@ -37,7 +35,6 @@ const WillContainer = () => {
     status,
     isFetching,
     hasNextPage,
-    isFetchingNextPage,
     fetchNextPage,
   } = useInfiniteMyWill({
     memIdx: String(memIdx),
@@ -83,8 +80,6 @@ const WillContainer = () => {
 const Main = () => {
   const isLogin = useIsLogin()
   const [presentWarningModal] = useModal(<WriteWarningInfoModal />)
-  const [presentLoginModal] = useModal(<LoginModal />)
-  const navigate = useNavigate()
   useEffect(() => {
     const isPrecented = localStorage.getItem('isPrecented')
     if (!isPrecented) {
@@ -93,15 +88,6 @@ const Main = () => {
     }
     if (isPrecented) return
   }, [presentWarningModal])
-
-  const handleWrite = () => {
-    if (!isLogin) {
-      presentLoginModal()
-      return
-    }
-
-    navigate('/write')
-  }
 
   return (
     <div className={styles.pageContainer}>
@@ -112,7 +98,7 @@ const Main = () => {
         <div className={styles.centerColumn}>
           <MainInfo />
           <div className={styles.writeButtonWrap}>
-            <MainButton onClick={handleWrite}>작성하러가기</MainButton>
+            <MainButton href="/write">작성하러가기</MainButton>
           </div>
           {isLogin && <WillContainer />}
         </div>

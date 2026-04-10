@@ -1,31 +1,28 @@
-import React, { useEffect, useMemo, useState } from 'react'
+import { useEffect, useMemo, useState, type ButtonHTMLAttributes, type FC, type HTMLAttributes } from 'react'
 import { Modal, ModalProps } from 'components/Common'
 import { Button } from 'components/ui/button'
 import { signIn } from 'next-auth/react'
-import { useCurrentHref } from '@/hooks/useCurrentPath'
-import cn from 'utils/cn'
+import { useCurrentHref, useNavigate } from '@/hooks/useCurrentPath'
+import { cn } from 'utils/cn'
 
 enum EType {
-  NAVER,
   KAKAO,
   GOOGLE,
   TEST,
 }
 
 const loginStyles: Record<number, string> = {
-  [EType.NAVER]: 'bg-[#03c75a] text-white text-[14.5px]',
   [EType.KAKAO]: 'bg-[#fee500] text-[#000000d8] text-[14.5px] rounded',
   [EType.GOOGLE]:
     'bg-white border border-[#e2e4e6] rounded text-black text-[14.5px] [&_span]:font-[Roboto,Spoqa_Han_Sans_Neo,sans-serif]',
 }
 
 const loginIconStyles: Record<number, string> = {
-  [EType.NAVER]: 'bg-[url(/images/login/logo/naver.svg)] brightness-0 invert',
   [EType.KAKAO]: 'bg-[url(/images/login/btn_kakao_icon.svg)]',
   [EType.GOOGLE]: 'bg-[url(/images/login/btn_google_icon.svg)] rounded',
 }
 
-interface LoginButtonProps extends React.ButtonHTMLAttributes<HTMLButtonElement> {
+interface LoginButtonProps extends ButtonHTMLAttributes<HTMLButtonElement> {
   loginType: EType
 }
 
@@ -48,15 +45,16 @@ const LoginButton = ({ loginType, className, ...props }: LoginButtonProps) => (
   />
 )
 
-const LoginIcon = ({ loginType, className, ...props }: { loginType: EType } & React.HTMLAttributes<HTMLElement>) => (
+const LoginIcon = ({ loginType, className, ...props }: { loginType: EType } & HTMLAttributes<HTMLElement>) => (
   <i
     className={cn('w-10 h-10 inline-block bg-no-repeat bg-center', loginIconStyles[loginType], className)}
     {...props}
   />
 )
 
-const LoginModal: React.FC<ModalProps> = ({ onDismiss, ...props }) => {
+const LoginModal: FC<ModalProps> = ({ onDismiss, ...props }) => {
   const currentHref = useCurrentHref()
+  const navigate = useNavigate()
   const callbackUrl = currentHref === '/' ? '/main' : currentHref
   const [providers, setProviders] = useState<AuthProvider[]>([])
 
@@ -100,6 +98,11 @@ const LoginModal: React.FC<ModalProps> = ({ onDismiss, ...props }) => {
     [providers],
   )
 
+  const handleGuestStart = () => {
+    onDismiss?.()
+    navigate('/write')
+  }
+
   return (
     <Modal title="로그인이 필요해요" onDismiss={onDismiss} {...props} minWidth="272px">
       <div className="flex flex-col items-center justify-center">
@@ -114,6 +117,22 @@ const LoginModal: React.FC<ModalProps> = ({ onDismiss, ...props }) => {
             </LoginButton>
           )
         })}
+
+        <div className="mt-6 flex w-[310px] items-center gap-3">
+          <div className="h-px flex-1 bg-[#E2E4E6]" />
+          <span className="text-xs text-[#A4A2A3]">또는</span>
+          <div className="h-px flex-1 bg-[#E2E4E6]" />
+        </div>
+
+        <Button
+          type="button"
+          variant="outline"
+          size="md"
+          className="mt-4 h-10 w-[310px] rounded text-[14.5px]"
+          onClick={handleGuestStart}
+        >
+          비회원으로 시작하기
+        </Button>
 
         <div className="mb-8 mt-16">
           <p className="text-[10px] text-[#A4A2A3] underline">개인정보 처리방침</p>

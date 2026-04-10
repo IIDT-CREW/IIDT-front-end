@@ -1,21 +1,25 @@
-import moment from 'moment'
-import { useState, useEffect } from 'react'
+import moment, { utc } from 'moment'
+import { useEffect, useRef, useState } from 'react'
 
 const CountDown = ({ height = '550px', isCountDown = true, text = '' }) => {
-  let timer: any = null
   const [time, setTime] = useState(moment())
+  const timerRef = useRef<ReturnType<typeof setInterval> | null>(null)
+
   useEffect(() => {
-    timer = setInterval(() => {
+    timerRef.current = setInterval(() => {
       setTime(moment())
     }, 1000)
+
     return () => {
-      clearInterval(timer)
+      if (timerRef.current) {
+        clearInterval(timerRef.current)
+      }
     }
   }, [])
 
   const nextDay = moment(moment().add(1, 'days').format('YYYY-MM-DD'))
   const leftTime = nextDay.unix() - time.unix()
-  //const formatted = moment.utc(leftTime * 1000).format('HH:mm:ss')
+
   return (
     <div>
       <div className="relative w-full" style={{ height }}>
@@ -28,7 +32,7 @@ const CountDown = ({ height = '550px', isCountDown = true, text = '' }) => {
           <div className="relative flex h-full items-center justify-center">
             {text === '' && (
               <p className="text-[72px] leading-none font-bold text-white">
-                {isCountDown ? moment.utc(leftTime * 1000).format('HH:mm:ss') : moment().format('HH:mm:ss')}
+                {isCountDown ? utc(leftTime * 1000).format('HH:mm:ss') : moment().format('HH:mm:ss')}
               </p>
             )}
             {text !== '' && <p className="text-[72px] leading-none font-bold text-white">{text}</p>}

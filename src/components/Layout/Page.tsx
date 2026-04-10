@@ -1,5 +1,5 @@
 import SEOHead from 'components/SEO/SEOHead'
-import cn from 'utils/cn'
+import { cn } from 'utils/cn'
 
 interface PageProps extends React.HTMLAttributes<HTMLDivElement> {
   title?: string

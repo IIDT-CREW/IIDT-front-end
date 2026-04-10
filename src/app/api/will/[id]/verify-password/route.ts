@@ -17,7 +17,7 @@ export async function POST(req: NextRequest, { params }: { params: Promise<{ id:
     const supabase = createSupabaseServerClient()
 
     const { data: existing } = await supabase
-      .from('will')
+      .from('iidt_will')
       .select('mem_idx, guest_password')
       .eq('will_id', id)
       .eq('is_delete', 0)

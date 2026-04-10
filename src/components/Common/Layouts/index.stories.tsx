@@ -6,9 +6,7 @@ export default {
   argTypes: {},
 }
 
-const Stub = () => (
-  <div className="w-full bg-[#1fc7d4] h-[300px]" />
-)
+const Stub = () => <div className="w-full bg-[#1fc7d4] h-[300px]" />
 
 export const Base: React.FC = () => {
   return (

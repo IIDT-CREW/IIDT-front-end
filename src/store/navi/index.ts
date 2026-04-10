@@ -5,7 +5,7 @@ export interface NaviStoreState {
   isScrollDown: boolean
   menuOnOff: () => void
   menuOff: () => void
-  scrollDown(payload: boolean): void
+  scrollDown: (...args: [boolean]) => void
 }
 
 export const useNaviStore = create<NaviStoreState>((set) => ({
@@ -13,5 +13,5 @@ export const useNaviStore = create<NaviStoreState>((set) => ({
   isScrollDown: false,
   menuOnOff: () => set((state) => ({ isMenuOpen: !state.isMenuOpen })),
   menuOff: () => set({ isMenuOpen: false }),
-  scrollDown: (payload) => set({ isScrollDown: payload }),
+  scrollDown: (isScrollDown) => set({ isScrollDown }),
 }))

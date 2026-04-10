@@ -23,7 +23,7 @@ export function mapWillRow(row: any): Will {
     REG_DATE: row.reg_date,
     EDIT_DATE: row.edit_date,
     MEM_NICKNAME: row.member?.mem_nickname ?? row.guest_nickname ?? row.mem_nickname ?? '',
-    ANSWER_LIST: row.will_answer?.map(mapAnswerRow) ?? undefined,
+    ANSWER_LIST: row.will_answer?.map(mapAnswerRow) ?? row.iidt_will_answer?.map(mapAnswerRow) ?? undefined,
     IS_GUEST: row.mem_idx == null,
   }
 }

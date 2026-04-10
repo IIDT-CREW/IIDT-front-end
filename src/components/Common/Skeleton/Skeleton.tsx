@@ -1,6 +1,6 @@
 import { AnimatePresence, domAnimation, LazyMotion, m as Motion } from 'framer-motion'
 import React, { forwardRef, useRef } from 'react'
-import cn from 'utils/cn'
+import { cn } from 'utils/cn'
 import { animation as ANIMATION, SkeletonProps, SkeletonV2Props, variant as VARIANT } from './types'
 import { animationVariants, animationMap, animationHandler } from '../../../utils/animationToolkit'
 

@@ -2,7 +2,7 @@ import { useCallback, useState } from 'react'
 import moment from 'moment'
 import StyledImage from 'components/Common/Image/StyledImage'
 import Typing from 'views/Home/components/Typing'
-import cn from 'utils/cn'
+import { cn } from 'utils/cn'
 
 type TitleBannerProps = {
   height: string

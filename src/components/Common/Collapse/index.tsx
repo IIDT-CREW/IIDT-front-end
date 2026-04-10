@@ -1,26 +1,23 @@
 import { useState, useRef, useCallback } from 'react'
-import cn from 'utils/cn'
+import { cn } from 'utils/cn'
 import iconMap from './iconMap'
 
 const Collapse = ({ title, children, noIcon }: any) => {
   const [isSubMenuOpen, setIsSubMenuOpen] = useState(true)
   const parentRef = useRef<HTMLDivElement>(null)
   const childRef = useRef<HTMLDivElement>(null)
-  const handleButtonClick = useCallback(
-    (event) => {
-      event.stopPropagation()
-      if (parentRef.current === null || childRef.current === null) {
-        return
-      }
-      if (parentRef.current.clientHeight > 0) {
-        parentRef.current.style.height = '0'
-      } else {
-        parentRef.current.style.height = `${childRef.current.clientHeight}px`
-      }
-      setIsSubMenuOpen((prev) => !prev)
-    },
-    [],
-  )
+  const handleButtonClick = useCallback((event) => {
+    event.stopPropagation()
+    if (parentRef.current === null || childRef.current === null) {
+      return
+    }
+    if (parentRef.current.clientHeight > 0) {
+      parentRef.current.style.height = '0'
+    } else {
+      parentRef.current.style.height = `${childRef.current.clientHeight}px`
+    }
+    setIsSubMenuOpen((prev) => !prev)
+  }, [])
 
   return (
     <div className="mb-3">
@@ -41,7 +38,10 @@ const Collapse = ({ title, children, noIcon }: any) => {
         </i>
       </div>
 
-      <div ref={parentRef} className="h-0 w-[inherit] px-2 overflow-hidden transition-[height,background] duration-[350ms] ease-[ease]">
+      <div
+        ref={parentRef}
+        className="h-0 w-[inherit] px-2 overflow-hidden transition-[height,background] duration-[350ms] ease-[ease]"
+      >
         <div ref={childRef}>{children}</div>
       </div>
     </div>

@@ -1,8 +1,8 @@
-import React, { useEffect, useRef, useState } from 'react'
+import { useEffect, useRef, useState, type ComponentPropsWithoutRef, type FC, type HTMLAttributes } from 'react'
 import useOnClickOutside from 'hooks/useOnClickOutside'
-import { DropdownMenuItemType, DropdownMenuProps } from './types'
+import { DROPDOWN_MENU_ITEM_TYPE, DropdownMenuProps } from './types'
 import Link from 'next/link'
-import cn from 'utils/cn'
+import { cn } from 'utils/cn'
 
 export const StyledDropdownMenu = ({
   isOpen,
@@ -10,7 +10,7 @@ export const StyledDropdownMenu = ({
   className,
   style,
   ...props
-}: React.HTMLAttributes<HTMLDivElement> & { isOpen: boolean; isBottomNav: boolean }) => (
+}: HTMLAttributes<HTMLDivElement> & { isOpen: boolean; isBottomNav: boolean }) => (
   <div
     className={cn(
       'bg-[var(--color-bg)] border border-[var(--color-card-border)] rounded-2xl py-1 pointer-events-auto z-[1001] absolute',
@@ -28,7 +28,7 @@ export const LinkStatus = ({
   color,
   className,
   ...props
-}: React.HTMLAttributes<HTMLSpanElement> & { color: string; fontSize?: string }) => (
+}: HTMLAttributes<HTMLSpanElement> & { color: string; fontSize?: string }) => (
   <span
     className={cn('rounded-2xl px-2 border-2 shadow-none ml-2 text-sm', className)}
     style={{
@@ -39,7 +39,7 @@ export const LinkStatus = ({
   />
 )
 
-export interface StyledDropdownMenuItemProps extends React.ComponentPropsWithoutRef<'button'> {
+export interface StyledDropdownMenuItemProps extends ComponentPropsWithoutRef<'button'> {
   disabled?: boolean
   isActive?: boolean
 }
@@ -64,11 +64,11 @@ export const DropdownMenuItem = ({
   />
 )
 
-export const StyledDropdownMenuItemContainer = ({ className, ...props }: React.HTMLAttributes<HTMLDivElement>) => (
+export const StyledDropdownMenuItemContainer = ({ className, ...props }: HTMLAttributes<HTMLDivElement>) => (
   <div className={cn('first:[&>button]:rounded-t-lg last:[&>button]:rounded-b-lg', className)} {...props} />
 )
 
-const DropdownMenu: React.FC<DropdownMenuProps> = ({
+const DropdownMenu: FC<DropdownMenuProps> = ({
   children,
   isBottomNav = false,
   showItemsOnMobile = false,
@@ -132,7 +132,7 @@ const DropdownMenu: React.FC<DropdownMenuProps> = ({
         <StyledDropdownMenu isBottomNav={isBottomNav} isOpen={isMenuShow}>
           {items
             .filter((item) => !item.isMobileOnly)
-            .map(({ type = DropdownMenuItemType.INTERNAL_LINK, label, href = '/', status, ...itemProps }) => {
+            .map(({ label, href = '/', status, type: itemType, ...itemProps }) => {
               const MenuItemContent = (
                 <>
                   {label}
@@ -146,7 +146,12 @@ const DropdownMenu: React.FC<DropdownMenuProps> = ({
               const isActive = href === activeItem
               return (
                 <StyledDropdownMenuItemContainer key={`${label}-${href}`}>
-                  <DropdownMenuItem isActive={isActive} type="button" {...itemProps}>
+                  <DropdownMenuItem
+                    isActive={isActive}
+                    type="button"
+                    data-item-type={itemType ?? DROPDOWN_MENU_ITEM_TYPE.INTERNAL_LINK}
+                    {...itemProps}
+                  >
                     <Link href={href}>{MenuItemContent}</Link>
                   </DropdownMenuItem>
                 </StyledDropdownMenuItemContainer>

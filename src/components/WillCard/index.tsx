@@ -1,4 +1,4 @@
-import React, { useCallback, useEffect, useRef, useState } from 'react'
+import { memo, useCallback, useEffect, useRef, useState } from 'react'
 import { Will } from '@api/will/types'
 import { ChevronUp, Ellipsis } from 'lucide-react'
 import { Card } from 'components/ui/card'
@@ -71,4 +71,4 @@ const WillCard = ({ will, handleDelete, handleShare, isPrivate = true }: WillCar
   )
 }
 
-export default React.memo(WillCard)
+export default memo(WillCard)

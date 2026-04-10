@@ -18,16 +18,12 @@ const InputGroup = ({
 
   return (
     <div className={cn('relative w-full', className)} {...props}>
-      {startIcon && (
-        <div className={cn('absolute top-0 h-full flex items-center', iconPositionClass)}>{startIcon}</div>
-      )}
+      {startIcon && <div className={cn('absolute top-0 h-full flex items-center', iconPositionClass)}>{startIcon}</div>}
       {cloneElement(children, {
         scale,
         className: cn(inputPaddingLeft, inputPaddingRight, children.props.className),
       })}
-      {endIcon && (
-        <div className={cn('absolute top-0 h-full flex items-center', endIconPositionClass)}>{endIcon}</div>
-      )}
+      {endIcon && <div className={cn('absolute top-0 h-full flex items-center', endIconPositionClass)}>{endIcon}</div>}
     </div>
   )
 }

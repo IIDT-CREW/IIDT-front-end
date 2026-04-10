@@ -1,5 +1,5 @@
 import { forwardRef } from 'react'
-import cn from 'utils/cn'
+import { cn } from 'utils/cn'
 import { TabProps } from './types'
 
 const Tab = forwardRef<HTMLButtonElement, TabProps & React.ButtonHTMLAttributes<HTMLButtonElement>>(

@@ -15,16 +15,3 @@ export function useUserInfo(): { memIdx: number; userid: string; name: string; e
     nickname: session?.user?.nickname ?? '',
   }
 }
-
-export function useAuthState() {
-  const { data: session, status } = useSession()
-  return {
-    isAuthenticated: status === 'authenticated',
-    accessToken: null as string | null,
-    name: session?.user?.name ?? '',
-    email: session?.user?.email ?? '',
-    nickname: session?.user?.nickname ?? '',
-    userid: session?.user?.userid ?? '',
-    memIdx: session?.user?.memIdx ?? -1,
-  }
-}

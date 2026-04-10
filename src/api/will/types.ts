@@ -1,5 +1,3 @@
-import { DefaultResponse } from '../types'
-
 // Response format - used when reading will data
 export type Answer = {
   question_essay_index: string
@@ -38,24 +36,6 @@ export type Will = {
   IS_GUEST?: boolean
 }
 
-export type GetWillCount = Omit<DefaultResponse, 'result'> & {
-  result: number
-}
-
-export type GetMyWill = Omit<DefaultResponse, 'result'> & {
-  result: Will[]
-}
-
-export type GetWill = Omit<DefaultResponse, 'data'> & {
-  result: Will
-}
-
-export type GetMyWillParams = {
-  memIdx: string
-  pageNo: string
-  pageSize: string
-}
-
 export type InsertWillParams = {
   title: string
   content: string
@@ -67,8 +47,4 @@ export type InsertWillParams = {
   answer_list?: AnswerInput[] | null
   guest_nickname?: string
   guest_password?: string
-}
-
-export type DeleteWillParams = {
-  will_id: string
 }

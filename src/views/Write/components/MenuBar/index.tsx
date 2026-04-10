@@ -1,7 +1,7 @@
 import { ArrowLeft } from 'components/Common/Svg'
 import { MENU_HEIGHT } from 'config/constants/default'
 import React, { useCallback } from 'react'
-import cn from 'utils/cn'
+import { cn } from 'utils/cn'
 import useToast from 'hooks/useToast'
 import { PREV, NEXT, DONE } from 'views/Write/data'
 import PrivateToggle from '@components/PrivateToggle'
@@ -33,7 +33,7 @@ export const StyleMenuButton = ({
 
 type MenuButtonListProps = {
   isMobile: boolean
-  handleMenuButton: (e: any) => void
+  handleMenuButton: (...args: ['prev' | 'next' | 'done']) => void
   page: number
   isLastPage: boolean
   isDisabled: boolean

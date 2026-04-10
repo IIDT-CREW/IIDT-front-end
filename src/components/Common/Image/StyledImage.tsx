@@ -1,5 +1,5 @@
 import React, { useEffect, useRef, useState } from 'react'
-import cn from 'utils/cn'
+import { cn } from 'utils/cn'
 import observerOptions from './options'
 import Wrapper from './Wrapper'
 import { ImageProps } from './types'

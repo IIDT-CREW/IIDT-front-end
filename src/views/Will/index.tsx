@@ -1,6 +1,6 @@
 'use client'
 
-import { useEffect, useCallback } from 'react'
+import { useEffect } from 'react'
 import AOS from 'aos'
 import Page from '@components/Layout/Page'
 import { useWill } from '@/queries/will'
@@ -8,7 +8,7 @@ import WillCard from '@views/Will/components/WillShareCard'
 import TitleBanner from '@views/Will/components/TitleBanner'
 import { MainButton } from '@views/Home'
 import type { Will } from '@api/will/types'
-import { useNavigate, useRouteParam } from '@/hooks/useCurrentPath'
+import { useRouteParam } from '@/hooks/useCurrentPath'
 
 type WillTitleProps = {
   data?: Will
@@ -31,6 +31,7 @@ type WillContentProps = {
   isLoading: boolean
   data?: Will
 }
+
 const WillContent = ({ isLoading, data }: WillContentProps) => {
   return (
     <div className="flex flex-col items-center justify-center">
@@ -38,36 +39,27 @@ const WillContent = ({ isLoading, data }: WillContentProps) => {
     </div>
   )
 }
-type WillFooterProps = {
-  handleWrite: () => void
-}
-const WillFooter = ({ handleWrite }: WillFooterProps) => {
-  return (
-    <div className="my-[50px]">
+
+const WillFooter = () => (
+  <div className="my-[50px]">
+    <div className="flex flex-col items-center justify-center">
       <div className="flex flex-col items-center justify-center">
-        <div className="flex flex-col items-center justify-center">
-          <p className="font-semibold leading-relaxed" data-aos="fade-up" data-aos-duration="1000">
-            한번 하루 유서를 적어보시겠어요?
-          </p>
-          <p className="font-semibold leading-relaxed" data-aos="fade-up" data-aos-duration="1500">
-            좋은 경험이 될거에요.
-          </p>
-        </div>
-        <div className="mt-[30px]" data-aos="fade" data-aos-duration="3000">
-          <MainButton onClick={handleWrite}>네. 작성해보겠습니다.</MainButton>
-        </div>
+        <p className="font-semibold leading-relaxed" data-aos="fade-up" data-aos-duration="1000">
+          한번 하루 유서를 적어보시겠어요?
+        </p>
+        <p className="font-semibold leading-relaxed" data-aos="fade-up" data-aos-duration="1500">
+          좋은 경험이 될거에요.
+        </p>
+      </div>
+      <div className="mt-[30px]" data-aos="fade" data-aos-duration="3000">
+        <MainButton href="/write">네. 작성해보겠습니다.</MainButton>
       </div>
     </div>
-  )
-}
+  </div>
+)
 const WillPage = () => {
-  const navigate = useNavigate()
   const willId = useRouteParam('id')
   const { data, isLoading, isError } = useWill(willId, { enabled: !!willId })
-
-  const handleWrite = useCallback(() => {
-    navigate('/write')
-  }, [navigate])
 
   useEffect(() => {
     AOS.init()
@@ -83,7 +75,7 @@ const WillPage = () => {
       <div className="min-h-[calc(100%_-_231px)]">
         <WillTitle data={data} />
         <WillContent data={data} isLoading={isLoading} />
-        <WillFooter handleWrite={handleWrite} />
+        <WillFooter />
       </div>
     </Page>
   )

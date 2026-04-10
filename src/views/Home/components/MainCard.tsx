@@ -1,12 +1,18 @@
 import styles from './home-card.module.css'
 
+type MainCardProps = {
+  height: number
+  title: string
+  secondTitle: string
+  imagePath?: string
+}
+
 const Card = ({
   height,
   title,
   secondTitle,
   imagePath = '/images/home/huyen-pham--PTlx55R-KU-unsplash.jpg',
-  alt = '',
-}) => {
+}: MainCardProps) => {
   return (
     <div
       className={styles.card}
@@ -35,4 +41,5 @@ const Card = ({
     </div>
   )
 }
+
 export default Card

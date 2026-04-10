@@ -1,6 +1,6 @@
 import { Modal } from 'components/Common'
 import { Button } from 'components/ui/button'
-import cn from 'utils/cn'
+import { cn } from 'utils/cn'
 
 type variant = 'primary' | 'secondary'
 

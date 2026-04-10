@@ -1,6 +1,7 @@
 'use client'
 
-import React, { useState, useCallback, useEffect } from 'react'
+import type { ChangeEvent } from 'react'
+import { useState, useCallback, useEffect } from 'react'
 import { useSession } from 'next-auth/react'
 import { useCheckNickname } from '@/queries/auth'
 import { Button } from 'components/ui/button'
@@ -14,6 +15,7 @@ export default function OnboardingPage() {
   const [isFetched, setIsFetched] = useState(false)
   const [isDuplicate, setIsDuplicate] = useState(false)
   const [isSubmitting, setIsSubmitting] = useState(false)
+  const [submitError, setSubmitError] = useState('')
 
   useEffect(() => {
     if (session?.user && !session.user.needsNickname) {
@@ -30,11 +32,12 @@ export default function OnboardingPage() {
     setIsDuplicate(checkResult.IS_EXIST)
   }, [checkResult])
 
-  const handleChange = useCallback((e: React.ChangeEvent<HTMLInputElement>) => {
+  const handleChange = useCallback((e: ChangeEvent<HTMLInputElement>) => {
     setNickname(e.target.value)
     setIsDuplicate(false)
     setIsFetched(false)
     setShouldCheck(false)
+    setSubmitError('')
   }, [])
 
   const handleCheck = useCallback(() => {
@@ -45,6 +48,7 @@ export default function OnboardingPage() {
   const handleSubmit = useCallback(async () => {
     if (isSubmitting) return
     setIsSubmitting(true)
+    setSubmitError('')
 
     try {
       const res = await fetch('/api/auth/complete-signup', {
@@ -67,7 +71,7 @@ export default function OnboardingPage() {
         setIsDuplicate(true)
       }
     } catch {
-      alert('오류가 발생했습니다. 다시 시도해주세요.')
+      setSubmitError('오류가 발생했습니다. 다시 시도해주세요.')
     } finally {
       setIsSubmitting(false)
     }
@@ -96,6 +100,14 @@ export default function OnboardingPage() {
         <div className="mb-4">
           <p className="text-red-500" role="alert">
             아쉽지만 다른 닉네임을 사용해주세요.
+          </p>
+        </div>
+      )}
+
+      {submitError && (
+        <div className="mb-4">
+          <p className="text-red-500" role="alert">
+            {submitError}
           </p>
         </div>
       )}

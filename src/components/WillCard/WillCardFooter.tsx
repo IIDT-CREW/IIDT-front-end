@@ -1,4 +1,4 @@
-import React from 'react'
+import { memo } from 'react'
 import { Will } from '@api/will/types'
 
 type WillCardProps = {
@@ -17,4 +17,4 @@ const Footer = ({ will }: WillCardProps) => {
   )
 }
 
-export default React.memo(Footer)
+export default memo(Footer)

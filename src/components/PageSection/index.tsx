@@ -1,20 +1,19 @@
-import { HTMLAttributes } from 'react'
-import cn from 'utils/cn'
+import { type HTMLAttributes, type ReactNode } from 'react'
+import { cn } from 'utils/cn'
 
 interface PageSectionProps extends HTMLAttributes<HTMLDivElement> {
   index?: number
   background?: string
   svgFill?: string
-  dividerComponent?: React.ReactNode
-  containerProps?: React.HTMLAttributes<HTMLDivElement>
-  innerProps?: React.HTMLAttributes<HTMLDivElement>
+  dividerComponent?: ReactNode
+  containerProps?: HTMLAttributes<HTMLDivElement>
+  innerProps?: HTMLAttributes<HTMLDivElement>
 }
 
 const PageSection: React.FC<PageSectionProps> = ({
   children,
   background,
   index = 1,
-  dividerComponent,
   containerProps,
   innerProps,
   ...props

@@ -1,5 +1,5 @@
 import { forwardRef } from 'react'
-import cn from 'utils/cn'
+import { cn } from 'utils/cn'
 import { SvgProps } from './types'
 
 const colorMap: Record<string, string> = {

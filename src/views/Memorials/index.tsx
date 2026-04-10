@@ -99,7 +99,6 @@ const WillContainer = () => {
     status,
     isFetching,
     hasNextPage,
-    isFetchingNextPage,
     fetchNextPage,
   } = useInfiniteWillList({
     pageSize: parseInt(DEFAULT_PAGE_SIZE, 10),

@@ -6,7 +6,7 @@ export async function GET() {
     const supabase = createSupabaseServerClient()
 
     const { count, error } = await supabase
-      .from('will')
+      .from('iidt_will')
       .select('*', { count: 'exact', head: true })
       .eq('is_delete', 0)
       .eq('is_private', 0)

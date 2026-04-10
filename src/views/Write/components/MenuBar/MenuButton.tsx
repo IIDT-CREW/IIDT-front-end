@@ -8,7 +8,7 @@ type MenuButtonProps = {
   isMobile: boolean
   text: string
   isDisabled: boolean
-  handleMenuButton: (e: any) => void
+  handleMenuButton: (...args: ['prev' | 'next' | 'done']) => void
   variant?: Variant
   buttonType: 'prev' | 'next' | 'done'
 }

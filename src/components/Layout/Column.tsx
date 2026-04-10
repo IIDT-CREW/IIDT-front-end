@@ -1,13 +1,13 @@
-import React, { forwardRef } from 'react'
-import cn from 'utils/cn'
+import { forwardRef, type HTMLAttributes } from 'react'
+import { cn } from 'utils/cn'
 
-const Column = forwardRef<HTMLDivElement, React.HTMLAttributes<HTMLDivElement>>(({ className, ...props }, ref) => (
+const Column = forwardRef<HTMLDivElement, HTMLAttributes<HTMLDivElement>>(({ className, ...props }, ref) => (
   <div ref={ref} className={cn('flex flex-col justify-start', className)} {...props} />
 ))
 
 Column.displayName = 'Column'
 
-export const ColumnCenter = forwardRef<HTMLDivElement, React.HTMLAttributes<HTMLDivElement>>(
+export const ColumnCenter = forwardRef<HTMLDivElement, HTMLAttributes<HTMLDivElement>>(
   ({ className, ...props }, ref) => (
     <div ref={ref} className={cn('flex flex-col justify-start w-full items-center', className)} {...props} />
   ),
@@ -15,7 +15,7 @@ export const ColumnCenter = forwardRef<HTMLDivElement, React.HTMLAttributes<HTML
 
 ColumnCenter.displayName = 'ColumnCenter'
 
-export interface AutoColumnProps extends React.HTMLAttributes<HTMLDivElement> {
+export interface AutoColumnProps extends HTMLAttributes<HTMLDivElement> {
   gap?: 'sm' | 'md' | 'lg' | string
   justify?: 'stretch' | 'center' | 'start' | 'end' | 'flex-start' | 'flex-end' | 'space-between'
 }

@@ -3,9 +3,9 @@
   "version": "0.1.0",
   "private": true,
   "scripts": {
-    "analyze": "ANALYZE=true npm run build",
+    "analyze": "ANALYZE=true next build --webpack",
     "dev": "next dev -p 5194",
-    "build": "next build",
+    "build": "next build --webpack",
     "postbuild": "next-sitemap --config next-sitemap.config.js",
     "start": "next start -p 6060",
     "lint": "eslint 'src/**/*.{js,jsx,ts,tsx}'",

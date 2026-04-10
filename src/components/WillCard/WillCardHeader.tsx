@@ -58,7 +58,8 @@ const Header = ({ will, handleDelete, handleShare, isPrivate = true }: HeaderPro
 
   // 비회원 글 비밀번호 확인 후 수정
   const handleGuestEdit = useCallback(
-    (password: string) => {
+    (_password: string) => {
+      void _password
       navigate(`/write?will_id=${willId}`)
     },
     [navigate, willId],

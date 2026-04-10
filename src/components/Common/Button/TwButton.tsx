@@ -1,5 +1,5 @@
 import { ButtonHTMLAttributes, forwardRef } from 'react'
-import cn from 'utils/cn'
+import { cn } from 'utils/cn'
 
 export type TwButtonVariant = 'primary' | 'secondary' | 'tertiary' | 'text' | 'danger' | 'subtle' | 'success' | 'light'
 

@@ -1,4 +1,4 @@
-import cn from 'utils/cn'
+import { cn } from 'utils/cn'
 import IconSun from '../../../../public/images/theme/Sun.svg'
 import IconMoon from '../../../../public/images/theme/Moon.svg'
 

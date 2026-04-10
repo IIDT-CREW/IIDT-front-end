@@ -1,4 +1,4 @@
-import cn from 'utils/cn'
+import { cn } from 'utils/cn'
 import EarthIcon from '../../public/images/write/earth.svg'
 import LockIcon from '../../public/images/write/lock.svg'
 

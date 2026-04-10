@@ -11,7 +11,10 @@ export interface CardProps extends HTMLAttributes<HTMLDivElement> {
 }
 
 const Card = forwardRef<HTMLDivElement, CardProps>(
-  ({ children, background, isActive, isSuccess, isWarning, isDisabled, borderBackground, className, style, ...props }, ref) => {
+  (
+    { children, background, isActive, isSuccess, isWarning, isDisabled, borderBackground, className, style, ...props },
+    ref,
+  ) => {
     // Determine border/background color
     const getBorderStyle = () => {
       if (borderBackground) return { background: borderBackground }

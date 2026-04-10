@@ -1,7 +1,7 @@
-import React, { forwardRef } from 'react'
-import cn from 'utils/cn'
+import { forwardRef, type HTMLAttributes } from 'react'
+import { cn } from 'utils/cn'
 
-const FlexLayout = forwardRef<HTMLDivElement, React.HTMLAttributes<HTMLDivElement>>(({ className, ...props }, ref) => (
+const FlexLayout = forwardRef<HTMLDivElement, HTMLAttributes<HTMLDivElement>>(({ className, ...props }, ref) => (
   <div
     ref={ref}
     className={cn(
@@ -14,7 +14,7 @@ const FlexLayout = forwardRef<HTMLDivElement, React.HTMLAttributes<HTMLDivElemen
 
 FlexLayout.displayName = 'FlexLayout'
 
-export interface FlexGapProps extends React.HTMLAttributes<HTMLDivElement> {
+export interface FlexGapProps extends HTMLAttributes<HTMLDivElement> {
   gap?: string
   rowGap?: string
   columnGap?: string
